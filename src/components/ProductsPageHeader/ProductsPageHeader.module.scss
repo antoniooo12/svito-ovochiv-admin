@@ -1,0 +1,34 @@
+@import "src/variablesGlobal";
+.wrapper {
+  height: $subHeader;
+  width: fit-content;
+  border: 1px solid #C0C0C0;
+  border-top: none;
+  box-sizing: border-box;
+  border-radius: 0px 0px 5px 5px;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  & > a {
+    padding-right: 7px;
+    padding-left: 7px;
+  }
+
+  .BtnPage {
+    font-size: 16px;
+    font-weight: 500;
+    padding-right: 7px;
+    padding-left: 7px;
+    padding-bottom: -5px;
+    border-radius: 8px;
+    transition: 0.3s;
+  }
+
+  .BtnPageSelected {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    height: fit-content;
+    background-color: #F2DA59;
+
+  }
+}

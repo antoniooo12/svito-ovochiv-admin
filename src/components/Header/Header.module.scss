@@ -1,0 +1,57 @@
+@import '/src/variablesGlobal';
+
+$marginsideHeader: 35px;
+
+.wrapper {
+  margin-left: $marginsideHeader;
+  margin-right: $marginsideHeader;
+  height: $headerHeight;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Inter, sans-serif;
+
+  &:before {
+    content: "";
+    position: absolute;
+    transform: translateX(-$marginsideHeader);
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 1px;
+    background-color: #C4C4C4;
+  }
+
+  .left {
+
+  }
+
+  .right {
+    & > span {
+      margin-right: 20px;
+
+    }
+  }
+
+  .BtnPage {
+    //margin-right: 15px;
+    padding-right: 7px;
+    padding-left: 7px;
+    padding-bottom: -5px;
+    transition: background-color 0.2s ease-out;
+    border-radius: 8px;
+
+  }
+
+  .BtnPageSelected {
+    padding-bottom: 3px;
+    height: fit-content;
+    background-color: #F2DA59;
+    transition: padding-bottom 0.4s, background-color 0.3s;
+  }
+}

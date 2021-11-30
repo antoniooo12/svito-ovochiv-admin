@@ -1,0 +1,20 @@
+.wrapper {
+  width: fit-content;
+  padding: 3px 15px;
+  font-weight: 500;
+  min-height: 33px;
+  color: #fff;
+  background: #0A65FF;
+  border-radius: 11px;
+  display:  flex;
+  align-items: center;
+  cursor: pointer;
+  & > * {
+    vertical-align: middle;
+    display: inline-block;
+    margin-left: 5px;
+  }
+
+
+
+}

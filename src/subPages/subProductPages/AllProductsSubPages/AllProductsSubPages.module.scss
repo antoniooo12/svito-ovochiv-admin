@@ -1,0 +1,92 @@
+@import "src/variablesGlobal";
+
+.wrapper {
+  position: relative;
+  //подивись у глобальні змінні на $headerHeight $subHeader
+  height: calc(100vh - 34px - 50px);
+  margin-left: $marginSide;
+  display: flex;
+
+  .right {
+    padding: 20px 15px 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    min-width: 336px;
+    background-color: #F4F4F4;
+
+    .rightMainSection {
+      flex: 1 1 auto;
+    }
+
+    .rightBottom {
+      margin: 0 auto;
+      height: fit-content;
+    }
+  }
+
+  .left {
+    width: 100%;
+
+    .leftHeader {
+      margin-left: $marginSide + 60px;
+      margin-top: $headerProductTableMargin;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 22px;
+
+
+    }
+
+    .leftLineDontSave{
+      background-color: #FFE1E1;
+    }
+    .leftLineDontSave2{
+      background-color: #FFC7C7;
+    }
+    .leftLine {
+
+      display: flex;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      width: fit-content;
+      &>input{
+        background-color:rgba(0, 0, 0, 0.0)
+      }
+
+     input{
+       font-size: 16px;
+     }
+      .lineCheckbox {
+        margin-left: 18px;
+        margin-right: 40px;
+      }
+
+      .lineName {
+        width: 206px;
+      }
+
+      .lineCategory {
+        width: 117px;
+      }
+
+      .lineSubCategory {
+        width: 140px;
+      }
+
+      .linePrice {
+        width: 60px;
+      }
+
+      .linePriority {
+        width: 85px;
+      }
+
+    }
+
+    .leftList {
+
+    }
+  }
+}
+
