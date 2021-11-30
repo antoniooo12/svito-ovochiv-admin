@@ -11,7 +11,7 @@ import PricePage from "../pages/PricePage";
 import ProductsPage from "../pages/ProductsPage";
 import {OrdersPage} from "../pages/OrdersPage";
 import {AllProductsSubPages} from "../subPages/subProductPages/AllProductsSubPages/AllProductsSubPages";
-import CategorySubPage from "../subPages/subProductPages/CategorySubPage";
+import CategorySubPage from "../subPages/subProductPages/CategorySubPage/CategorySubPage";
 
 function App() {
     return (
