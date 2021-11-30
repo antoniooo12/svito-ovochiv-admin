@@ -8,7 +8,7 @@ import {Layout} from "../components/Layout/Layout";
 import {BrowserRouter, Routes, Route, Link, Outlet} from "react-router-dom";
 import {pageList} from "../mokData/mokData";
 import PricePage from "../pages/PricePage";
-import ProductsPage from "../pages/ProductsPage";
+import ProductsPage from "../pages/ProductsPage/ProductsPage";
 import {OrdersPage} from "../pages/OrdersPage";
 import {AllProductsSubPages} from "../subPages/subProductPages/AllProductsSubPages/AllProductsSubPages";
 import CategorySubPage from "../subPages/subProductPages/CategorySubPage/CategorySubPage";

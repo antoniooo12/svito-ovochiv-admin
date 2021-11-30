@@ -1,10 +1,19 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import cl from "./CategorySubPage.module.scss";
 import {BtnBlue} from "../../../components/UI/BtnBlue/BtnBlue";
 import {IconSave} from "../../../components/UI/icons/IconSave";
+import {useDispatch, useSelector} from "react-redux";
+import categoryReducer from "../../../reducer/categoryReducer";
 
 const CategorySubPage = () => {
-    const onSave = () => {
+    const dispatch = useDispatch()
+    let newCategoryR = useSelector(state => state.category.newCategory) || []
+    const [listOfNewCategory, setListOfNewCategory] = useState([])
+
+    useEffect(() => {
+        setListOfNewCategory(newCategoryR)
+    }, [newCategoryR])
+    const onChangeNewCategory = () => {
 
     }
     return (
@@ -13,20 +22,22 @@ const CategorySubPage = () => {
                 <div className={cl.leftLine}>
                     <div className={cl.lineCategory}>Назва категорії</div>
                 </div>
-            </div>
-            <div className={cl.right}>
-                <div className={cl.rightMainSection}>
-                    <BtnBlue onClick={(e) => {
-                        // onCreateProduct()
-                    }}>
-                        створити товар <IconSave/>
-                    </BtnBlue>
-                </div>
+                <div className={cl.leftList}>
+                    {listOfNewCategory.map((el, i) => {
+                        return (<div>
+                                <input
+                                    onChange={(e) =>
+                                        onChangeNewCategory({e, tempId: el.tempId})} type="checkbox"
+                                    className={cl.lineCheckbox}/>
+                                <input
+                                    onChange={(e) =>
+                                    onChangeNewCategory({e, tempId: el.tempId})}
+                                    placeholder={'категорія'}
+                                       type="text"/>
+                            </div>
 
-                <div className={cl.rightBottom}>
-                    <BtnBlue onClick={(e) => onSave()}>
-                        зберегти
-                    </BtnBlue>
+                        )
+                    })}
                 </div>
             </div>
         </div>

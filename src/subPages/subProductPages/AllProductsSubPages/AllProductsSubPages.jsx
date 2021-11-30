@@ -1,43 +1,29 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import cl from './AllProductsSubPages.module.scss'
 import {BtnBlue} from "../../../components/UI/BtnBlue/BtnBlue";
 import {IconSave} from "../../../components/UI/icons/IconSave";
-import {useDispatch} from "react-redux";
-import {createProduct} from "../../../reducer/productReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {changeNewProduct, createNewProduct} from "../../../reducer/productReducer";
 
 const AllProductsSubPages = () => {
     const dispatch = useDispatch()
+    let newProductsR = useSelector(state => state.product.newProducts) || []
     const [listOfProducts, setListOfProducts] = useState([])
     const [listOfNewProduct, setListOfNewProduct] = useState([])
-    const onCreateProduct = () => {
-        const tempId = Date.now()
-        setListOfNewProduct([...listOfNewProduct, {tempId}])
-    }
+
+    useEffect(() => {
+        setListOfNewProduct(newProductsR)
+    }, [newProductsR])
+
     const onChangeNewProduct = ({e, tempId}) => {
         const selected = e.target.placeholder
         const value = e.target.value
-        const indexOfNewP = listOfNewProduct.findIndex(el => el.tempId === tempId)
-        let newProduct = listOfNewProduct.filter(el => el.tempId === tempId)[0]
-        if (selected === 'назва') {
-            newProduct.title = value
-        } else if (selected === 'категорія') {
-            newProduct.category = value
-        } else if (selected === 'підкатегорія') {
-            newProduct.subCategory = value
-        } else if (selected === 'ціна') {
-            newProduct.price = value
-        } else if (selected === 'пріорітет') {
-            newProduct.priority = value
-        }
-        setListOfNewProduct(
-            [...listOfNewProduct.slice(0, indexOfNewP),
-                newProduct,
-                ...listOfNewProduct.slice(indexOfNewP + 1)])
+        dispatch(changeNewProduct({selected, value, tempId}))
 
     }
     const onSaveProduct = () => {
         console.log(listOfNewProduct)
-        dispatch(createProduct())
+        // dispatch()
     }
     return (
         <div className={cl.wrapper}>
@@ -53,7 +39,6 @@ const AllProductsSubPages = () => {
                 </div>
                 <div className={cl.leftList}>
                     {listOfNewProduct.map((el, i) => {
-                        console.log(el)
                         return (<div key={el.tempId}
                                      className={[cl.leftLine, i % 2 === 0 ? cl.leftLineDontSave : cl.leftLineDontSave2].join(' ')}>
                             <input
@@ -67,28 +52,13 @@ const AllProductsSubPages = () => {
                             <input onChange={(e) => onChangeNewProduct({e, tempId: el.tempId})}
                                    placeholder={'підкатегорія'}
                                    className={cl.lineSubCategory}/>
-                            <input   onChange={(e) => onChangeNewProduct({e, tempId: el.tempId})} type={'number'}
-                                    placeholder={'ціна'}
-                                    className={cl.linePrice} min="0"/>
-                            <input   onChange={(e) => onChangeNewProduct({e, tempId: el.tempId})} type={'number'}
+                            <input onChange={(e) => onChangeNewProduct({e, tempId: el.tempId})} type={'number'}
+                                   placeholder={'ціна'}
+                                   className={cl.linePrice} min="0"/>
+                            <input onChange={(e) => onChangeNewProduct({e, tempId: el.tempId})} type={'number'}
                                    placeholder={'пріорітет'} className={cl.linePriority} min="0"/>
                         </div>)
                     })}
-                </div>
-            </div>
-            <div className={cl.right}>
-                <div className={cl.rightMainSection}>
-                    <BtnBlue onClick={(e) => {
-                        onCreateProduct()
-                    }}>
-                        створити товар <IconSave/>
-                    </BtnBlue>
-                </div>
-
-                <div className={cl.rightBottom}>
-                    <BtnBlue onClick={(e) => onSaveProduct()}>
-                        зберегти
-                    </BtnBlue>
                 </div>
             </div>
         </div>
