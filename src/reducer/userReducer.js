@@ -4,7 +4,7 @@ const LOGOUT = "LOG_OUT"
 
 const defaultState = {
     currentUser: {},
-    isAuth: false
+    isAuth: true
 }
 
 

@@ -1,10 +1,10 @@
 import axios from 'axios'
 import {setUser} from "../reducer/userReducer";
-
+import {URL} from '../API'
 export const login = (email, password)=>{
     return async  dispatch =>{
         try {
-            const res = await axios.post(`http://localhost:4800/api/user/login`,{
+            const res = await axios.post(`${URL}/api/user/login`,{
                 email,
                 password,
             })
