@@ -2,11 +2,7 @@
 
 .wrapper {
   position: relative;
-  //подивись у глобальні змінні на $headerHeight $subHeader
-  height: calc(100vh - 34px - 50px);
   margin-left: $marginSide;
-  display: flex;
-
   .left {
     width: 100%;
 

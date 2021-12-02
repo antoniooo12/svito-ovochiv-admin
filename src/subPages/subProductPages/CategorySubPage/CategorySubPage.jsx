@@ -9,6 +9,9 @@ import {changeNewProduct} from "../../../reducer/productReducer";
 import {getAllCategory} from "../../../actions/category";
 import {TableCategory} from "../../../components/Table/elements/TableCategory/TableCategory";
 import TableCheckbox from "../../../components/Table/elements/TableCheckbox/TableCheckbox";
+import {TableList} from "../../../components/Table/TableList/TableList";
+import {TableHeader} from "../../../components/Table/TableHeader/TableHeader";
+import TableLine from "../../../components/Table/TableLine/TableLine";
 
 const CategorySubPage = () => {
     const dispatch = useDispatch()
@@ -33,22 +36,36 @@ const CategorySubPage = () => {
     }
     return (
         <div className={cl.wrapper}>
-            <div className={cl.leftHeader}>
-                <div className={cl.leftLine}>
-                    <div className={cl.lineCategory}>Назва категорії</div>
-                </div>
+            <TableList>
+                <TableHeader>
+                    <TableHeader.Name>Назва категорії</TableHeader.Name>
+                </TableHeader>
+            </TableList>
+            {listOfNewCategory.map((el, i) => {
+                return (<TableLine key={el.tempId}>
+                    <TableLine.Checkbox onChange={onChangeNewCategory} tempId={el.tempId}/>
+                    <TableLine.Category onChange={onChangeNewCategory} tempId={el.tempId}/>
+                </TableLine>)
+            })
+            }
 
-                <div>
-                    {listOfNewCategory.map((el, i) => {
-                        return (<div key={el.tempId}>
-                                <TableCheckbox onChange={onChangeNewCategory} tempId={el.tempId}/>
-                                <TableCategory onChange={onChangeNewCategory} tempId={el.tempId}/>
-                            </div>
 
-                        )
-                    })}
-                </div>
-            </div>
+            {/*<div className={cl.leftHeader}>*/}
+            {/*    <div className={cl.leftLine}>*/}
+            {/*        <div className={cl.lineCategory}>Назва категорії</div>*/}
+            {/*    </div>*/}
+
+            {/*    <div>*/}
+            {/*        {listOfNewCategory.map((el, i) => {*/}
+            {/*            return (<div key={el.tempId}>*/}
+            {/*                    <TableCheckbox onChange={onChangeNewCategory} tempId={el.tempId}/>*/}
+            {/*                    <TableCategory onChange={onChangeNewCategory} tempId={el.tempId}/>*/}
+            {/*                </div>*/}
+
+            {/*            )*/}
+            {/*        })}*/}
+            {/*    </div>*/}
+            {/*</div>*/}
         </div>
     );
 };

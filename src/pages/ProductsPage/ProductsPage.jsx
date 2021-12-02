@@ -8,7 +8,7 @@ import {BtnBlue} from "../../components/UI/BtnBlue/BtnBlue";
 import {IconSave} from "../../components/UI/icons/IconSave";
 import {useDispatch} from "react-redux";
 import {createNewProduct} from "../../reducer/productReducer";
-import {RightPlace} from "../../subPages/subProductPages/RightPlace/RightPlace";
+import {RightPanel} from "../../subPages/subProductPages/RightPanel/RightPanel";
 
 const ProductsPage = () => {
     const dispatch = useDispatch()
@@ -18,10 +18,12 @@ const ProductsPage = () => {
         <div className={cl.wrapper}>
             <div className={cl.left}>
                 <ProductsPageHeader/>
-                <Outlet/>
+                <div className={cl.table}>
+                    <Outlet/>
+                </div>
             </div>
             <div className={cl.right}>
-                <RightPlace/>
+                <RightPanel/>
             </div>
         </div>
     );

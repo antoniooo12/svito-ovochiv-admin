@@ -1,0 +1,16 @@
+.wrapper{
+  height: 100%;
+  padding: 20px 15px 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #F4F4F4;
+
+  .rightMainSection {
+    flex: 1 1 auto;
+  }
+
+  .rightBottom {
+    margin: 0 auto;
+    height: fit-content;
+  }
+}

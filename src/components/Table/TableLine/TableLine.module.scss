@@ -1,0 +1,21 @@
+.wrapper {
+  display: flex;
+  padding-left: 3px;
+  align-items: center;
+  width: fit-content;
+
+  & input {
+    background-color: rgba(0, 0, 0, 0.0);
+    border-right: 2px solid #C0C0C0;
+    padding: 8px 1px 8px 3px;
+  }
+
+}
+
+.LineDontSave {
+  background-color: #FFE1E1;
+}
+
+.LineDontSave2 {
+  background-color: #FFC7C7;
+}

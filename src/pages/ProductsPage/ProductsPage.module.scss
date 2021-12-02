@@ -1,0 +1,29 @@
+@import "src/variablesGlobal";
+
+.wrapper {
+  position: relative;
+  margin-left: $marginSide;
+  display: flex;
+
+  .right {
+    min-height: 100%;
+    min-width: 336px;
+  }
+
+  .left {
+
+    overflow: hidden;
+    //height: 100%;
+    width: 100%;
+  }
+
+  .table {
+    padding-top: 4px;
+    overflow-x: scroll;
+    //подивись у глобальні змінні на $headerHeight $subHeader
+    height: calc(100vh - 34px - 50px);
+
+  }
+
+}
+

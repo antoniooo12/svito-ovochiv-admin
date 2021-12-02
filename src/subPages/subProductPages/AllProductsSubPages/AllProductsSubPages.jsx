@@ -36,29 +36,25 @@ const AllProductsSubPages = () => {
         <div className={cl.wrapper}>
             <TableList>
                 <TableHeader>
-                    <div>Назва</div>
-                    <div>Категорія</div>
-                    <div>підкатегорія</div>
-                    <div>ціна</div>
+                    <TableHeader.Name isHeader={true}>Назва</TableHeader.Name>
+                    <TableHeader.Category>Категорія</TableHeader.Category>
+                    <TableHeader.SubCategory>підкатегорія</TableHeader.SubCategory>
+                    <TableHeader.Price>ціна</TableHeader.Price>
                     <div>пріорітет</div>
                 </TableHeader>
                 {listOfNewProduct.map((el, i) => {
                     return (
                         <TableLine key={el.tempId}
-                                       index={i}
-                                       className={[cl.leftLine, i % 2 === 0 ? cl.leftLineDontSave : cl.leftLineDontSave2].join(' ')}>
+                                   index={i}
+                                   className={[cl.leftLine, i % 2 === 0 ? cl.leftLineDontSave : cl.leftLineDontSave2].join(' ')}>
 
-                        <TableCheckbox onChange={onChangeNewProduct} tempId={el.tempId}/>
-                        <TableName onChange={onChangeNewProduct} tempId={el.tempId}/>
-                        <TableCategory onChange={onChangeNewProduct} tempId={el.tempId}/>
-                        <TableSubCategory onChange={onChangeNewProduct} tempId={el.tempId}/>
-
-                        <input onChange={(e) => onChangeNewProduct({e, tempId: el.tempId})} type={'number'}
-                               placeholder={'ціна'}
-                               className={cl.linePrice} min="0"/>
-                        <input onChange={(e) => onChangeNewProduct({e, tempId: el.tempId})} type={'number'}
-                               placeholder={'пріорітет'} className={cl.linePriority} min="0"/>
-                    </TableLine>)
+                            <TableLine.Checkbox onChange={onChangeNewProduct} tempId={el.tempId}/>
+                            <TableLine.Name onChange={onChangeNewProduct} tempId={el.tempId}/>
+                            <TableCategory onChange={onChangeNewProduct} tempId={el.tempId}/>
+                            <TableSubCategory onChange={onChangeNewProduct} tempId={el.tempId}/>
+                            <TableLine.Price onChange={onChangeNewProduct} tempId={el.tempId}/>
+                            <TableLine.Priority onChange={onChangeNewProduct} tempId={el.tempId}/>
+                        </TableLine>)
                 })}
             </TableList>
         </div>
