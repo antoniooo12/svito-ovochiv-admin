@@ -26,7 +26,6 @@
   }
 
   .left {
-    width: 100%;
 
     .leftHeader {
       margin-left: $marginSide + 60px;
@@ -57,22 +56,6 @@
      input{
        font-size: 16px;
      }
-      .lineCheckbox {
-        margin-left: 18px;
-        margin-right: 40px;
-      }
-
-      .lineName {
-        width: 206px;
-      }
-
-      .lineCategory {
-        width: 117px;
-      }
-
-      .lineSubCategory {
-        width: 140px;
-      }
 
       .linePrice {
         width: 60px;
@@ -81,10 +64,6 @@
       .linePriority {
         width: 85px;
       }
-
-    }
-
-    .leftList {
 
     }
   }

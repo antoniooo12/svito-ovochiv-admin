@@ -3,7 +3,12 @@ import cl from "./CategorySubPage.module.scss";
 import {BtnBlue} from "../../../components/UI/BtnBlue/BtnBlue";
 import {IconSave} from "../../../components/UI/icons/IconSave";
 import {useDispatch, useSelector} from "react-redux";
-import categoryReducer from "../../../reducer/categoryReducer";
+import categoryReducer, {changeNewCategory} from "../../../reducer/categoryReducer";
+import {FormGroup, TableBody, TableCell} from "@mui/material";
+import {changeNewProduct} from "../../../reducer/productReducer";
+import {getAllCategory} from "../../../actions/category";
+import {TableCategory} from "../../../components/Table/elements/TableCategory/TableCategory";
+import TableCheckbox from "../../../components/Table/elements/TableCheckbox/TableCheckbox";
 
 const CategorySubPage = () => {
     const dispatch = useDispatch()
@@ -11,9 +16,19 @@ const CategorySubPage = () => {
     const [listOfNewCategory, setListOfNewCategory] = useState([])
 
     useEffect(() => {
+        console.log('sd')
         setListOfNewCategory(newCategoryR)
     }, [newCategoryR])
-    const onChangeNewCategory = () => {
+
+    useEffect(() => {
+        console.log('aaa')
+        dispatch(getAllCategory())
+    }, [])
+
+    const onChangeNewCategory = ({e, tempId}) => {
+        const selected = e.target.placeholder
+        const value = e.target.value
+        dispatch(changeNewCategory({selected, value, tempId}))
 
     }
     return (
@@ -22,18 +37,12 @@ const CategorySubPage = () => {
                 <div className={cl.leftLine}>
                     <div className={cl.lineCategory}>Назва категорії</div>
                 </div>
-                <div className={cl.leftList}>
+
+                <div>
                     {listOfNewCategory.map((el, i) => {
-                        return (<div>
-                                <input
-                                    onChange={(e) =>
-                                        onChangeNewCategory({e, tempId: el.tempId})} type="checkbox"
-                                    className={cl.lineCheckbox}/>
-                                <input
-                                    onChange={(e) =>
-                                    onChangeNewCategory({e, tempId: el.tempId})}
-                                    placeholder={'категорія'}
-                                       type="text"/>
+                        return (<div key={el.tempId}>
+                                <TableCheckbox onChange={onChangeNewCategory} tempId={el.tempId}/>
+                                <TableCategory onChange={onChangeNewCategory} tempId={el.tempId}/>
                             </div>
 
                         )

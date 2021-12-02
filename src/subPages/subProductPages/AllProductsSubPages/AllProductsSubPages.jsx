@@ -4,6 +4,13 @@ import {BtnBlue} from "../../../components/UI/BtnBlue/BtnBlue";
 import {IconSave} from "../../../components/UI/icons/IconSave";
 import {useDispatch, useSelector} from "react-redux";
 import {changeNewProduct, createNewProduct} from "../../../reducer/productReducer";
+import {TableCategory} from "../../../components/Table/elements/TableCategory/TableCategory";
+import {TableName} from "../../../components/Table/elements/TableName/TableName";
+import TableCheckbox from "../../../components/Table/elements/TableCheckbox/TableCheckbox";
+import TableLine from "../../../components/Table/TableLine/TableLine";
+import {TableSubCategory} from "../../../components/Table/elements/TableSubCategory/TableSubCategory";
+import {TableList} from "../../../components/Table/TableList/TableList";
+import {TableHeader} from "../../../components/Table/TableHeader/TableHeader";
 
 const AllProductsSubPages = () => {
     const dispatch = useDispatch()
@@ -27,40 +34,33 @@ const AllProductsSubPages = () => {
     }
     return (
         <div className={cl.wrapper}>
-            <div className={cl.left}>
-                <div className={cl.leftHeader}>
-                    <div className={cl.leftLine}>
-                        <div className={cl.lineName}>Назва</div>
-                        <div className={cl.lineCategory}>Категорія</div>
-                        <div className={cl.lineSubCategory}>підкатегорія</div>
-                        <div className={cl.linePrice}>ціна</div>
-                        <div className={cl.linePriority}>пріорітет</div>
-                    </div>
-                </div>
-                <div className={cl.leftList}>
-                    {listOfNewProduct.map((el, i) => {
-                        return (<div key={el.tempId}
-                                     className={[cl.leftLine, i % 2 === 0 ? cl.leftLineDontSave : cl.leftLineDontSave2].join(' ')}>
-                            <input
-                                onChange={(e) => onChangeNewProduct({e, tempId: el.tempId})} type="checkbox"
-                                className={cl.lineCheckbox}/>
-                            <input onChange={(e) => onChangeNewProduct({e, tempId: el.tempId})}
-                                   placeholder={'назва'} className={cl.lineName}/>
-                            <input onChange={(e) => onChangeNewProduct({e, tempId: el.tempId})}
-                                   placeholder={'категорія'}
-                                   className={cl.lineCategory}/>
-                            <input onChange={(e) => onChangeNewProduct({e, tempId: el.tempId})}
-                                   placeholder={'підкатегорія'}
-                                   className={cl.lineSubCategory}/>
-                            <input onChange={(e) => onChangeNewProduct({e, tempId: el.tempId})} type={'number'}
-                                   placeholder={'ціна'}
-                                   className={cl.linePrice} min="0"/>
-                            <input onChange={(e) => onChangeNewProduct({e, tempId: el.tempId})} type={'number'}
-                                   placeholder={'пріорітет'} className={cl.linePriority} min="0"/>
-                        </div>)
-                    })}
-                </div>
-            </div>
+            <TableList>
+                <TableHeader>
+                    <div>Назва</div>
+                    <div>Категорія</div>
+                    <div>підкатегорія</div>
+                    <div>ціна</div>
+                    <div>пріорітет</div>
+                </TableHeader>
+                {listOfNewProduct.map((el, i) => {
+                    return (
+                        <TableLine key={el.tempId}
+                                       index={i}
+                                       className={[cl.leftLine, i % 2 === 0 ? cl.leftLineDontSave : cl.leftLineDontSave2].join(' ')}>
+
+                        <TableCheckbox onChange={onChangeNewProduct} tempId={el.tempId}/>
+                        <TableName onChange={onChangeNewProduct} tempId={el.tempId}/>
+                        <TableCategory onChange={onChangeNewProduct} tempId={el.tempId}/>
+                        <TableSubCategory onChange={onChangeNewProduct} tempId={el.tempId}/>
+
+                        <input onChange={(e) => onChangeNewProduct({e, tempId: el.tempId})} type={'number'}
+                               placeholder={'ціна'}
+                               className={cl.linePrice} min="0"/>
+                        <input onChange={(e) => onChangeNewProduct({e, tempId: el.tempId})} type={'number'}
+                               placeholder={'пріорітет'} className={cl.linePriority} min="0"/>
+                    </TableLine>)
+                })}
+            </TableList>
         </div>
     );
 };
