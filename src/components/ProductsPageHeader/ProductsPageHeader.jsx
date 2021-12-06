@@ -11,7 +11,7 @@ const ProductsPageHeader = () => {
             <NavLink to='category' className={({isActive}) => isActive ? [cl.BtnPageSelected,cl.BtnPage ].join(' ')  : cl.BtnPage}>
                 категорії
             </NavLink>
-            <NavLink to='subCategory' className={({isActive}) => isActive ? [cl.BtnPageSelected,cl.BtnPage ].join(' ')  : cl.BtnPage}>
+            <NavLink to='subcategory' className={({isActive}) => isActive ? [cl.BtnPageSelected,cl.BtnPage ].join(' ')  : cl.BtnPage}>
                 підкатегорії
             </NavLink>
         </div>

@@ -1,18 +1,20 @@
 import React, {createContext, useContext, useEffect} from 'react';
 import cl from './TableName.module.scss'
 import {HeaderContent} from "../../TableHeader/TableHeaderContext";
+import {LineContent} from "../../TableLine/LineContext";
 
-const TableName = ({onChange, tempId, children}) => {
+const TableName = ({onChange,  children}) => {
     const {isHeader} = useContext(HeaderContent)
+    const {id} = useContext(LineContent)
     return (
         <>
             {
                 isHeader !== true ? <input
                     onChange={(e) =>
-                        onChange({e, tempId})}
+                        onChange({e, id})}
                     placeholder={'назва'}
                     className={cl.wrapper}
-                /> : <div className={[cl.wrapper,cl.wrapperHeader ].join(' ')}>  {children}</div>
+                /> : <div className={[cl.wrapper, cl.wrapperHeader].join(' ')}>  {children}</div>
             }
         </>
 

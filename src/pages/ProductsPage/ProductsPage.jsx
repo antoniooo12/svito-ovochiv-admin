@@ -1,18 +1,21 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavLink, Outlet, Route, Routes} from "react-router-dom";
 import {AllProductsSubPages} from "../../subPages/subProductPages/AllProductsSubPages/AllProductsSubPages";
 import CategorySubPage from "../../subPages/subProductPages/CategorySubPage/CategorySubPage";
 import {ProductsPageHeader} from "../../components/ProductsPageHeader/ProductsPageHeader";
 import cl from "./ProductsPage.module.scss";
 import {BtnBlue} from "../../components/UI/BtnBlue/BtnBlue";
-import {IconSave} from "../../components/UI/icons/IconSave";
+import {IconSave} from "../../components/UI/icons/IconSave/IconSave";
 import {useDispatch} from "react-redux";
 import {createNewProduct} from "../../reducer/productReducer";
-import {RightPanel} from "../../subPages/subProductPages/RightPanel/RightPanel";
+import {RightPanel} from "./RightPanel/RightPanel";
+import {getAllCategory} from "../../actions/category";
 
 const ProductsPage = () => {
     const dispatch = useDispatch()
-
+    useEffect(() => {
+        dispatch(getAllCategory())
+    }, [])
 
     return (
         <div className={cl.wrapper}>

@@ -1,3 +1,40 @@
-.wrapper{
+.wrapper {
   width: 117px;
+  position: relative;
+
+  input {
+    &:focus {
+
+      & + .dropdownList {
+        display: block;
+      }
+    }
+  }
+}
+
+
+.dropdownList {
+  position: absolute;
+  display: none;
+  z-index: 1;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: fit-content;
+  overflow: hidden;
+
+  background-color: #fff;
+
+  & > ul {
+    height: 70px;
+    overflow: auto;
+    width: 100%;
+    & > li {
+      cursor: pointer;
+
+      &:hover {
+        background-color: #F4F7FC;
+      }
+    }
+  }
 }

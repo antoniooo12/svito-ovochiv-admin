@@ -7,17 +7,20 @@ const defaultState = {
 export default function productReducer(state = defaultState, action) {
     switch (action.type) {
         case CREATE_PRODUCT: {
+            const item = {
+                id: Date.now()
+            }
             return {
                 ...state,
-                newProducts: [...state.newProducts, action.payload]
+                newProducts: [...state.newProducts, item]
             }
         }
         case CHANGE_NEW_PRODUCT: {
             const selected = action.payload.selected
             const value = action.payload.value
-            const tempId = action.payload.tempId
-            const indexOfNewP = state.newProducts.findIndex(el => el.tempId === tempId)
-            let newProduct = state.newProducts.filter(el => el.tempId === tempId)[0]
+            const id = action.payload.id
+            const indexOfNewP = state.newProducts.findIndex(el => el.id === id)
+            let newProduct = state.newProducts.filter(el => el.id === id)[0]
             if (selected === 'назва') {
                 newProduct.title = value
             } else if (selected === 'категорія') {
