@@ -1,17 +1,25 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import cl from "../TableSubCategory/TableSubCategory.module.scss";
 import {HeaderContent} from "../../TableHeader/TableHeaderContext";
 import {LineContent} from "../../TableLine/LineContext";
 
-const TablePriority = ({onChange,  children}) => {
+const TablePriority = ({children}) => {
     const {isHeader} = useContext(HeaderContent)
-    const {id} = useContext(LineContent)
+    const {id, onChange, states} = useContext(LineContent)
+    const [title, setTitle] = useState('')
+
+    useEffect(() => {
+        if (states) {
+            setTitle(states.subcategory)
+        }
+    }, [states.subcategory])
 
     return (
         <>
             {isHeader !== true ? <input
+                    value={title}
                     onChange={(e) =>
-                        onChange({e, id})}
+                        onChange({value: e.target.value, selected: e.target.placeholder, id})}
                     type={'number'}
                     min="0"
                     placeholder={'пріорітет'}

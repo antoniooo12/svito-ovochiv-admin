@@ -3,6 +3,8 @@
   position: relative;
 
   input {
+    max-width: 100%;
+
     &:focus {
 
       & + .dropdownList {
@@ -19,16 +21,21 @@
   z-index: 1;
   top: 100%;
   left: 0;
-  width: 100%;
+  //width: 100%;
   height: fit-content;
   overflow: hidden;
 
   background-color: #fff;
 
+  &:hover {
+    display: block;
+  }
+
   & > ul {
     height: 70px;
     overflow: auto;
     width: 100%;
+
     & > li {
       cursor: pointer;
 
@@ -37,4 +44,5 @@
       }
     }
   }
+
 }

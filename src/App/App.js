@@ -12,7 +12,7 @@ import ProductsPage from "../pages/ProductsPage/ProductsPage";
 import {OrdersPage} from "../pages/OrdersPage";
 import {AllProductsSubPages} from "../subPages/subProductPages/AllProductsSubPages/AllProductsSubPages";
 import CategorySubPage from "../subPages/subProductPages/CategorySubPage/CategorySubPage";
-import SubCategorySubPage from "../subPages/subProductPages/SubCategorySubPage/SubCategorySubPage";
+import SubcategorySubPage from "../subPages/subProductPages/SubcategorySubPage/SubcategorySubPage";
 
 function App() {
     return (
@@ -22,7 +22,7 @@ function App() {
                     <Route path='products/*' element={<ProductsPage/>}>
                         <Route path='allProducts' element={<AllProductsSubPages/>}/>
                         <Route path='category' element={<CategorySubPage/>}/>
-                        <Route path='subcategory' element={<SubCategorySubPage/>}/>
+                        <Route path='subcategory' element={<SubcategorySubPage/>}/>
                     </Route>
                     <Route path='price' element={<PricePage/>}/>
                     <Route path='orders' element={<OrdersPage/>}/>

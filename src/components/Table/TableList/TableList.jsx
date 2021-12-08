@@ -6,10 +6,9 @@ import {TableHeader} from "../TableHeader/TableHeader";
 import {ListContent} from "./ListContext";
 
 
-const TableList = ({children, categories}) => {
-    console.log(categories)
+const TableList = ({children, categories, isMother, subcategories = []}) => {
     return (
-        <ListContent.Provider value={{categories}}>
+        <ListContent.Provider value={{categories, isMother, subcategories}}>
             <div className={cl.wrapper}>
                 {children}
             </div>

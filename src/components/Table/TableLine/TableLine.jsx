@@ -8,11 +8,12 @@ import {TablePriority} from "../elements/TablePriority/TablePriority";
 import {TablePrice} from "../elements/TablePrice/TablePrice";
 import {LineContent} from "./LineContext";
 import {TableDelete} from "../elements/TableDelete/TableDelete";
+import {TableEdit} from "../elements/TableEdit/TableEdit";
+import {TableSelectUnit} from "../elements/TableSelectUnit/TableSelectUnit";
 
-const TableLine = ({children, index, id, states, isNew}) => {
-
+const TableLine = ({children, index, id, states, isNew, onChange}) => {
     return (
-        <LineContent.Provider value={{id: id, states, isNew}}>
+        <LineContent.Provider value={{id, states, isNew, onChange, wasEdit: false}}>
             <div className={[cl.wrapper,
                 isNew === true
                     ? index % 2 === 0 ? cl.LineDontSaveNew : cl.LineDontSaveNew2
@@ -35,3 +36,5 @@ TableLine.SubCategory = TableSubCategory
 TableLine.Price = TablePrice
 TableLine.Priority = TablePriority
 TableLine.Delete = TableDelete
+TableLine.Edit = TableEdit
+TableLine.Unit = TableSelectUnit

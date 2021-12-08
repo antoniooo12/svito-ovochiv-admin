@@ -10,11 +10,15 @@ import {useDispatch} from "react-redux";
 import {createNewProduct} from "../../reducer/productReducer";
 import {RightPanel} from "./RightPanel/RightPanel";
 import {getAllCategory} from "../../actions/category";
+import {getAllSubcategories} from "../../actions/subcategory";
+import {getAllProducts} from "../../actions/productServer";
 
 const ProductsPage = () => {
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(getAllCategory())
+        dispatch(getAllSubcategories())
+        dispatch(getAllProducts())
     }, [])
 
     return (

@@ -6,9 +6,12 @@ const path = {
     CATEGORY: 'category',
     SUBCATEGORY: 'subcategory',
 }
-
+const columns={
+    CATEGORY:"категорія"
+}
 
 export {
+    columns,
     path,
     URL,
 }

@@ -3,46 +3,57 @@ import cl from './TableCategory.module.scss'
 import {HeaderContent} from "../../TableHeader/TableHeaderContext";
 import {LineContent} from "../../TableLine/LineContext";
 import {ListContent} from "../../TableList/ListContext";
+import {columns} from "../../../../API";
 
-const TableCategory = ({onChange, children, isMother}) => {
+const TableCategory = ({children, onDropdownList}) => {
     const {isHeader} = useContext(HeaderContent)
-    const {id, states} = useContext(LineContent)
-    const {categories} = useContext(ListContent)
-    const [listOfCategories, setListOfCategories] = useState([])
+    const {id, states, onChange, isNew} = useContext(LineContent)
+    const {categories, isMother = {}} = useContext(ListContent)
+    const [listOfCategories, setListOfCategories] = useState([{category: ''}])
     const [title, setTitle] = useState('')
-    const [isSearchBlockActive, setSearchBlockActive] = useState(false)
+    const [isEdit, setIsEdit] = useState(false)
+    const [searchValue, setSearchValue] = useState('')
+
     useEffect(() => {
-        if (states) {
-            setTitle(states.category)
-        }
-    }, [])
+        setIsEdit(states.wasEdit)
+    }, [states.wasEdit])
+    useEffect(() => {
+        setTitle(states.category)
+    }, [states.category])
     useEffect(() => {
         setListOfCategories(categories)
-        console.log(categories)
-    }, [])
+    }, [categories])
+
     return (
         <>{isHeader !== true ?
             <div className={cl.wrapper}>
                 <input
+                    disabled={!(isNew === true || isEdit === true)}
+                    list="categories"
                     value={title}
-
                     onChange={(e) => {
-                        onChange({e, id, title: title})
-
+                        onChange({value: e.target.value, selected: e.target.placeholder, id, title, isNew})
                     }}
                     placeholder={'категорія'}
                 />
-                {!isMother &&
-                    <div className={[cl.dropdownList].join(' ')}>
-                        <ul>
-                            {listOfCategories.map((el, i) => {
-                                console.log(el)
-                                return (<li>{el.category}</li>)
-                            })
-
+                {!isMother.category &&
+                    <datalist id="categories">
+                        {listOfCategories.map((el, i) => {
+                            if (el.id === states.categoryId) {
+                                return (<option
+                                    key={el.id}
+                                    value={`${el.id}:  ${el.category}`}
+                                />)
+                            } else {
+                                return (<option
+                                    key={el.id}
+                                    value={`${el.id}:  ${el.category}`}
+                                />)
                             }
-                        </ul>
-                    </div>}
+
+                        })}
+                    </datalist>
+                }
 
 
             </div>

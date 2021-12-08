@@ -4,7 +4,7 @@ import {composeWithDevTools} from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import productReducer from "./productReducer";
 import categoryReducer from "./categoryReducer";
-import {subcategoryReducer} from "./subCategory";
+import {subcategoryReducer} from "./subcategoryReducer";
 
 
 const rootReducer = combineReducers({

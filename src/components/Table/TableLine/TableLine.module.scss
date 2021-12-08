@@ -7,9 +7,8 @@
   width: fit-content;
   position: relative;
 
-  & input {
+  & input, select {
     background-color: rgba(0, 0, 0, 0.0);
-
     padding: 8px 1px 8px 3px;
   }
 

@@ -7,9 +7,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {useLocation} from "react-router-dom";
 import {createNewCategory} from "../../../reducer/categoryReducer";
 import {getAllCategory, saveNewCategoryToServer} from "../../../actions/category";
-import {createNewSubCategory} from "../../../reducer/subCategory";
+import {createNewSubCategory} from "../../../reducer/subcategoryReducer";
 import {path} from "../../../API";
 import {saveNewSubcategoryToServer} from "../../../actions/subcategory";
+import {saveProductsToServer} from "../../../actions/productServer";
 
 const RightPanel = () => {
     const dispatch = useDispatch()
@@ -18,6 +19,10 @@ const RightPanel = () => {
     const [createText, setCreateText] = useState('')
     const newC = useSelector(state => state.category.newCategory)
     const oldC = useSelector(state => state.category.allCategory)
+    const newSc = useSelector(state => state.subcategory.newSubcategory)
+    const oldSc = useSelector(state => state.subcategory.allSubcategory)
+    const oldP = useSelector(state => state.product.allProducts)
+    const newP = useSelector(state => state.product.newProducts)
 
     const newSubcategories = useSelector(state => state.subcategory.newSubcategory)
 
@@ -47,12 +52,12 @@ const RightPanel = () => {
     }
 
     const onSave = () => {
-        if (rightPanelBehavior === 'allProducts') {
-
-        } else if (rightPanelBehavior === 'category') {
+        if (rightPanelBehavior === path.ALL_PRODUCTS) {
+            dispatch(saveProductsToServer({newItems: newP, oldItems: oldP}))
+        } else if (rightPanelBehavior === path.CATEGORY) {
             dispatch(saveNewCategoryToServer({newC, oldC}))
         } else if (rightPanelBehavior === path.SUBCATEGORY) {
-            dispatch(saveNewSubcategoryToServer(newSubcategories))
+            dispatch(saveNewSubcategoryToServer({newItems: newSc, oldItems: oldSc}))
         }
     }
     return (

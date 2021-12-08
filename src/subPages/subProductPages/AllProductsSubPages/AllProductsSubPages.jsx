@@ -11,51 +11,89 @@ import {TableLine} from "../../../components/Table/TableLine/TableLine";
 import {TableSubCategory} from "../../../components/Table/elements/TableSubCategory/TableSubCategory";
 import {TableList} from "../../../components/Table/TableList/TableList";
 import {TableHeader} from "../../../components/Table/TableHeader/TableHeader";
+import {logDOM} from "@testing-library/react";
 
 const AllProductsSubPages = () => {
     const dispatch = useDispatch()
     let newProductsR = useSelector(state => state.product.newProducts) || []
+    let productsR = useSelector(state => state.product.allProducts) || []
+    let categoryR = useSelector(state => state.category.allCategory) || []
+    let subcategoryR = useSelector(state => state.subcategory.allSubcategory) || []
+
+
     const [listOfProducts, setListOfProducts] = useState([])
     const [listOfNewProduct, setListOfNewProduct] = useState([])
+    const [listOfCategory, setListOfCategory] = useState([])
+    const [listOfSubcategory, setListOfSubcategory] = useState([])
 
+    useEffect(() => {
+        setListOfSubcategory(subcategoryR)
+    }, [subcategoryR])
+    useEffect(() => {
+        setListOfCategory(categoryR)
+    }, [categoryR])
     useEffect(() => {
         setListOfNewProduct(newProductsR)
     }, [newProductsR])
+    useEffect(() => {
+        setListOfProducts(productsR)
+    }, [productsR])
 
-    const onChangeNewProduct = ({e, id}) => {
-        const selected = e.target.placeholder
-        const value = e.target.value
-        ///todo refactor id to id
-        dispatch(changeNewProduct({selected, value, id: id}))
+    const onChangeNewProduct = ({value, selected, id}) => {
+        dispatch(changeNewProduct({selected, value, id}))
+    }
 
-    }
-    const onSaveProduct = () => {
-        console.log(listOfNewProduct)
-        // dispatch()
-    }
     return (
         <div className={cl.wrapper}>
-            <TableList>
+            <TableList categories={listOfCategory} subcategories={listOfSubcategory}>
                 <TableHeader>
-                    <TableHeader.Name isHeader={true}>Назва</TableHeader.Name>
-                    <TableHeader.Category>Категорія</TableHeader.Category>
+                    <TableHeader.Name isHeader={true}>назва</TableHeader.Name>
+                    <TableHeader.Category>категорія</TableHeader.Category>
                     <TableHeader.SubCategory>підкатегорія</TableHeader.SubCategory>
+                    <TableLine.Unit>тип</TableLine.Unit>
                     <TableHeader.Price>ціна</TableHeader.Price>
                     <div>пріорітет</div>
                 </TableHeader>
+                {listOfProducts.map((el,i)=>{
+                    return (
+                        <TableLine
+                            onChange={onChangeNewProduct}
+                            states={el}
+                            isNew={false}
+                            index={i}
+                            id={el.id}
+                            key={el.id}
+                        >
+
+                            <TableLine.Checkbox/>
+                            <TableLine.Name/>
+                            <TableLine.Category/>
+                            <TableLine.SubCategory/>
+                            <TableLine.Unit/>
+                            <TableLine.Price/>
+                            <TableLine.Priority/>
+                        </TableLine>)
+                })
+
+                }
                 {listOfNewProduct.map((el, i) => {
                     return (
-                        <TableLine key={el.id}
-                                   index={i}
-                                   id={el.id}
-                                   className={[cl.leftLine, i % 2 === 0 ? cl.leftLineDontSave : cl.leftLineDontSave2].join(' ')}>
+                        <TableLine
+                            onChange={onChangeNewProduct}
+                            states={el}
+                            isNew={true}
+                            index={i}
+                            id={el.id}
+                            key={el.id}
+                        >
 
-                            <TableLine.Checkbox onChange={onChangeNewProduct} id={el.id}/>
-                            <TableLine.Name onChange={onChangeNewProduct} id={el.id}/>
-                            <TableLine.Category onChange={onChangeNewProduct} id={el.id}/>
-                            <TableLine.SubCategory onChange={onChangeNewProduct} id={el.id}/>
-                            <TableLine.Price onChange={onChangeNewProduct} id={el.id}/>
-                            <TableLine.Priority onChange={onChangeNewProduct} id={el.id}/>
+                            <TableLine.Checkbox/>
+                            <TableLine.Name/>
+                            <TableLine.Category/>
+                            <TableLine.SubCategory/>
+                            <TableLine.Unit/>
+                            <TableLine.Price/>
+                            <TableLine.Priority/>
                         </TableLine>)
                 })}
             </TableList>

@@ -1,14 +1,11 @@
 import axios from "axios";
 import {URL} from '../API'
 import categoryReducer, {bulkDeleteCategories, cleanCategories, setCategory} from "../reducer/categoryReducer";
-import {useSelector} from "react-redux";
 
 export const saveNewCategoryToServer = ({newC, oldC}) => {
     return async dispatch => {
         try {
-
-
-            let oldCategoriesToDel = [], newCategories = [], newCategoriesToDel = [];
+            let oldCategoriesToDel = [], oldItemsToUpdate = [], newCategories = [], newCategoriesToDel = [];
             newC.forEach(el => {
                 if (!el.toDelete) {
                     newCategories.push({category: el.category})
@@ -17,14 +14,17 @@ export const saveNewCategoryToServer = ({newC, oldC}) => {
                 }
             })
             oldC.forEach(el => {
+                console.log(el)
                 if (el.toDelete) {
                     oldCategoriesToDel.push(el.id)
+                } else if (el.wasEdit) {
+                    oldItemsToUpdate.push({category: el.category, id: el.id})
                 }
             })
 
-            console.log(oldCategoriesToDel)
+            console.log(oldItemsToUpdate)
             let response
-            await axios.post(`${URL}/api/product/type`, {newCategories, oldCategoriesToDel})
+            await axios.post(`${URL}/api/product/type`, {newCategories, oldCategoriesToDel, oldItemsToUpdate})
                 .then((res) => {
                     if (res.status === 200) {
                         dispatch(bulkDeleteCategories(newCategoriesToDel))
