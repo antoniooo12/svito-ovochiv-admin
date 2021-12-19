@@ -12,7 +12,8 @@ export default function productReducer(state = defaultState, action) {
     switch (action.type) {
         case CREATE_PRODUCT: {
             const item = {
-                id: Date.now()
+                id: Date.now(),
+                toDelete: false,
             }
             return {
                 ...state,
@@ -90,7 +91,8 @@ export default function productReducer(state = defaultState, action) {
             }
         }
         case DELETE_PRODUCT: {
-            const {isNew, id} = action.payload
+            const {isNew, id, isActive} = action.payload
+            console.log(isActive)
             let searchingArr = [];
             if (isNew) {
                 searchingArr = state.newProducts
@@ -99,7 +101,7 @@ export default function productReducer(state = defaultState, action) {
             }
             const indexOfNew = searchingArr.findIndex(el => el.id === id)
             let change = searchingArr.filter(el => el.id === id)[0]
-            change.toDelete = !change.toDelete
+            change.toDelete = isActive
 
             if (isNew) {
                 return {

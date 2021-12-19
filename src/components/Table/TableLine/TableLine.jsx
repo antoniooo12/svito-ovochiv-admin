@@ -12,11 +12,9 @@ import {TableLineBtn} from "../elements/TableLineBtn/TableLineBtn";
 import isEqual from "react-fast-compare";
 
 
-const TableLine = React.memo(({children, index, id, states, isNew, onChange}) => {
-    const childrenMemo = useMemo(() => {
-        return children
-    }, [children])
+const TableLine = React.memo(({children, index, id, states, toDelete, isNew, onChange}) => {
 
+    console.log(toDelete)
     const lineColor = useMemo(() => {
         if (isNew) {
             if (index % 2 === 0) {
@@ -33,15 +31,17 @@ const TableLine = React.memo(({children, index, id, states, isNew, onChange}) =>
         }
     }, [index, isNew])
     const isTodelete = useMemo(() => {
-        return states.toDelete
-    }, [states.toDelete])
+        console.log(`toDelete : `)
+        // console.log(states)
+        return toDelete
+    }, [toDelete])
     return (
         <LineContent.Provider value={{id, states, isNew, onChange, wasEdit: false}}>
             <div className={[cl.wrapper,
                 lineColor,
-                isTodelete && cl.toDelete,
+                toDelete && cl.toDelete,
             ].join(' ')}>
-                {childrenMemo}
+                {children}
             </div>
         </LineContent.Provider>
     );

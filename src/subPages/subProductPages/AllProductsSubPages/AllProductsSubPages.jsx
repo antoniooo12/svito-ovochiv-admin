@@ -40,8 +40,8 @@ const AllProductsSubPages = () => {
     const onEdit = useCallback(({id}) => {
         dispatch(editOldProduct(id))
     }, [])
-    const onDelete = useCallback(({id, isNew}) => {
-        dispatch(deleteProduct({id, isNew}))
+    const onDelete = useCallback(({id, isNew, isActive}) => {
+        dispatch(deleteProduct({id, isNew, isActive}))
     }, [])
     return (
         <div className={cl.wrapper}>
@@ -58,6 +58,7 @@ const AllProductsSubPages = () => {
                             onChange={onChangeNewProduct}
                             states={el}
                             isNew={false}
+                            toDelete={el.toDelete}
                             index={i}
                             id={el.id}
                             key={el.id}
@@ -105,6 +106,7 @@ const AllProductsSubPages = () => {
                     return (
                         <TableLine
                             onChange={onChangeNewProduct}
+                            toDelete={el.toDelete}
                             states={el}
                             isNew={true}
                             index={i}
@@ -138,13 +140,10 @@ const AllProductsSubPages = () => {
                                 placeholder={'ціна'}
                             />
                             <TableLine.Btn
-                                BtnIcon={<IconTrash/>}
-
-                            />
-                            <TableLine.Btn
                                 type={'delete'}
                                 icon={<IconTrash/>}
                                 onClick={onDelete}
+
                             />
                         </TableLine>)
                 })}
