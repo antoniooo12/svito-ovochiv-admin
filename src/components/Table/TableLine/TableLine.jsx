@@ -1,40 +1,58 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import cl from './TableLine.module.scss'
-import {TableName} from "../elements/TableName/TableName";
-import {TableCategory} from "../elements/TableCategory/TableCategory";
 import TableCheckbox from "../elements/TableCheckbox/TableCheckbox";
-import {TableSubCategory} from "../elements/TableSubCategory/TableSubCategory";
-import {TablePriority} from "../elements/TablePriority/TablePriority";
-import {TablePrice} from "../elements/TablePrice/TablePrice";
 import {LineContent} from "./LineContext";
+import {TableInputMemoized} from "../elements/TableInput/TableInput";
+import {TableSelect} from "../elements/TableSelect/TableSelect";
+import {TableNumber} from "../elements/TableNumber/TableNumber";
+import {TableHeader} from "../TableHeader/TableHeader";
 import {TableDelete} from "../elements/TableDelete/TableDelete";
 import {TableEdit} from "../elements/TableEdit/TableEdit";
-import {TableSelectUnit} from "../elements/TableSelectUnit/TableSelectUnit";
+import {TableLineBtn} from "../elements/TableLineBtn/TableLineBtn";
+import isEqual from "react-fast-compare";
 
-const TableLine = ({children, index, id, states, isNew, onChange}) => {
+
+const TableLine = React.memo(({children, index, id, states, isNew, onChange}) => {
+    const childrenMemo = useMemo(() => {
+        return children
+    }, [children])
+
+    const lineColor = useMemo(() => {
+        if (isNew) {
+            if (index % 2 === 0) {
+                return cl.LineDontSaveNew
+            } else {
+                return cl.LineDontSaveNew2
+            }
+        } else {
+            if (index % 2 === 0) {
+                return cl.LineDontSaveOld
+            } else {
+                return cl.LineDontSaveOld2
+            }
+        }
+    }, [index, isNew])
+    const isTodelete = useMemo(() => {
+        return states.toDelete
+    }, [states.toDelete])
     return (
         <LineContent.Provider value={{id, states, isNew, onChange, wasEdit: false}}>
             <div className={[cl.wrapper,
-                isNew === true
-                    ? index % 2 === 0 ? cl.LineDontSaveNew : cl.LineDontSaveNew2
-                    : index % 2 === 0 ? cl.LineDontSaveOld : cl.LineDontSaveOld2
-                ,
-                states.toDelete === true && cl.toDelete,
+                lineColor,
+                isTodelete && cl.toDelete,
             ].join(' ')}>
-                {children}
+                {childrenMemo}
             </div>
         </LineContent.Provider>
     );
-};
+}, isEqual);
+export {TableLine}
 
-export {TableLine};
-
+TableLine.Header = TableHeader
 TableLine.Checkbox = TableCheckbox
-TableLine.Name = TableName
-TableLine.Category = TableCategory
-TableLine.SubCategory = TableSubCategory
-TableLine.Price = TablePrice
-TableLine.Priority = TablePriority
+TableLine.Input = TableInputMemoized
+TableLine.Select = TableSelect
+TableLine.Number = TableNumber
 TableLine.Delete = TableDelete
 TableLine.Edit = TableEdit
-TableLine.Unit = TableSelectUnit
+TableLine.Btn = TableLineBtn

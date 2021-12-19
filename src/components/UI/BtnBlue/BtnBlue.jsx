@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import cl from './BtnBlue.module.scss'
-const BtnBlue = ({onClick, children}) => {
+
+const BtnBlueInner = ({onClick, children}) => {
+    const childrenMemo = useMemo(() => {
+        return children
+    }, [children])
     return (
         <div onClick={onClick} className={cl.wrapper}>
-            {children}
+            {childrenMemo}
         </div>
     );
 };
-
-export {BtnBlue};
+export const BtnBlue = React.memo(BtnBlueInner)

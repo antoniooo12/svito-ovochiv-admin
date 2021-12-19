@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {NavLink, Outlet, Route, Routes} from "react-router-dom";
 import {AllProductsSubPages} from "../../subPages/subProductPages/AllProductsSubPages/AllProductsSubPages";
 import CategorySubPage from "../../subPages/subProductPages/CategorySubPage/CategorySubPage";
@@ -15,7 +15,7 @@ import {getAllProducts} from "../../actions/productServer";
 
 const ProductsPage = () => {
     const dispatch = useDispatch()
-    useEffect(() => {
+    useMemo(() => {
         dispatch(getAllCategory())
         dispatch(getAllSubcategories())
         dispatch(getAllProducts())
@@ -29,6 +29,7 @@ const ProductsPage = () => {
                     <Outlet/>
                 </div>
             </div>
+
             <div className={cl.right}>
                 <RightPanel/>
             </div>
@@ -36,4 +37,4 @@ const ProductsPage = () => {
     );
 };
 
-export default ProductsPage;
+export default React.memo(ProductsPage);

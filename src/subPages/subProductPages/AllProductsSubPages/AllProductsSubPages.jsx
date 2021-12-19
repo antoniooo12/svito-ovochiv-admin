@@ -1,17 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import cl from './AllProductsSubPages.module.scss'
-import {BtnBlue} from "../../../components/UI/BtnBlue/BtnBlue";
-import {IconSave} from "../../../components/UI/icons/IconSave/IconSave";
 import {useDispatch, useSelector} from "react-redux";
-import {changeNewProduct, createNewProduct} from "../../../reducer/productReducer";
-import {TableCategory} from "../../../components/Table/elements/TableCategory/TableCategory";
-import {TableName} from "../../../components/Table/elements/TableName/TableName";
-import TableCheckbox from "../../../components/Table/elements/TableCheckbox/TableCheckbox";
+import {changeNewProduct, deleteProduct, editOldProduct} from "../../../reducer/productReducer";
 import {TableLine} from "../../../components/Table/TableLine/TableLine";
-import {TableSubCategory} from "../../../components/Table/elements/TableSubCategory/TableSubCategory";
 import {TableList} from "../../../components/Table/TableList/TableList";
 import {TableHeader} from "../../../components/Table/TableHeader/TableHeader";
-import {logDOM} from "@testing-library/react";
+import {IconTrash} from "../../../components/UI/icons/Trash/Trash";
+import {IconNotePencil} from "../../../components/UI/icons/NotePencil/IconNotePencil";
+import {editOldCategory} from "../../../reducer/categoryReducer";
 
 const AllProductsSubPages = () => {
     const dispatch = useDispatch()
@@ -20,41 +16,43 @@ const AllProductsSubPages = () => {
     let categoryR = useSelector(state => state.category.allCategory) || []
     let subcategoryR = useSelector(state => state.subcategory.allSubcategory) || []
 
-
-    const [listOfProducts, setListOfProducts] = useState([])
-    const [listOfNewProduct, setListOfNewProduct] = useState([])
-    const [listOfCategory, setListOfCategory] = useState([])
-    const [listOfSubcategory, setListOfSubcategory] = useState([])
-
-    useEffect(() => {
-        setListOfSubcategory(subcategoryR)
-    }, [subcategoryR])
-    useEffect(() => {
-        setListOfCategory(categoryR)
+    const listOfCategory = useMemo(() => {
+        return categoryR
     }, [categoryR])
-    useEffect(() => {
-        setListOfNewProduct(newProductsR)
+    const listOfSubcategory = useMemo(() => {
+        return subcategoryR
+    }, [subcategoryR])
+    const listOfNewProduct = useMemo(() => {
+        return newProductsR
     }, [newProductsR])
-    useEffect(() => {
-        setListOfProducts(productsR)
+    const listOfProducts = useMemo(() => {
+        return productsR
     }, [productsR])
 
-    const onChangeNewProduct = ({value, selected, id}) => {
-        dispatch(changeNewProduct({selected, value, id}))
-    }
+    const enteredDropDownList = useMemo(() => {
+        return {category: listOfCategory, subcategory: listOfSubcategory}
+    }, [listOfSubcategory, listOfCategory])
 
+    const onChangeNewProduct = useCallback(({isNew, value, type, id}) => {
+        dispatch(changeNewProduct({isNew, type, value, id}))
+    }, [])
+
+    const onEdit = useCallback(({id}) => {
+        dispatch(editOldProduct(id))
+    }, [])
+    const onDelete = useCallback(({id, isNew}) => {
+        dispatch(deleteProduct({id, isNew}))
+    }, [])
     return (
         <div className={cl.wrapper}>
-            <TableList categories={listOfCategory} subcategories={listOfSubcategory}>
+            <TableList enteredDropDownList={enteredDropDownList}>
                 <TableHeader>
-                    <TableHeader.Name isHeader={true}>назва</TableHeader.Name>
-                    <TableHeader.Category>категорія</TableHeader.Category>
-                    <TableHeader.SubCategory>підкатегорія</TableHeader.SubCategory>
-                    <TableLine.Unit>тип</TableLine.Unit>
-                    <TableHeader.Price>ціна</TableHeader.Price>
-                    <div>пріорітет</div>
+                    <TableLine.Input width={190}>назва</TableLine.Input>
+                    <TableLine.Input width={125}>категорія</TableLine.Input>
+                    <TableLine.Input width={125}>підкатегорія</TableLine.Input>
+
                 </TableHeader>
-                {listOfProducts.map((el,i)=>{
+                {listOfProducts.map((el, i) => {
                     return (
                         <TableLine
                             onChange={onChangeNewProduct}
@@ -64,14 +62,41 @@ const AllProductsSubPages = () => {
                             id={el.id}
                             key={el.id}
                         >
-
                             <TableLine.Checkbox/>
-                            <TableLine.Name/>
-                            <TableLine.Category/>
-                            <TableLine.SubCategory/>
-                            <TableLine.Unit/>
-                            <TableLine.Price/>
-                            <TableLine.Priority/>
+                            <TableLine.Input
+                                width={190}
+                                placeholder={'назва'}
+                                type={'productName'}
+                            />
+                            <TableLine.Input
+                                width={125}
+                                placeholder={'категорія'}
+                                type={'category'}
+                            />
+                            <TableLine.Input
+                                width={125}
+                                placeholder={'підкатегорія'}
+                                type={'subcategory'}
+                                filterBy={'categoryId'}
+                            />
+                            <TableLine.Select
+                                options={['шт', 'кг']}
+                                type={'unit'}
+                            />
+                            <TableLine.Number
+                                type={'price'}
+                                placeholder={'ціна'}
+                            />
+                            <TableLine.Btn
+                                type={'edit'}
+                                icon={<IconNotePencil/>}
+                                onClick={onEdit}
+                            />
+                            <TableLine.Btn
+                                type={'delete'}
+                                icon={<IconTrash/>}
+                                onClick={onDelete}
+                            />
                         </TableLine>)
                 })
 
@@ -88,12 +113,39 @@ const AllProductsSubPages = () => {
                         >
 
                             <TableLine.Checkbox/>
-                            <TableLine.Name/>
-                            <TableLine.Category/>
-                            <TableLine.SubCategory/>
-                            <TableLine.Unit/>
-                            <TableLine.Price/>
-                            <TableLine.Priority/>
+                            <TableLine.Input
+                                width={190}
+                                placeholder={'назва'}
+                                type={'productName'}
+                            />
+                            <TableLine.Input
+                                width={125}
+                                placeholder={'категорія'}
+                                type={'category'}
+                            />
+                            <TableLine.Input
+                                width={125}
+                                placeholder={'підкатегорія'}
+                                type={'subcategory'}
+                                filterBy={'categoryId'}
+                            />
+                            <TableLine.Select
+                                options={['шт', 'кг']}
+                                type={'unit'}
+                            />
+                            <TableLine.Number
+                                type={'price'}
+                                placeholder={'ціна'}
+                            />
+                            <TableLine.Btn
+                                BtnIcon={<IconTrash/>}
+
+                            />
+                            <TableLine.Btn
+                                type={'delete'}
+                                icon={<IconTrash/>}
+                                onClick={onDelete}
+                            />
                         </TableLine>)
                 })}
             </TableList>

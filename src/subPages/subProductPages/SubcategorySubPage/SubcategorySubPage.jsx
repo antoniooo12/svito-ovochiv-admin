@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import cl from './SubcategorySubPage.module.scss'
 import {TableList} from "../../../components/Table/TableList/TableList";
 import {TableHeader} from "../../../components/Table/TableHeader/TableHeader";
 import {useDispatch, useSelector} from "react-redux";
 import {TableLine} from "../../../components/Table/TableLine/TableLine";
 import {changeNewSubcategory, deleteSubcategory, editOldSubcategory} from "../../../reducer/subcategoryReducer";
-import {deleteCategory, editOldCategory} from "../../../reducer/categoryReducer";
 import {getAllSubcategories} from "../../../actions/subcategory";
+import {IconNotePencil} from "../../../components/UI/icons/NotePencil/IconNotePencil";
+import {IconTrash} from "../../../components/UI/icons/Trash/Trash";
 
 const SubcategorySubPage = () => {
     const dispatch = useDispatch()
@@ -39,21 +40,32 @@ const SubcategorySubPage = () => {
     const onDelete = (requirement) => {
         dispatch(deleteSubcategory(requirement))
     }
-    const onEdit = (id) => {
+    const onEdit = ({id}) => {
         dispatch(editOldSubcategory(id))
     }
-    const onDropdownListHandler = ({categoryId}) => {
-        // dispatch(changeNewSubcategory({selected, value: title, id}))
+
+    const onChangeNewSubCategory = ({type, value, id, isNew}) => {
+        dispatch(changeNewSubcategory({type, value, id, isNew}))
     }
-    const onChangeNewSubCategory = ({selected, value, id, isNew}) => {
-        console.log(isNew)
-        dispatch(changeNewSubcategory({selected, value, id, isNew}))
-    }
+
+    // const onChangeNewSubCategory =
     return (
         <div className={cl.wrapper}>
-            <TableList categories={listOfCategory} isMother={{subcategory: true}}>
+            <TableList enteredDropDownList={{category: categoryR}} isMother={{subcategory: true}}>
                 <TableHeader>
-                    <TableHeader.Name>підкатегорії</TableHeader.Name>
+                    <TableLine.Input
+                        width={125}
+                    >
+                        підкатегорія
+                    </TableLine.Input>
+                    <TableLine.Input
+                        width={125}
+                        placeholder={'категорія'}
+                        type={'category'}
+                        dropDownList={listOfCategory}
+                    >
+                        категорія
+                    </TableLine.Input>
                 </TableHeader>
                 {listOfSubcategory.map((el, i) =>
                     <TableLine
@@ -64,10 +76,27 @@ const SubcategorySubPage = () => {
                         index={i}
                         key={el.id}>
                         <TableLine.Checkbox/>
-                        <TableLine.SubCategory/>
-                        <TableLine.Category onDropdownList={onDropdownListHandler}/>
-                        <TableLine.Edit onClick={onEdit}/>
-                        <TableLine.Delete onClick={onDelete}/>
+                        <TableLine.Input
+                            width={125}
+                            placeholder={'підкатегорія'}
+                            type={'subcategory'}
+                        />
+                        <TableLine.Input
+                            width={125}
+                            placeholder={'категорія'}
+                            type={'category'}
+                            dropDownList={listOfCategory}
+                        />
+                        <TableLine.Btn
+                            type={'edit'}
+                            icon={<IconNotePencil/>}
+                            onClick={onEdit}
+                        />
+                        <TableLine.Btn
+                            type={'delete'}
+                            icon={<IconTrash/>}
+                            onClick={onDelete}
+                        />
                     </TableLine>
                 )}
                 {listOfNewSubcategory.map((el, i) =>
@@ -79,9 +108,22 @@ const SubcategorySubPage = () => {
                         index={i}
                         key={el.id}>
                         <TableLine.Checkbox/>
-                        <TableLine.SubCategory/>
-                        <TableLine.Category onDropdownList={onDropdownListHandler}/>
-                        <TableLine.Delete onClick={onDelete}/>
+                        <TableLine.Input
+                            width={125}
+                            placeholder={'підкатегорія'}
+                            type={'subcategory'}
+                        />
+                        <TableLine.Input
+                            width={125}
+                            placeholder={'категорія'}
+                            type={'category'}
+                            dropDownList={listOfCategory}
+                        />
+                        <TableLine.Btn
+                            type={'delete'}
+                            icon={<IconTrash/>}
+                            onClick={onDelete}
+                        />
                     </TableLine>
                 )}
             </TableList>
@@ -89,4 +131,4 @@ const SubcategorySubPage = () => {
     );
 };
 
-export default SubcategorySubPage;
+export default React.memo(SubcategorySubPage);

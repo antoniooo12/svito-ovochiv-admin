@@ -22,7 +22,7 @@ export function subcategoryReducer(state = defaultState, action) {
             }
         }
         case CHANGE_SUB_CATEGORY: {
-            const {selected, value, id, isNew} = action.payload
+            const {type, value, id, isNew} = action.payload
             let searchedArray = []
             if (isNew) {
                 searchedArray = state.newSubcategory
@@ -32,9 +32,9 @@ export function subcategoryReducer(state = defaultState, action) {
             const indexOfNew = searchedArray.findIndex(el => el.id === id)
             let changed = searchedArray.filter(el => el.id === id)[0]
             console.log(searchedArray)
-            if (selected === 'підкатегорія') {
+            if (type === 'subcategory') {
                 changed.subcategory = value
-            } else if (selected === 'категорія') {
+            } else if (type === 'category') {
                 changed.category = value
                 changed.categoryId = value.split(':').shift()
             }
@@ -99,6 +99,6 @@ export function subcategoryReducer(state = defaultState, action) {
 export const createNewSubCategory = newSubCategory => ({type: CREATE_SUB_CATEGORY, payload: newSubCategory})
 export const changeNewSubcategory = (recruitment = {}) => ({type: CHANGE_SUB_CATEGORY, payload: recruitment})
 export const deleteSubcategory = (recruitment = {}) => ({type: DELETE_SUBCATEGORY, payload: recruitment})
-export const setSubcategory = (subcategories = {}) => ({type: SET_SUBCATEGORY, payload: subcategories})
+export const setSubcategory = (subcategories ) => ({type: SET_SUBCATEGORY, payload: subcategories})
 export const cleanNewSubcategory = () => ({type: CLEAN_NEW_SUBCATEGORY})
 export const editOldSubcategory = (id) => ({type: EDIT_OLD_SUBCATEGORY, payload: id})

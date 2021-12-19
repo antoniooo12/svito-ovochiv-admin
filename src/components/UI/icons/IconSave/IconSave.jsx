@@ -1,12 +1,13 @@
 import React from 'react';
 import {ReactComponent as Svg} from './FilePlus.svg'
 
-const IconSave = () => {
-    return (
-        <div>
-            <Svg/>
-        </div>
-    );
-};
+ const IconSaveInner = () => {
+     return (
+         <div>
+             <Svg/>
+         </div>
+     );
+ };
 
-export {IconSave};
+// export  const IconSave = IconSaveInner
+export const IconSave = React.memo(IconSaveInner)

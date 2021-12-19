@@ -28,7 +28,7 @@ export default function categoryReducer(state = defaultState, action) {
         }
 
         case  CHANGE_CATEGORY: {
-            const {isNew, id, value, selected} = action.payload
+            const {isNew, id, value, type} = action.payload
             let searchingArr = [];
             if (isNew) {
                 searchingArr = state.newCategory
@@ -37,7 +37,7 @@ export default function categoryReducer(state = defaultState, action) {
             }
             let indexOfChanged = searchingArr.findIndex(el => el.id === id)
             let changed = searchingArr.filter(el => el.id === id)[0]
-            if (selected === 'категорія') {
+            if (type === 'category') {
                 changed.category = value
             }
             if (isNew) {
@@ -98,8 +98,8 @@ export default function categoryReducer(state = defaultState, action) {
             }
         }
         case EDIT_OLD_CATEGORY: {
-
-            const id = action.payload
+            console.log(action.payload)
+            const {id} = action.payload
             const indexOfNew = state.allCategory.findIndex(el => el.id === id)
             let change = state.allCategory.filter(el => el.id === id)[0]
             change.wasEdit = true
@@ -124,8 +124,8 @@ export default function categoryReducer(state = defaultState, action) {
 
 export const createNewCategory = newCategory => ({type: CREATE_CATEGORY, payload: newCategory})
 export const changeCategory = (recruitment = {}) => ({type: CHANGE_CATEGORY, payload: recruitment})
-export const setCategory = (categories = {}) => ({type: SET_CATEGORIES, payload: categories})
+export const setCategory = (categories = []) => ({type: SET_CATEGORIES, payload: categories})
 export const deleteCategory = (recruitment = {}) => ({type: DELETE_CATEGORY, payload: recruitment})
 export const bulkDeleteCategories = (arrOfId) => ({type: BULK_DELETE_CATEGORY, payload: arrOfId})
 export const cleanCategories = () => ({type: CLEAN_NEW_CATEGORY})
-export const editOldCategory = (id) => ({type: EDIT_OLD_CATEGORY, payload: id})
+export const editOldCategory = (recruitment) => ({type: EDIT_OLD_CATEGORY, payload: recruitment})

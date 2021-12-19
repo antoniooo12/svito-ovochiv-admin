@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import cl from "./RightPanel.module.scss";
 import {BtnBlue} from "../../../components/UI/BtnBlue/BtnBlue";
 import {IconSave} from "../../../components/UI/icons/IconSave/IconSave";
@@ -12,11 +12,11 @@ import {path} from "../../../API";
 import {saveNewSubcategoryToServer} from "../../../actions/subcategory";
 import {saveProductsToServer} from "../../../actions/productServer";
 
-const RightPanel = () => {
+const RightPanelInner = () => {
     const dispatch = useDispatch()
     let location = useLocation();
-    const [rightPanelBehavior, setRightPanelBehavior] = useState('')
-    const [createText, setCreateText] = useState('')
+    // const [rightPanelBehavior, setRightPanelBehavior] = useState('')
+    // const [createText, setCreateText] = useState('')
     const newC = useSelector(state => state.category.newCategory)
     const oldC = useSelector(state => state.category.allCategory)
     const newSc = useSelector(state => state.subcategory.newSubcategory)
@@ -26,22 +26,25 @@ const RightPanel = () => {
 
     const newSubcategories = useSelector(state => state.subcategory.newSubcategory)
 
-    useEffect(() => {
-        setRightPanelBehavior(location.pathname.split('/').pop())
+    const rightPanelBehavior = useMemo(() => {
+        return location.pathname.split('/').pop()
     }, [location])
 
-    useEffect(() => {
+    const createText = useMemo(() => {
         if (rightPanelBehavior === 'allProducts') {
-            setCreateText('створити товар')
+            return 'створити товар'
         } else if (rightPanelBehavior === 'category') {
-            setCreateText('створити категорію')
+            return 'створити категорію'
         } else if (rightPanelBehavior === path.SUBCATEGORY) {
-            setCreateText('створити під категорію')
+            return 'створити під категорію'
         }
     }, [rightPanelBehavior])
 
+    const onCreate = useCallback(() => {
+        onCreateT(rightPanelBehavior)
+    }, [rightPanelBehavior])
 
-    const onCreate = () => {
+    const onCreateT = (rightPanelBehavior) => {
         if (rightPanelBehavior === 'allProducts') {
             dispatch(createNewProduct())
         } else if (rightPanelBehavior === 'category') {
@@ -51,7 +54,11 @@ const RightPanel = () => {
         }
     }
 
-    const onSave = () => {
+    const onSave = useCallback(() => {
+        onSaveT(rightPanelBehavior)
+    }, [rightPanelBehavior, newC, oldC, newP, oldP, newSc, oldSc])
+
+    const onSaveT = (rightPanelBehavior) => {
         if (rightPanelBehavior === path.ALL_PRODUCTS) {
             dispatch(saveProductsToServer({newItems: newP, oldItems: oldP}))
         } else if (rightPanelBehavior === path.CATEGORY) {
@@ -60,6 +67,7 @@ const RightPanel = () => {
             dispatch(saveNewSubcategoryToServer({newItems: newSc, oldItems: oldSc}))
         }
     }
+
     return (
         <div className={cl.wrapper}>
             <div className={cl.rightMainSection}>
@@ -71,14 +79,15 @@ const RightPanel = () => {
             </div>
 
             <div className={cl.rightBottom}>
-                <BtnBlue onClick={(e) => {
-                    onSave()
-                }}>
+                <BtnBlue onClick={
+                    onSave
+                }>
                     зберегти
                 </BtnBlue>
             </div>
         </div>
-    );
+    )
+        ;
 };
-
+const RightPanel = React.memo(RightPanelInner)
 export {RightPanel};
