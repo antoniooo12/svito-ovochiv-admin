@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo} from 'react';
 import {NavLink, Outlet, Route, Routes} from "react-router-dom";
 import {AllProductsSubPages} from "../../subPages/subProductPages/AllProductsSubPages/AllProductsSubPages";
-import CategorySubPage from "../../subPages/subProductPages/CategorySubPage/CategorySubPage";
+import {CategorySubPage} from "../../subPages/subProductPages/CategorySubPage/CategorySubPage";
 import {ProductsPageHeader} from "../../components/ProductsPageHeader/ProductsPageHeader";
 import cl from "./ProductsPage.module.scss";
 import {BtnBlue} from "../../components/UI/BtnBlue/BtnBlue";

@@ -9,7 +9,6 @@ export const saveProductsToServer = ({newItems, oldItems}) => {
         try {
             let oldItemsToDel = [], oldItemsToUpdate = [], newItemsToCreate = []
             newItems.forEach(item => {
-                console.log(item)
                 if (!item.toDelete) {
                     newItemsToCreate.push({
                         productName: item.productName,
@@ -30,7 +29,7 @@ export const saveProductsToServer = ({newItems, oldItems}) => {
                     })
                 }
             })
-            console.log(oldItemsToDel[0])
+
             const res = await axios.post(`${URL}/api/product/product`, {
                 oldItemsToDel,
                 newItems: newItemsToCreate,
@@ -52,7 +51,7 @@ export const getAllProducts = () => {
     return async dispatch => {
         try {
             const res = await axios.get(`${URL}/api/product/product`)
-            console.log(res.data[0])
+
             dispatch(setProduct(res.data[0]))
         } catch (e) {
             console.log(e)

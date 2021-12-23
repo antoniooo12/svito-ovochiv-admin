@@ -92,7 +92,7 @@ export default function productReducer(state = defaultState, action) {
         }
         case DELETE_PRODUCT: {
             const {isNew, id, isActive} = action.payload
-            console.log(isActive)
+
             let searchingArr = [];
             if (isNew) {
                 searchingArr = state.newProducts
