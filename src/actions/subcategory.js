@@ -28,7 +28,7 @@ export const saveNewSubcategoryToServer = ({newItems, oldItems}) => {
                     oldItemsToUpdate.push({subcategory: item.subcategory, categoryId: item.categoryId, id: item.id})
                 }
             })
-            console.log(oldItemsToUpdate)
+
             const res = await axios.post(`${URL}/api/product/subtype`, {
                 oldItemsToDel,
                 newItems: newItemsToCreate,

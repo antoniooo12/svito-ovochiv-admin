@@ -6,6 +6,7 @@ import {setSubcategory} from "../reducer/subcategoryReducer";
 export const saveNewCategoryToServer = ({newC, oldC}) => {
     return async dispatch => {
         try {
+            debugger
             let oldCategoriesToDel = [], oldItemsToUpdate = [], newCategories = [], newCategoriesToDel = [];
             newC.forEach(el => {
                 if (!el.toDelete) {
@@ -15,7 +16,7 @@ export const saveNewCategoryToServer = ({newC, oldC}) => {
                 }
             })
             oldC.forEach(el => {
-                console.log(el)
+
                 if (el.toDelete) {
                     oldCategoriesToDel.push(el.id)
                 } else if (el.wasEdit) {
@@ -43,7 +44,7 @@ export const getAllCategory = () => {
         try {
             // debugger
             const res = await axios.get(`${URL}/api/product/type`)
-            await console.log(res.data[0])
+
             dispatch(setCategory(res.data[0]))
         } catch (e) {
             console.log(e)

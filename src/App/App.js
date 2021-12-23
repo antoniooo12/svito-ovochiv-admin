@@ -11,24 +11,25 @@ import PricePage from "../pages/PricePage";
 import ProductsPage from "../pages/ProductsPage/ProductsPage";
 import {OrdersPage} from "../pages/OrdersPage";
 import {AllProductsSubPages} from "../subPages/subProductPages/AllProductsSubPages/AllProductsSubPages";
-import CategorySubPage from "../subPages/subProductPages/CategorySubPage/CategorySubPage";
+import {CategorySubPage} from "../subPages/subProductPages/CategorySubPage/CategorySubPage";
 import SubcategorySubPage from "../subPages/subProductPages/SubcategorySubPage/SubcategorySubPage";
 
 function App() {
     return (
-        <>
-            <Routes>
-                <Route path='/' element={<Layout/>}>
-                    <Route path='products/*' element={<ProductsPage/>}>
-                        <Route path='allProducts' element={<AllProductsSubPages/>}/>
-                        <Route path='category' element={<CategorySubPage/>}/>
-                        <Route path='subcategory' element={<SubcategorySubPage/>}/>
+            <>
+                <Routes>
+                    <Route path='/' element={<Layout/>}>
+                        <Route path='products/*' element={<ProductsPage/>}>
+                            <Route path='allProducts' element={<AllProductsSubPages/>}/>
+                            <Route path='category' element={<CategorySubPage/>}/>
+                            <Route path='subcategory' element={<SubcategorySubPage/>}/>
+                        </Route>
+                        <Route path='price' element={<PricePage/>}/>
+                        <Route path='orders' element={<OrdersPage/>}/>
                     </Route>
-                    <Route path='price' element={<PricePage/>}/>
-                    <Route path='orders' element={<OrdersPage/>}/>
-                </Route>
-            </Routes>
-        </>
+                </Routes>
+            </>
+
 
     )
         ;

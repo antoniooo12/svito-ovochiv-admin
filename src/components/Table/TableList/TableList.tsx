@@ -1,13 +1,15 @@
 import React, {useMemo} from 'react';
 import cl from './TableList.module.scss';
-import {TableLine} from "../TableLine/TableLine";
-import Header from "../../Header/Header";
-import {TableHeader} from "../TableHeader/TableHeader";
 import {ListContent} from "./ListContext";
 import isEqual from "react-fast-compare";
 
+interface ITableList {
+    isMother?: boolean,
+    enteredDropDownList?: any,
 
-const TableListInner = ({children, isMother, enteredDropDownList}) => {
+}
+
+const TableList: React.FC<ITableList> = React.memo(({children, isMother, enteredDropDownList}) => {
     const childrenMemo = useMemo(() => {
         return children
     }, [children])
@@ -19,7 +21,8 @@ const TableListInner = ({children, isMother, enteredDropDownList}) => {
         </ListContent.Provider>
 
     );
-};
+}, isEqual);
 
-export const TableList = React.memo(TableListInner, isEqual)
+export { TableList}
+
 

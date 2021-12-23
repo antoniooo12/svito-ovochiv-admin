@@ -43,6 +43,7 @@ const AllProductsSubPages = () => {
     const onDelete = useCallback(({id, isNew, isActive}) => {
         dispatch(deleteProduct({id, isNew, isActive}))
     }, [])
+
     return (
         <div className={cl.wrapper}>
             <TableList enteredDropDownList={enteredDropDownList}>

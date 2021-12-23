@@ -31,7 +31,7 @@ export function subcategoryReducer(state = defaultState, action) {
             }
             const indexOfNew = searchedArray.findIndex(el => el.id === id)
             let changed = searchedArray.filter(el => el.id === id)[0]
-            console.log(searchedArray)
+
             if (type === 'subcategory') {
                 changed.subcategory = value
             } else if (type === 'category') {

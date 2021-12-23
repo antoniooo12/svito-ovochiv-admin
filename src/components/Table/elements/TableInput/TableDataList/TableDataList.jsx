@@ -2,25 +2,24 @@ import React, {useMemo} from 'react';
 import isEqual from "react-fast-compare";
 
 const TableDataListInner = ({type, link, data, filterBy, exampleFilter = ''}) => {
-    let filtredData = useMemo(() => {
-        console.log(exampleFilter)
-        console.log(filterBy)
+    const filteredData = useMemo(() => {
+
+
         if (filterBy && exampleFilter) {
             let res = data.filter(el => {
                 if (el[filterBy].toString() === exampleFilter.toString()) {
                     return el
                 }
             })
-            console.log(res)
-            return res
+            return res || []
         } else {
-            return data
+            return data.data || []
         }
     }, [exampleFilter])
-    console.log(filtredData)
+
     return (
         <datalist id={link}>
-            {filtredData
+            {filteredData
                 .map(el => <option
                         key={el.id}
                         value={`${el.id}:  ${el[type]}`}

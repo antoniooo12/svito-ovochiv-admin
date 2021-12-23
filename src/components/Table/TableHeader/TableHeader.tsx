@@ -1,12 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {ReactNode} from 'react';
 import cl from './TableHeader.module.scss'
 import {HeaderContent} from './TableHeaderContext'
 
+export interface ITableHeader {
+    children?: ReactNode,
+}
 
-const TableHeaderInner = ({children}) => {
-    useEffect(() => {
-
-    }, [])
+const TableHeader: React.FC<ITableHeader> = ({children}) => {
 
     return (
         <HeaderContent.Provider value={{isHeader: true}}>
@@ -17,4 +17,6 @@ const TableHeaderInner = ({children}) => {
     );
 };
 
-export const TableHeader = React.memo(TableHeaderInner);
+export {
+    TableHeader
+}

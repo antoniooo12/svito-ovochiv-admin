@@ -17,14 +17,14 @@ const RightPanelInner = () => {
     let location = useLocation();
     // const [rightPanelBehavior, setRightPanelBehavior] = useState('')
     // const [createText, setCreateText] = useState('')
-    const newC = useSelector(state => state.category.newCategory)
-    const oldC = useSelector(state => state.category.allCategory)
-    const newSc = useSelector(state => state.subcategory.newSubcategory)
-    const oldSc = useSelector(state => state.subcategory.allSubcategory)
-    const oldP = useSelector(state => state.product.allProducts)
-    const newP = useSelector(state => state.product.newProducts)
+    const newC = useSelector(state => state.category) || []
+    const oldC = useSelector(state => false && state.category.allCategory) || []
+    const newSc = useSelector(state => false && state.subcategory.newSubcategory) || []
+    const oldSc = useSelector(state => false && state.subcategory.allSubcategory) || []
+    const oldP = useSelector(state => false && state.product.allProducts) || []
+    const newP = useSelector(state => false && state.product.newProducts) || []
 
-    const newSubcategories = useSelector(state => state.subcategory.newSubcategory)
+    // const newSubcategories = useSelector(state => state.subcategory.newSubcategory)
 
     const rightPanelBehavior = useMemo(() => {
         return location.pathname.split('/').pop()
@@ -59,6 +59,8 @@ const RightPanelInner = () => {
     }, [rightPanelBehavior, newC, oldC, newP, oldP, newSc, oldSc])
 
     const onSaveT = (rightPanelBehavior) => {
+        debugger
+
         if (rightPanelBehavior === path.ALL_PRODUCTS) {
             dispatch(saveProductsToServer({newItems: newP, oldItems: oldP}))
         } else if (rightPanelBehavior === path.CATEGORY) {

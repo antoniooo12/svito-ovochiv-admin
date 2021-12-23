@@ -10,7 +10,7 @@ export const login = (email, password)=>{
             })
             dispatch(setUser(res.data.user))
             localStorage.setItem('token', res.data.token)
-            console.log(res.data.user)
+
 
         }catch (e) {
             console.log(e)
