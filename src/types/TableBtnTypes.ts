@@ -8,5 +8,5 @@ export enum EnumTableBtn {
 export interface IOnClick {
     id: number | string,
     value: number | boolean,
-    typeRow: EnumTypeRows,
+    typeRows: EnumTypeRows,
 }

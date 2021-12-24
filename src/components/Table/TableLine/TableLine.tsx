@@ -3,8 +3,8 @@ import cl from './TableLine.module.scss'
 import {IOnChange, LineContent} from "./LineContext";
 import {ITableInput, TableInput} from "../elements/TableInput/TableInput";
 import {ITableHeader, TableHeader} from "../TableHeader/TableHeader";
-import {useForceUpdate, useTypedSelector} from "../../../hooks/hooks";
-import {EnumTypeRows, Item} from "../../../types/categoryReducerTypes";
+import {useForceUpdate} from "../../../hooks/hooks";
+import {EnumStatus, EnumTypeRows, Item, RowItem} from "../../../types/categoryReducerTypes";
 import {ITableBtn, TableLineBtn} from "../elements/TableLineBtn/TableLineBtn";
 
 interface ITableLineComposition {
@@ -16,12 +16,12 @@ interface ITableLineComposition {
 type ITableLine = {
     index: number,
     id: number | string,
-    outerReduxObjState: Item,
+    outerReduxObjState: RowItem,
     isNew?: boolean,
     onChange?: ({}: IOnChange) => void,
-    typeRow?: EnumTypeRows,
+    typeRows?: EnumTypeRows,
     children?: ReactNode,
-
+    status?: keyof typeof EnumStatus,
 
 }
 
@@ -34,22 +34,23 @@ const TableLine: React.FC<ITableLine> & ITableLineComposition =
          outerReduxObjState,
          isNew,
          onChange,
-         typeRow
+         typeRows,
+         status,
      }) => {
         const forceUpdate = useForceUpdate();
         // const localReduxObjectState = useTypedSelector(state => state.category.storage.newCategory.data[index])
-    const [states, setState] = useState<Item>()
-        console.log(states)
-    useEffect(() => {
-        setState(outerReduxObjState)
-        // if (localReduxObjectState) {
-        //     setState(localReduxObjectState)
-        // } else if (outerReduxObjState) {
-        //     setState(outerReduxObjState)
-        // } else {
-        //     throw new Error('TableLine немає states')
-        // }
-    }, [outerReduxObjState])
+        const [rowState, setRowState] = useState<RowItem>()
+        console.log(rowState)
+        useEffect(() => {
+            setRowState(outerReduxObjState)
+            // if (localReduxObjectState) {
+            //     setState(localReduxObjectState)
+            // } else if (outerReduxObjState) {
+            //     setState(outerReduxObjState)
+            // } else {
+            //     throw new Error('TableLine немає states')
+            // }
+        }, [outerReduxObjState])
 
     const lineColor = useMemo(() => {
         if (isNew) {
@@ -70,15 +71,16 @@ const TableLine: React.FC<ITableLine> & ITableLineComposition =
     return (<LineContent.Provider
         value={{
             id,
-            states,
+            rowState,
             isNew,
             onChange,
-            typeRow,
+            typeRows,
             wasEdit: false,
             forceUpdate,
+            status,
         }}>
         <div
-            className={[cl.wrapper, lineColor, states && states.toDelete && cl.toDelete,].join(' ')}>
+            className={[cl.wrapper, lineColor, rowState && rowState.toDelete && cl.toDelete,].join(' ')}>
             {children}
         </div>
     </LineContent.Provider>);

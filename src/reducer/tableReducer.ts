@@ -5,11 +5,13 @@ import {
     EnumCategoryReducer,
     EnumStatus,
     EnumTypeCategory, EnumTypeRows,
-    Item, TableEntitiesType, TableEntity
+    Item, RowItem, TableEntitiesType, TableEntity
 } from "../types/categoryReducerTypes";
 import {IOnClick} from "../types/TableBtnTypes";
 import {findIndexById} from "./helpers/helper";
-import {DataEntitiesCatalog} from "../API";
+import {columns, DataEntitiesCatalog} from "../API";
+import {TableCreatorMokData} from "../mokData";
+import {TableCreator} from "../types/TableCreatorTypes";
 
 const CREATE_CATEGORY = 'CREATE_CATEGORY'
 const CHANGE_CATEGORY = "CHANGE_CATEGORY"
@@ -50,49 +52,76 @@ export default function tableReducer(state: CategoryState = defaultState, action
 
     switch (action.type) {
         case EnumCategoryReducer.CREATE_CATEGORY: {
-            const location: any = action.payload as keyof TableEntity
-            const item: Item = {
+            const {typeRow}: any = action.payload as keyof TableEntity
+            console.log(typeRow)
+            console.log()
+            const rowItemArray: Array<Item> = TableCreatorMokData[typeRow].row.map((column): Item => {
+                    return {
+                        typeColumn: column.typeColumn,
+                        wasEdit: false,
+                        value: '',
+                    }
+                }
+            )
+
+            const row: RowItem = {
                 id: Date.now(),
                 toDelete: false,
                 wasEdit: false,
-                value: '',
+                columns: [...rowItemArray]
             }
 
             return {
                 ...state,
                 storage: {
                     ...state.storage,
-                    [location]: {
-                        ...state.storage [location].isAll,
-                        isNew: item
+                    [typeRow]: {
+                        ...state.storage[typeRow],
+                        isNew: {
+                            ...state.storage[typeRow].isNew,
+                            data: [...state.storage[typeRow].isNew.data, row]
+                        }
                     }
                 }
             }
         }
 
-//
-//         case EnumCategoryReducer.CHANGE_CATEGORY: {
-//             const {value, id, typeRow} = action.payload
-//             const index = state.storage[typeRow].data.findIndex(obj => obj.id === id)
-//             const oldObj = state.storage[typeRow].data.filter(obj => obj.id === id)[0]
-//             const changedObj = {
-//                 ...oldObj,
-//                 value,
-//             }
-//             const newArr: Array<Item> = [...state.storage[typeRow].data.slice(0, index), changedObj, ...state.storage[typeRow].data.slice(index + 1)]
-//             console.log(typeRow)
-//             console.log(state.storage[EnumTypeCategory[typeRow]])
-//             return {
-//                 ...state,
-//                 storage: {
-//                     ...state.storage,
-//                     [EnumTypeCategory.newCategory]: {
-//                         ...[state.storage[EnumTypeCategory.newCategory]][0],
-//                         data: newArr
-//                     },
-//                 }
-//             }
-//         }
+
+        case EnumCategoryReducer.CHANGE_CATEGORY: {
+            const {value, id, typeRows, typeColumn, status} = action.payload
+            const oldData = state.storage[typeRows][status].data
+            const indexRow = findIndexById<RowItem>(oldData, id)
+            const oldRow = oldData.filter(obj => obj.id === id)[0]
+            const oldColumn = oldRow.columns.filter(column => column.typeColumn === typeColumn)[0]
+            const indexOldColumn = oldRow.columns.findIndex(column => column.typeColumn === typeColumn)
+            // debugger
+            const changedColumn = {
+                ...oldColumn,
+                value,
+            }
+            const changedRow = {
+                ...oldRow,
+                columns: [...oldRow.columns.slice(0, indexOldColumn), changedColumn, ...oldRow.columns.slice(indexOldColumn + 1)]
+            }
+            console.log(changedRow)
+            const changedData = [...oldData.slice(0, indexRow), changedRow, ...oldData.slice(indexRow + 1)]
+
+            return {
+                ...state,
+                storage: {
+                    ...state.storage,
+                    [typeRows]: {
+                        ...state.storage[typeRows],
+                        [status]: {
+                            ...state.storage[typeRows][status],
+                            data: changedData
+                        }
+                    }
+                }
+            }
+        }
+
+
 //         case EnumCategoryReducer.DELETE_CATEGORY: {
 //             const {value, id, typeRow} = action.payload
 //             if (typeof value !== "boolean") {
@@ -124,9 +153,9 @@ export default function tableReducer(state: CategoryState = defaultState, action
 }
 
 
-export const createNewRow = (type: string) => ({
+export const createNewRow = (typeRow: string) => ({
     type: EnumCategoryReducer.CREATE_CATEGORY,
-    payload: {type}
+    payload: {typeRow}
 })
 export const changeCategory = (recruitment: IOnChange) => ({
     type: EnumCategoryReducer.CHANGE_CATEGORY,

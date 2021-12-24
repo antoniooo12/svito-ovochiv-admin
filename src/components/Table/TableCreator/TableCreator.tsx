@@ -3,7 +3,7 @@ import cl from './TableCreator.module.scss'
 import {TableList} from "../TableList/TableList";
 import {TableHeader} from '../TableHeader/TableHeader';
 import {TableLine} from "../TableLine/TableLine";
-import {Item} from "../../../types/categoryReducerTypes";
+import {EnumStatus, EnumTypeRows, Item, TableEntityStructure} from "../../../types/categoryReducerTypes";
 import {IOnChange} from "../TableLine/LineContext";
 
 interface column {
@@ -11,19 +11,19 @@ interface column {
 }
 
 interface TableCreator {
+    typeRows?: EnumTypeRows,
     actions: {
         onChange: ({}: IOnChange) => void,
     }
     params: {
-        column: Array<{ width: number }>
-        header: Array<{ title: string }>
-        row: Array<{ typeColumn: string, typeInput: string, placeholder: string, isMother: boolean }>
+        column: Array<{ width: number }>,
+        header: Array<{ title: string }>,
+        row: Array<{ typeColumn: EnumTypeRows, typeInput: string, placeholder: string, isMother: boolean }>,
     },
-    data: Array<Item>,
+    data: TableEntityStructure,
 }
 
-const TableCreator: React.FC<TableCreator> = ({params, data, actions}) => {
-    console.log(params)
+const TableCreator: React.FC<TableCreator> = ({params, data, actions, typeRows}) => {
     return (
         <div className={cl.wrapper}>
             <TableList>
@@ -34,29 +34,30 @@ const TableCreator: React.FC<TableCreator> = ({params, data, actions}) => {
                         </div>
                     )}
                 </TableHeader>
-                {data.map((row, index) => {
-                    return (
-                        <TableLine
-                            isNew={true}
-                            index={index}
-                            id={row.id}
-                            outerReduxObjState={row}
-                            key={row.id}
-                            onChange={actions.onChange}
-                        >
-                            {params.row.map((templateRow, index) =>
-                                <TableLine.Input
-                                    width={params.column[index].width}
-                                    type={templateRow.typeColumn as any}
-                                    placeholder={templateRow.placeholder}
-                                />
-                            )}
-
-                        </TableLine>
-
-
-                    )
-                })}
+                {Object.keys(EnumStatus).map(status =>
+                    data[status as EnumStatus].data.map((row, index) => {
+                        return (
+                            <TableLine
+                                typeRows={typeRows}
+                                isNew={true}
+                                index={index}
+                                id={row.id}
+                                outerReduxObjState={row}
+                                key={row.id}
+                                onChange={actions.onChange}
+                                status={status as EnumStatus}
+                            >
+                                {params.row.map((templateRow, index) =>
+                                    <TableLine.Input
+                                        width={params.column[index].width}
+                                        typeColumn={templateRow.typeColumn}
+                                        placeholder={templateRow.placeholder}
+                                    />
+                                )}
+                            </TableLine>
+                        )
+                    })
+                )}
             </TableList>
         </div>
     );

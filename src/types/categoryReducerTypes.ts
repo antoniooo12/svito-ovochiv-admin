@@ -1,6 +1,7 @@
 import {IOnChange} from "../components/Table/TableLine/LineContext";
 import {IOnClick} from "./TableBtnTypes";
 import {DataEntitiesCatalog} from "../API";
+import {TableCreator} from "./TableCreatorTypes";
 
 export enum EnumCategoryReducer {
     CREATE_CATEGORY = "CREATE_CATEGORY",
@@ -11,7 +12,7 @@ export enum EnumCategoryReducer {
 
 export type TableEntitiesType = keyof typeof DataEntitiesCatalog
 
-type TableEntityStructure = {
+export type TableEntityStructure = {
     [status in EnumStatus]: ICategoryTypeStructure;
 };
 
@@ -39,18 +40,22 @@ export type EnumTypeRows = TableEntitiesType
 
 export interface ICategoryTypeStructure {
     forceRender: number,
-    data: Array<Item>,
+    data: Array<RowItem>,
 }
 
-
+export interface RowItem {
+    id: number | string,
+    toDelete: boolean,
+    wasEdit: boolean,
+    columns: Array<Item>,
+}
 
 export interface IItems {
     Items: Array<Item>
 }
 
 export interface Item {
-    id: number;
-    toDelete: boolean;
+    typeColumn: keyof TableEntity;
     value: string | number | boolean;
     wasEdit: boolean;
 }

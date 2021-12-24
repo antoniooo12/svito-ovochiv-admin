@@ -19,7 +19,7 @@ const RightPanelInner = () => {
 
     const onCreate = useCallback(() => {
         dispatch(createNewRow(behavior))
-    }, [])
+    }, [behavior])
 
     return (
         <div className={cl.wrapper}>

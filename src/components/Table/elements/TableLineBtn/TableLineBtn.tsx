@@ -13,7 +13,7 @@ export interface ITableBtn {
 }
 
 const TableLineBtn: React.FC<ITableBtn> = React.memo(({icon, onClick, type}) => {
-    const {id, isNew, wasEdit, typeRow, forceUpdate} = useContext(LineContent)
+    const {id, isNew, wasEdit, typeRows, forceUpdate} = useContext(LineContent)
     const [isActive, setIsActive] = useState(false)
 
 
@@ -23,8 +23,8 @@ const TableLineBtn: React.FC<ITableBtn> = React.memo(({icon, onClick, type}) => 
     }, [isActive])
 
     useEffectSkipMount(() => {
-        if (id && typeRow) {
-            onClick && onClick({id, typeRow, value: isActive})
+        if (id && typeRows) {
+            onClick && onClick({id, typeRows, value: isActive})
         }
     }, [isActive])
 

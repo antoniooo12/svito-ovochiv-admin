@@ -1,10 +1,12 @@
 import {createContext} from "react";
-import {EnumTypeRows, Item} from "../../../types/categoryReducerTypes";
+import {EnumStatus, EnumTypeRows, Item, RowItem} from "../../../types/categoryReducerTypes";
 
 export interface IOnChange {
     id: number | string,
     value: number | string | boolean,
-    typeRow: EnumTypeRows,
+    typeRows: EnumTypeRows,
+    typeColumn: EnumTypeRows,
+    status: keyof typeof EnumStatus
 }
 
 interface ILineContent {
@@ -12,10 +14,12 @@ interface ILineContent {
     states?: Item,
     wasEdit?: boolean,
     isNew?: boolean,
+    status?: keyof typeof EnumStatus,
     type?: any,
-    typeRow?: EnumTypeRows,
-    onChange?: ({id, value, typeRow}: IOnChange) => void,
+    typeRows?: EnumTypeRows,
+    onChange?: ({id, value, typeRows}: IOnChange) => void,
     forceUpdate?: any,
+    rowState?: RowItem,
 }
 
 export const LineContent = createContext<ILineContent>({})
