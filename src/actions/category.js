@@ -1,6 +1,6 @@
 import axios from "axios";
 import {axiosCashConfig, URL} from '../API'
-import categoryReducer, {bulkDeleteCategories, cleanCategories, setCategory} from "../reducer/categoryReducer";
+import tableReducer, {bulkDeleteCategories, cleanCategories, setCategory} from "../reducer/tableReducer";
 import {setSubcategory} from "../reducer/subcategoryReducer";
 
 export const saveNewCategoryToServer = ({newC, oldC}) => {

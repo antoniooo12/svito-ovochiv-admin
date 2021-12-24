@@ -1,19 +1,17 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import cl from './CategorySubPage.module.scss'
+import React, {useCallback, useMemo, useState} from 'react';
 import {useDispatch} from "react-redux";
 import isEqual from "react-fast-compare";
 import {useTypedSelector} from "../../../hooks/hooks";
-import {
-    changeCategory,
-    deleteCategory,
-} from "../../../reducer/categoryReducer";
-import {TableLine} from '../../../components/Table/TableLine/TableLine';
-import {TableHeader} from '../../../components/Table/TableHeader/TableHeader';
+import {changeCategory, deleteCategory,} from "../../../reducer/tableReducer";
 import {IOnChange} from "../../../components/Table/TableLine/LineContext";
-import {EnumTableEntity, EnumTypeCategory, Item} from "../../../types/categoryReducerTypes";
+import {EnumTypeCategory, Item,} from "../../../types/categoryReducerTypes";
+import {TableList} from "../../../components/Table/TableList/TableList";
+import cl from './CategorySubPage.module.scss'
+import {TableHeader} from '../../../components/Table/TableHeader/TableHeader';
+import {TableLine} from "../../../components/Table/TableLine/TableLine";
+import {DataEntitiesCatalog} from "../../../API";
 import {EnumTableBtn} from "../../../types/TableBtnTypes";
 import {IconTrash} from "../../../components/UI/icons/Trash/Trash";
-import {TableList} from "../../../components/Table/TableList/TableList";
 
 export const CategorySubPage = React.memo(() => {
     const dispatch = useDispatch()
@@ -24,8 +22,8 @@ export const CategorySubPage = React.memo(() => {
     const [listOfCategory, setListOfCategory] = useState<Array<Item>>([])
 
     const listOfNewCategory = useMemo(() => {
-        return storage[EnumTypeCategory.newCategory].data
-    }, [storage[EnumTypeCategory.newCategory].data.length])
+        return [{}]
+    }, [storage])
 
     const onChangeCategory = useCallback((recruitment: IOnChange) => {
         dispatch(changeCategory(recruitment))
@@ -50,7 +48,6 @@ export const CategorySubPage = React.memo(() => {
                     <TableLine.Input
                         width={100}
                         placeholder={'категорія'}
-                        type={EnumTableEntity.categories}
                     >
                         категорія
                     </TableLine.Input>
@@ -58,17 +55,21 @@ export const CategorySubPage = React.memo(() => {
                 {listOfNewCategory.map((el, i) => {
                     return (<TableLine
                             onChange={onChangeCategory}
-                            outerReduxObjState={el}
+                            // outerReduxObjState={el}
                             isNew={true}
+                            // @ts-ignore
                             typeRow={EnumTypeCategory.newCategory}
-                            id={el.id}
+
                             index={i}
                             key={i.toString()}
+                            // @ts-ignore
+                            id={el.id}
+                            // @ts-ignore
+                            outerReduxObjState={el}
                         >
                             <TableLine.Input
                                 width={100}
                                 placeholder={'категорія'}
-                                type={EnumTableEntity.categories}
                             />
                             <TableLine.Btn
                                 type={EnumTableBtn.delete}

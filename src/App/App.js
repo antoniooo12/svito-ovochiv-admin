@@ -13,6 +13,7 @@ import {OrdersPage} from "../pages/OrdersPage";
 import {AllProductsSubPages} from "../subPages/subProductPages/AllProductsSubPages/AllProductsSubPages";
 import {CategorySubPage} from "../subPages/subProductPages/CategorySubPage/CategorySubPage";
 import SubcategorySubPage from "../subPages/subProductPages/SubcategorySubPage/SubcategorySubPage";
+import {SubPage} from "../pages/ProductsPage/subPage/subPage";
 
 function App() {
     return (
@@ -20,9 +21,11 @@ function App() {
                 <Routes>
                     <Route path='/' element={<Layout/>}>
                         <Route path='products/*' element={<ProductsPage/>}>
-                            <Route path='allProducts' element={<AllProductsSubPages/>}/>
-                            <Route path='category' element={<CategorySubPage/>}/>
-                            <Route path='subcategory' element={<SubcategorySubPage/>}/>
+                            ///todo переробити денамічний роутинг
+                            <Route path='*' element={<SubPage/>}/>
+                            {/*<Route path='allProducts' element={<AllProductsSubPages/>}/>*/}
+                            {/*<Route path='category' element={<CategorySubPage/>}/>*/}
+                            {/*<Route path='subcategory' element={<SubcategorySubPage/>}/>*/}
                         </Route>
                         <Route path='price' element={<PricePage/>}/>
                         <Route path='orders' element={<OrdersPage/>}/>

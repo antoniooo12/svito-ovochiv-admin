@@ -18,7 +18,7 @@ const TableLineBtn: React.FC<ITableBtn> = React.memo(({icon, onClick, type}) => 
 
 
     const setIsActiveCallback = useCallback(() => {
-        // forceUpdate()
+        forceUpdate()
         setIsActive(!isActive)
     }, [isActive])
 

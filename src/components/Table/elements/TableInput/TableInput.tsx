@@ -6,14 +6,18 @@ import cl from './TableInput.module.scss'
 import {TableDataList} from "./TableDataList/TableDataList";
 import isEqual from "react-fast-compare";
 import {useEffectSkipMount} from "../../../../hooks/hooks";
-import {EnumTableEntity} from "../../../../types/categoryReducerTypes";
+
+export enum EnumInput {
+    string = 'string',
+    number = 'number',
+}
 
 export interface ITableInput {
     dropDownList?: any,
-    type?: EnumTableEntity,
+    type?: keyof typeof EnumInput,
     placeholder?: string,
     width?: number,
-    filterBy?: EnumTableEntity,
+    filterBy?: string,
 }
 
 export const TableInput: React.FC<ITableInput> = React.memo(({
@@ -52,7 +56,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(({
         if (states && typeof states.value === "string") {
             setTitle(states.value)
         }
-    }, [])
+    }, [states])
 
     const datalist = useMemo(() => {
         if (enteredDropDownList && type && enteredDropDownList[type]) {

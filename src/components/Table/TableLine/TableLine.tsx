@@ -19,29 +19,30 @@ type ITableLine = {
     outerReduxObjState: Item,
     isNew?: boolean,
     onChange?: ({}: IOnChange) => void,
-    typeRow: EnumTypeRows,
+    typeRow?: EnumTypeRows,
     children?: ReactNode,
 
 
 }
 
 
-const TableLine: React.FC<ITableLine> & ITableLineComposition = ({
-                                                                     children,
-                                                                     index,
-                                                                     id,
-                                                                     outerReduxObjState,
-                                                                     isNew,
-                                                                     onChange,
-                                                                     typeRow
-                                                                 }) => {
-    const forceUpdate = useForceUpdate();
-    // const localReduxObjectState = useTypedSelector(state => state.category.storage.newCategory.data[index])
+const TableLine: React.FC<ITableLine> & ITableLineComposition =
+    ({
+         children,
+         index,
+         id,
+         outerReduxObjState,
+         isNew,
+         onChange,
+         typeRow
+     }) => {
+        const forceUpdate = useForceUpdate();
+        // const localReduxObjectState = useTypedSelector(state => state.category.storage.newCategory.data[index])
     const [states, setState] = useState<Item>()
-
+        console.log(states)
     useEffect(() => {
         setState(outerReduxObjState)
-        // if (localReduxObjectState !== null) {
+        // if (localReduxObjectState) {
         //     setState(localReduxObjectState)
         // } else if (outerReduxObjState) {
         //     setState(outerReduxObjState)
