@@ -1,7 +1,7 @@
 import axios from "axios";
 import {URL} from '../API'
 
-import categoryReducer, {bulkDeleteCategories, cleanCategories, setCategory} from "../reducer/categoryReducer";
+import tableReducer, {bulkDeleteCategories, cleanCategories, setCategory} from "../reducer/tableReducer";
 import {useSelector} from "react-redux";
 import {changeNewSubcategory, cleanNewSubcategory, setSubcategory} from "../reducer/subcategoryReducer";
 import {getAllCategory} from "./category";

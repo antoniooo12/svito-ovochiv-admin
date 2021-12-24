@@ -1,11 +1,11 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import {composeWithDevTools} from "redux-devtools-extension";
 import thunk from "redux-thunk";
-import categoryReducer from "./categoryReducer";
+import tableReducer from "./tableReducer";
 
 
 const rootReducer = combineReducers({
-    category: categoryReducer,
+    category: tableReducer,
 })
 
 

@@ -7,7 +7,7 @@ import {TableList} from "../../../components/Table/TableList/TableList";
 import {TableHeader} from "../../../components/Table/TableHeader/TableHeader";
 import {IconTrash} from "../../../components/UI/icons/Trash/Trash";
 import {IconNotePencil} from "../../../components/UI/icons/NotePencil/IconNotePencil";
-import {editOldCategory} from "../../../reducer/categoryReducer";
+import {editOldCategory} from "../../../reducer/tableReducer";
 
 const AllProductsSubPages = () => {
     const dispatch = useDispatch()
