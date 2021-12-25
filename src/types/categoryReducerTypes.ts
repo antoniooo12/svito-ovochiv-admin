@@ -1,7 +1,8 @@
 import {IOnChange} from "../components/Table/TableLine/LineContext";
 import {IOnClick} from "./TableBtnTypes";
-import {DataEntitiesCatalog} from "../API";
+import {} from "../API";
 import {TableCreator} from "./TableCreatorTypes";
+import {DataEntitiesCatalog} from "../mokData";
 
 export enum EnumCategoryReducer {
     CREATE_CATEGORY = "CREATE_CATEGORY",

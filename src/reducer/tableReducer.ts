@@ -9,8 +9,8 @@ import {
 } from "../types/categoryReducerTypes";
 import {IOnClick} from "../types/TableBtnTypes";
 import {findIndexById} from "./helpers/helper";
-import {columns, DataEntitiesCatalog} from "../API";
-import {TableCreatorMokData} from "../mokData";
+import {columns} from "../API";
+import {DataEntitiesCatalog, TableCreatorMokData} from "../mokData";
 import {TableCreator} from "../types/TableCreatorTypes";
 
 const CREATE_CATEGORY = 'CREATE_CATEGORY'

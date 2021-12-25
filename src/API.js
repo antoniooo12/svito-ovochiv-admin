@@ -14,10 +14,7 @@ const path = {
     price: {}
 }
 
-export const DataEntitiesCatalog = {
-    categories: "categories",
-    subCategories: "subCategories"
-}
+
 
 
 
