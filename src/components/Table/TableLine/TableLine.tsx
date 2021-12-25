@@ -4,8 +4,9 @@ import {IOnChange, LineContent} from "./LineContext";
 import {ITableInput, TableInput} from "../elements/TableInput/TableInput";
 import {ITableHeader, TableHeader} from "../TableHeader/TableHeader";
 import {useForceUpdate} from "../../../hooks/hooks";
-import {EnumStatus, EnumTypeRows, Item, RowItem} from "../../../types/categoryReducerTypes";
+import {EnumStatus, RowItem} from "../../../types/categoryReducerTypes";
 import {ITableBtn, TableLineBtn} from "../elements/TableLineBtn/TableLineBtn";
+import {TypeColumn, TypeTable} from "../../../types/TableCreatorTypes";
 
 interface ITableLineComposition {
     Header: React.FC<ITableHeader>,
@@ -19,7 +20,8 @@ type ITableLine = {
     outerReduxObjState: RowItem,
     isNew?: boolean,
     onChange?: ({}: IOnChange) => void,
-    typeRows?: EnumTypeRows,
+    typeTable?: TypeTable,
+    typeRows?: TypeColumn,
     children?: ReactNode,
     status?: keyof typeof EnumStatus,
 
@@ -35,6 +37,7 @@ const TableLine: React.FC<ITableLine> & ITableLineComposition =
          isNew,
          onChange,
          typeRows,
+        typeTable,
          status,
      }) => {
         const forceUpdate = useForceUpdate();

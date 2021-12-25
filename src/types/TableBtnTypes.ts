@@ -1,4 +1,3 @@
-import {EnumTypeRows} from "./categoryReducerTypes";
 
 export enum EnumTableBtn {
     delete = "delete",
@@ -8,5 +7,5 @@ export enum EnumTableBtn {
 export interface IOnClick {
     id: number | string,
     value: number | boolean,
-    typeRows: EnumTypeRows,
+    typeRows: any,
 }

@@ -3,15 +3,13 @@ import {
     CategoryReducerActions,
     CategoryState,
     EnumCategoryReducer,
-    EnumStatus,
-    EnumTypeCategory, EnumTypeRows,
-    Item, RowItem, TableEntitiesType, TableEntity
+    Item,
+    RowItem,
+    TableEntity
 } from "../types/categoryReducerTypes";
 import {IOnClick} from "../types/TableBtnTypes";
 import {findIndexById} from "./helpers/helper";
-import {columns} from "../API";
 import {DataEntitiesCatalog, TableCreatorMokData} from "../mokData";
-import {TableCreator} from "../types/TableCreatorTypes";
 
 const CREATE_CATEGORY = 'CREATE_CATEGORY'
 const CHANGE_CATEGORY = "CHANGE_CATEGORY"
@@ -88,13 +86,12 @@ export default function tableReducer(state: CategoryState = defaultState, action
 
 
         case EnumCategoryReducer.CHANGE_CATEGORY: {
-            const {value, id, typeRows, typeColumn, status} = action.payload
-            const oldData = state.storage[typeRows][status].data
+            const {value, id, typeTable, typeColumn, status} = action.payload
+            const oldData = state.storage[typeTable][status].data
             const indexRow = findIndexById<RowItem>(oldData, id)
             const oldRow = oldData.filter(obj => obj.id === id)[0]
             const oldColumn = oldRow.columns.filter(column => column.typeColumn === typeColumn)[0]
             const indexOldColumn = oldRow.columns.findIndex(column => column.typeColumn === typeColumn)
-            // debugger
             const changedColumn = {
                 ...oldColumn,
                 value,
@@ -110,10 +107,10 @@ export default function tableReducer(state: CategoryState = defaultState, action
                 ...state,
                 storage: {
                     ...state.storage,
-                    [typeRows]: {
-                        ...state.storage[typeRows],
+                    [typeTable]: {
+                        ...state.storage[typeTable],
                         [status]: {
-                            ...state.storage[typeRows][status],
+                            ...state.storage[typeTable][status],
                             data: changedData
                         }
                     }

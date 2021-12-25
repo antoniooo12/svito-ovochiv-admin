@@ -1,11 +1,12 @@
 import {createContext} from "react";
-import {EnumStatus, EnumTypeRows, Item, RowItem} from "../../../types/categoryReducerTypes";
+import {EnumStatus, Item, RowItem} from "../../../types/categoryReducerTypes";
+import {TypeTable, TypeColumn} from "../../../types/TableCreatorTypes";
 
 export interface IOnChange {
     id: number | string,
     value: number | string | boolean,
-    typeRows: EnumTypeRows,
-    typeColumn: EnumTypeRows,
+    typeTable: TypeTable,
+    typeColumn: TypeColumn,
     status: keyof typeof EnumStatus
 }
 
@@ -16,8 +17,9 @@ interface ILineContent {
     isNew?: boolean,
     status?: keyof typeof EnumStatus,
     type?: any,
-    typeRows?: EnumTypeRows,
-    onChange?: ({id, value, typeRows}: IOnChange) => void,
+    typeTable?:TypeTable,
+    typeRows?: TypeColumn,
+    onChange?: ({id, value, typeTable, typeColumn, status}: IOnChange) => void,
     forceUpdate?: any,
     rowState?: RowItem,
 }

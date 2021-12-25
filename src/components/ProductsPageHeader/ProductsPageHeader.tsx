@@ -11,7 +11,7 @@ const ProductsPageHeaderInner = () => {
             {Object.keys(DataEntitiesCatalog).map(el =>
                 <NavLink to={el}
                          className={({isActive}) => isActive ? [cl.BtnPageSelected, cl.BtnPage].join(' ') : cl.BtnPage}>
-                    {DataEntitiesCatalog[el]}
+                    {el}
                 </NavLink>
             )}
         </div>

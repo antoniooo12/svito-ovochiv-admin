@@ -6,12 +6,12 @@ import {TableCreatorMokData} from "../../../mokData";
 import {IOnChange} from "../../../components/Table/TableLine/LineContext";
 import {changeCategory} from "../../../reducer/tableReducer";
 import {useDispatch} from "react-redux";
-import {EnumTypeRows} from "../../../types/categoryReducerTypes";
+import {TypeColumn, TypeTable} from "../../../types/TableCreatorTypes";
 
 const SubPage = () => {
     const dispatch = useDispatch()
     const location = useLocation();
-    const behavior: EnumTypeRows = location.pathname.split('/').pop() as EnumTypeRows
+    const behavior: TypeColumn = location.pathname.split('/').pop() as TypeTable
     const {storage} = useTypedSelector(state => state.category)
     try {
         const onChange =  useCallback((recruitment: IOnChange) => {
@@ -21,7 +21,7 @@ const SubPage = () => {
         return (
             <div>
                 {TableCreatorMokData[behavior] && <TableCreator
-                    typeRows={behavior}
+                    typeTable={behavior}
                     actions={{onChange}}
                     data={storage[behavior]}
                     params={TableCreatorMokData[behavior]}

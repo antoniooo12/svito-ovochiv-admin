@@ -1,8 +1,8 @@
 import {IOnChange} from "../components/Table/TableLine/LineContext";
 import {IOnClick} from "./TableBtnTypes";
 import {} from "../API";
-import {TableCreator} from "./TableCreatorTypes";
-import {DataEntitiesCatalog} from "../mokData";
+import {IDataColumn, TableCreator} from "./TableCreatorTypes";
+import {DataEntitiesCatalog, DataColumn} from "../mokData";
 
 export enum EnumCategoryReducer {
     CREATE_CATEGORY = "CREATE_CATEGORY",
@@ -11,7 +11,8 @@ export enum EnumCategoryReducer {
 }
 
 
-export type TableEntitiesType = keyof typeof DataEntitiesCatalog
+// export type TableEntitiesType = keyof typeof DataEntitiesCatalog
+export type TableEntitiesType = typeof DataEntitiesCatalog
 
 export type TableEntityStructure = {
     [status in EnumStatus]: ICategoryTypeStructure;
@@ -36,7 +37,10 @@ export enum EnumTypeCategory {
     newCategory = "newCategory",
 }
 
-export type EnumTypeRows = TableEntitiesType
+// export type EnumTypeColumn = typeof DataColumn
+// export type EnumTypeColumn = {
+//     [typeColumn in keyof typeof DataColumn]: typeof DataColumn
+// }
 
 
 export interface ICategoryTypeStructure {
@@ -56,7 +60,7 @@ export interface IItems {
 }
 
 export interface Item {
-    typeColumn: keyof TableEntity;
+    typeColumn: any;
     value: string | number | boolean;
     wasEdit: boolean;
 }

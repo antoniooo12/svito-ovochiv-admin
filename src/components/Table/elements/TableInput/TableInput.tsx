@@ -1,13 +1,4 @@
-import React, {
-    ChangeEvent,
-    ChangeEventHandler,
-    HTMLInputTypeAttribute,
-    useCallback,
-    useContext,
-    useEffect,
-    useMemo,
-    useState
-} from 'react';
+import React, {ChangeEvent, useCallback, useContext, useMemo, useState} from 'react';
 import {HeaderContent} from "../../TableHeader/TableHeaderContext";
 import {LineContent} from "../../TableLine/LineContext";
 import {ListContent} from "../../TableList/ListContext";
@@ -15,7 +6,7 @@ import cl from './TableInput.module.scss'
 import {TableDataList} from "./TableDataList/TableDataList";
 import isEqual from "react-fast-compare";
 import {useEffectSkipMount} from "../../../../hooks/hooks";
-import {EnumTypeRows} from "../../../../types/categoryReducerTypes";
+import {TypeColumn} from "../../../../types/TableCreatorTypes";
 
 export enum EnumInput {
     string = 'string',
@@ -28,7 +19,7 @@ export interface ITableInput {
     placeholder?: string,
     width?: number,
     filterBy?: string,
-    typeColumn: EnumTypeRows,
+    typeColumn: TypeColumn,
 }
 
 export const TableInput: React.FC<ITableInput> = React.memo(
@@ -44,13 +35,12 @@ export const TableInput: React.FC<ITableInput> = React.memo(
 
 
         const {isHeader} = useContext(HeaderContent)
-        const {onChange, states, isNew, typeRows, status, id} = useContext(LineContent)
-        const {isMother = {}, enteredDropDownList} = useContext(ListContent)
+        const {onChange, states, isNew, status, id} = useContext(LineContent)
+        const {isMother = {}, enteredDropDownList, typeTable} = useContext(ListContent)
 
         const [value, setValue] = useState<string>('')
 
-        if (!id) {
-
+        if (!id || !typeTable || !status  || !onChange ) {
             throw new Error(`Error in TableInput ${id}`)
         }
 
@@ -72,7 +62,8 @@ export const TableInput: React.FC<ITableInput> = React.memo(
         useEffectSkipMount(() => {
             // debugger
             if (!isHeader && isNew) {
-                status && typeRows && onChange && onChange({value: value, id, typeRows, typeColumn, status})
+
+               onChange({value: value, id, typeTable: typeTable, typeColumn, status})
             }
         }, [value])
 
