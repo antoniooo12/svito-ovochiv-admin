@@ -1,12 +1,11 @@
 import axios from "axios";
-import {axiosCashConfig, URL} from '../API'
-import tableReducer, {bulkDeleteCategories, cleanCategories, setCategory} from "../reducer/tableReducer";
-import {setSubcategory} from "../reducer/subcategoryReducer";
+import {URL} from '../API'
+import {cleanCategories} from "../reducer/tableReducer";
 
 export const saveNewCategoryToServer = ({newC, oldC}) => {
     return async dispatch => {
         try {
-            debugger
+
             let oldCategoriesToDel = [], oldItemsToUpdate = [], newCategories = [], newCategoriesToDel = [];
             newC.forEach(el => {
                 if (!el.toDelete) {
@@ -45,7 +44,6 @@ export const getAllCategory = () => {
             // debugger
             const res = await axios.get(`${URL}/api/product/type`)
 
-            dispatch(setCategory(res.data[0]))
         } catch (e) {
             console.log(e)
         }

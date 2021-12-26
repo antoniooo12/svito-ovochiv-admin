@@ -4,7 +4,7 @@ import {
     CategoryState,
     EnumCategoryReducer,
     Item,
-    RowItem,
+    RowItem, RowsToSelectedTable,
     TableEntity
 } from "../types/categoryReducerTypes";
 import {IOnClick} from "../types/TableBtnTypes";
@@ -124,6 +124,22 @@ export default function tableReducer(state: CategoryState = defaultState, action
             }
         }
 
+        case EnumCategoryReducer.SET_CATEGORIES: {
+            const {typeTable, rowItem} = action.payload
+            return {
+                ...state,
+                storage: {
+                    ...state.storage,
+                    [typeTable]: {
+                        ...state.storage[typeTable],
+                        isAll: {
+                            ...state.storage[typeTable].isAll,
+                            data: rowItem
+                        }
+                    }
+                }
+            }
+        }
 
 //         case EnumCategoryReducer.DELETE_CATEGORY: {
 //             const {value, id, typeRow} = action.payload
@@ -162,15 +178,17 @@ export const createNewRow = (recruitment: TypeTable) => ({
 })
 export const changeCategory = (recruitment: IOnChange) => ({
     type: EnumCategoryReducer.CHANGE_CATEGORY,
-    payload: recruitment
+    payload: recruitment,
 })
 export const deleteCategory = (recruitment: IOnClick) => ({
     type: EnumCategoryReducer.DELETE_CATEGORY,
-    payload: recruitment
+    payload: recruitment,
+})
+export const setCategories = (recruitment: RowsToSelectedTable) => ({
+    type: EnumCategoryReducer.SET_CATEGORIES,
+    payload: recruitment,
 })
 
-
-export const setCategory = (categories = []) => ({type: SET_CATEGORIES, payload: categories})
 export const bulkDeleteCategories = (arrOfId: any) => ({type: BULK_DELETE_CATEGORY, payload: arrOfId})
 export const cleanCategories = () => ({type: CLEAN_NEW_CATEGORY})
 export const editOldCategory = (recruitment: any) => ({type: EDIT_OLD_CATEGORY, payload: recruitment})

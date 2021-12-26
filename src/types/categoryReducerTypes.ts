@@ -7,7 +7,8 @@ import {DataEntitiesCatalog, DataColumn} from "../mokData";
 export enum EnumCategoryReducer {
     CREATE_CATEGORY = "CREATE_CATEGORY",
     CHANGE_CATEGORY = "CHANGE_CATEGORY",
-    DELETE_CATEGORY = "DELETE_CATEGORY"
+    DELETE_CATEGORY = "DELETE_CATEGORY",
+    SET_CATEGORIES = "SET_CATEGORIES",
 }
 
 
@@ -75,9 +76,20 @@ interface ChangeCategory {
     type: EnumCategoryReducer.CHANGE_CATEGORY,
     payload: IOnChange,
 }
+
 interface DeleteCategory {
     type: EnumCategoryReducer.DELETE_CATEGORY,
     payload: IOnClick,
 }
 
-export type CategoryReducerActions = CreateCategory | ChangeCategory | DeleteCategory
+export interface RowsToSelectedTable {
+   readonly rowItem: Array<RowItem>,
+   readonly typeTable: TypeTable,
+}
+
+interface SetCategories {
+    type: EnumCategoryReducer.SET_CATEGORIES,
+    payload: RowsToSelectedTable,
+}
+
+export type CategoryReducerActions = CreateCategory | ChangeCategory | DeleteCategory | SetCategories

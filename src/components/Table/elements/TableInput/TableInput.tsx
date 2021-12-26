@@ -5,9 +5,9 @@ import {ListContent} from "../../TableList/ListContext";
 import cl from './TableInput.module.scss'
 import {TableDataList} from "./TableDataList/TableDataList";
 import isEqual from "react-fast-compare";
-import {useEffectSkipMount} from "../../../../hooks/hooks";
+import {useEffectSkipMount, useTypedSelector} from "../../../../hooks/hooks";
 import {TypeColumn} from "../../../../types/TableCreatorTypes";
-import {Item} from "../../../../types/categoryReducerTypes";
+import {Item, RowItem} from "../../../../types/categoryReducerTypes";
 import {Simulate} from "react-dom/test-utils";
 
 
@@ -17,7 +17,6 @@ export enum EnumInput {
 }
 
 export interface ITableInput {
-    dropDownList?: any,
     typeInput?: keyof typeof EnumInput,
     placeholder?: string,
     width?: number,
@@ -31,7 +30,6 @@ export const TableInput: React.FC<ITableInput> = React.memo(
     ({
          index,
          children,
-         dropDownList,
          typeInput,
          typeColumn,
          placeholder,
@@ -47,19 +45,22 @@ export const TableInput: React.FC<ITableInput> = React.memo(
 
         const [value, setValue] = useState<string>('')
 
-        //
-        if ( !rowState ||  !id || !typeTable || !status || !onChange || !typeColumn) {
+        if (!rowState || !id || !typeTable || !status || !onChange || !typeColumn) {
             debugger
-                throw new Error('Уупс!');
+            throw new Error('Уупс!');
         }
         const state = useMemo<Item>((): Item => {
-            // debugger
-            return   rowState.columns[index]
+            return rowState.columns[index]
         }, [rowState])
+        const data: Array<RowItem> = useTypedSelector(state => state.tableReducer.storage[typeColumn].isAll.data)
+
+        const dropDownList = useMemo(() => {
+            data.map(row => {
+                return row.columns.filter(column => column.typeColumn === typeColumn)[0]
+            })
+        }, [data])
         useEffect(() => {
-            ///??? питання
             if (state && typeof state.value === typeof value) {
-                debugger
                 setValue(state.value as typeof value)
             }
         }, [state])
@@ -74,9 +75,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
         }, [value])
 
         useEffectSkipMount(() => {
-            // debugger
             if (!isHeader && isNew) {
-
                onChange({value: value, id, typeTable: typeTable, typeColumn, status})
             }
         }, [value])
