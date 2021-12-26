@@ -61,6 +61,7 @@ export default function tableReducer(state: CategoryState = defaultState, action
 
             const rowItemArray: Array<Item> = TableCreatorMokData[typeTable as TypeTable].row.map((column): Item => {
                     return {
+                        id: Date.now(),
                         typeColumn: column.typeColumn,
                         wasEdit: false,
                         value: '',
