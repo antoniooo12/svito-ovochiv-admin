@@ -1,17 +1,20 @@
-import React from 'react';
+import React, {useMemo, useState} from 'react';
 import {NavLink} from "react-router-dom";
 import cl from './ProductsPageHeader.module.scss'
-import {DataEntitiesCatalog} from "../../mokData";
+import {DataColumn, DataEntitiesCatalog} from "../../mokData";
 
 const ProductsPageHeaderInner = () => {
 
-
+    const navs = useMemo(() => {
+        return DataEntitiesCatalog
+    }, [DataEntitiesCatalog])
+    console.log(navs);
     return (
         <div className={cl.wrapper}>
-            {Object.keys(DataEntitiesCatalog).map(el =>
+            {Object.keys(navs).map(el =>
                 <NavLink to={el}
                          className={({isActive}) => isActive ? [cl.BtnPageSelected, cl.BtnPage].join(' ') : cl.BtnPage}>
-                    {el}
+                    {navs[el as keyof typeof navs]}
                 </NavLink>
             )}
         </div>

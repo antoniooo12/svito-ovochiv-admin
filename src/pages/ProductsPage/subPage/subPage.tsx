@@ -20,12 +20,13 @@ const SubPage = () => {
 
         return (
             <div>
-                {TableCreatorMokData[behavior] && <TableCreator
-                    typeTable={behavior}
-                    actions={{onChange}}
-                    data={storage[behavior]}
-                    params={TableCreatorMokData[behavior]}
-                />}
+                {TableCreatorMokData[behavior] &&
+                    <TableCreator
+                        typeTable={behavior}
+                        actions={{onChange}}
+                        data={storage[behavior]}
+                        params={TableCreatorMokData[behavior]}
+                    />}
             </div>
         );
     } catch (e) {

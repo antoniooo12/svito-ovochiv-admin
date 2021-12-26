@@ -9,6 +9,7 @@ export const DataColumn = {
     categories: "категорія",
     subCategories: "підкатегорія",
 }
+
 export const TableCreatorMokData: TableCreator = {
     categories: {
         title: 'категорія',
@@ -16,6 +17,7 @@ export const TableCreatorMokData: TableCreator = {
         header: [{title: 'Категорія'}],
         row: [{typeColumn: "categories", typeInput: 'text', placeholder: 'категорія', isMother: true}]
     },
+
     subCategories: {
         title: 'підкатегорія',
         column: [{width: 150}, {width: 150}],
@@ -26,13 +28,4 @@ export const TableCreatorMokData: TableCreator = {
 
         ]
     },
-
 }
-
-
-// export const CategoriesMokData: Array<SItem> = [
-//     {value: 'картошка', wasEdit: false,},
-//     {value: 'капуста', wasEdit: false,},
-//     {value: 'морква', wasEdit: false,},
-//     {value: 'огирок', wasEdit: false,},
-// ]

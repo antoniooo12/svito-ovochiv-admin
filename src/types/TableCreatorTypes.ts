@@ -23,6 +23,6 @@ type DataEntitiesTableStructure = {
     row: Array<{ typeColumn: TypeColumn, typeInput: string, placeholder: string, isMother: boolean }>
 };
 
-export interface TableCreator {
-    [name: string]: DataEntitiesTableStructure
-}
+export type TableCreator = {
+    [name in  TypeTable]: DataEntitiesTableStructure;
+};

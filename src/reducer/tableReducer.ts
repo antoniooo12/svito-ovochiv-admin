@@ -10,6 +10,7 @@ import {
 import {IOnClick} from "../types/TableBtnTypes";
 import {findIndexById} from "./helpers/helper";
 import {DataEntitiesCatalog, TableCreatorMokData} from "../mokData";
+import {TableCreator, TypeTable} from "../types/TableCreatorTypes";
 
 const CREATE_CATEGORY = 'CREATE_CATEGORY'
 const CHANGE_CATEGORY = "CHANGE_CATEGORY"
@@ -50,10 +51,14 @@ export default function tableReducer(state: CategoryState = defaultState, action
 
     switch (action.type) {
         case EnumCategoryReducer.CREATE_CATEGORY: {
-            const {typeRow}: any = action.payload as keyof TableEntity
-            console.log(typeRow)
+            debugger
+            const typeTable: any = action.payload
+            debugger
+
+            console.log(typeTable)
             console.log()
-            const rowItemArray: Array<Item> = TableCreatorMokData[typeRow].row.map((column): Item => {
+
+            const rowItemArray: Array<Item> = TableCreatorMokData[typeTable as TypeTable].row.map((column): Item => {
                     return {
                         typeColumn: column.typeColumn,
                         wasEdit: false,
@@ -73,11 +78,11 @@ export default function tableReducer(state: CategoryState = defaultState, action
                 ...state,
                 storage: {
                     ...state.storage,
-                    [typeRow]: {
-                        ...state.storage[typeRow],
+                    [typeTable]: {
+                        ...state.storage[typeTable],
                         isNew: {
-                            ...state.storage[typeRow].isNew,
-                            data: [...state.storage[typeRow].isNew.data, row]
+                            ...state.storage[typeTable].isNew,
+                            data: [...state.storage[typeTable].isNew.data, row]
                         }
                     }
                 }
@@ -150,9 +155,9 @@ export default function tableReducer(state: CategoryState = defaultState, action
 }
 
 
-export const createNewRow = (typeRow: string) => ({
+export const createNewRow = (recruitment: TypeTable) => ({
     type: EnumCategoryReducer.CREATE_CATEGORY,
-    payload: {typeRow}
+    payload: recruitment
 })
 export const changeCategory = (recruitment: IOnChange) => ({
     type: EnumCategoryReducer.CHANGE_CATEGORY,
