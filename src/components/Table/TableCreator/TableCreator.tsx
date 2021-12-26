@@ -51,11 +51,13 @@ const TableCreator: React.FC<TableCreator> = ({params, data, actions, typeTable}
                                     onChange={actions.onChange}
                                 status={status as EnumStatus}
                             >
-                                    {params.row.map((templateRow, index) =>
+                                    {params.row.map((column, index) =>
                                         <TableLine.Input
+                                            index={index}
+                                            isMother={column.isMother}
                                             width={params.column[index].width}
-                                            typeColumn={templateRow.typeColumn}
-                                            placeholder={templateRow.placeholder}
+                                            typeColumn={column.typeColumn}
+                                            placeholder={column.placeholder}
                                         />
                                     )}
                                 </TableLine>

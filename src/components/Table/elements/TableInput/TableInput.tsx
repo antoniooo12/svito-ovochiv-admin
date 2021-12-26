@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useCallback, useContext, useMemo, useState} from 'react';
+import React, {ChangeEvent, useCallback, useContext, useEffect, useMemo, useState} from 'react';
 import {HeaderContent} from "../../TableHeader/TableHeaderContext";
 import {LineContent} from "../../TableLine/LineContext";
 import {ListContent} from "../../TableList/ListContext";
@@ -7,6 +7,9 @@ import {TableDataList} from "./TableDataList/TableDataList";
 import isEqual from "react-fast-compare";
 import {useEffectSkipMount} from "../../../../hooks/hooks";
 import {TypeColumn} from "../../../../types/TableCreatorTypes";
+import {Item} from "../../../../types/categoryReducerTypes";
+import {Simulate} from "react-dom/test-utils";
+
 
 export enum EnumInput {
     string = 'string',
@@ -20,10 +23,13 @@ export interface ITableInput {
     width?: number,
     filterBy?: string,
     typeColumn: TypeColumn,
+    isMother?: boolean,
+    index: number,
 }
 
 export const TableInput: React.FC<ITableInput> = React.memo(
     ({
+         index,
          children,
          dropDownList,
          typeInput,
@@ -31,24 +37,32 @@ export const TableInput: React.FC<ITableInput> = React.memo(
          placeholder,
          width,
          filterBy,
+         isMother,
      }) => {
 
 
         const {isHeader} = useContext(HeaderContent)
-        const {onChange, states, isNew, status, id} = useContext(LineContent)
-        const {isMother = {}, enteredDropDownList, typeTable} = useContext(ListContent)
+        const {onChange, rowState, isNew, status, id} = useContext(LineContent)
+        const {enteredDropDownList, typeTable} = useContext(ListContent)
 
         const [value, setValue] = useState<string>('')
 
-        if (!id || !typeTable || !status  || !onChange ) {
-            throw new Error(`Error in TableInput ${id}`)
+        //
+        if ( !rowState ||  !id || !typeTable || !status || !onChange || !typeColumn) {
+            debugger
+                throw new Error('Уупс!');
         }
-
-        // useEffect(() => {
-        //     if (states && typeof states.value === "string") {
-        //         setValue(states.value)
-        //     }
-        // }, [states])
+        const state = useMemo<Item>((): Item => {
+            // debugger
+            return   rowState.columns[index]
+        }, [rowState])
+        useEffect(() => {
+            ///??? питання
+            if (state && typeof state.value === typeof value) {
+                debugger
+                setValue(state.value as typeof value)
+            }
+        }, [state])
 
         const isVisibleHeader = useMemo(() => {
             return isHeader !== true && true
@@ -76,13 +90,16 @@ export const TableInput: React.FC<ITableInput> = React.memo(
 
 
         const isInputDisable = useMemo(() => {
-            if (states) {
-                return !(isNew === true || states.wasEdit === true)
+            console.log(isNew)
+            if ( status === 'isNew') {
+                return false
+            }else if( status === 'isAll' ) {
+                return true
             }
-        }, [isNew, states && states.wasEdit])
+        }, [isNew, state && state.wasEdit])
 
         const isShowDataList = useMemo(() => {
-            return typeColumn && !isMother[typeColumn]
+            return !isMother
         }, [])
 
 
@@ -97,12 +114,12 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                             onChange={setTitleCallback}
                             disabled={isInputDisable}
                             placeholder={placeholder}
-                            list={`${typeColumn} + ${states && id}`}
+                            // list={`${typeColumn} + ${state && id}`}
                             type={typeInput}
                         />
                         {isShowDataList &&
                             <TableDataList
-                                link={`${typeColumn} + ${states && id}`}
+                                link={`${typeColumn} `}
                                 // exampleFilter={filterByExample}
                                 filterBy={filterBy}
                                 type={typeColumn}

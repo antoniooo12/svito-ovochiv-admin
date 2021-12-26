@@ -20,7 +20,7 @@ type DataEntitiesTableStructure = {
     title: string
     column: Array<{ width: number }>
     header: Array<{ title: string }>
-    row: Array<{ typeColumn: TypeColumn, typeInput: string, placeholder: string, isMother: boolean }>
+    row: Array<{ typeColumn: TypeColumn, filterByColumn?: TypeColumn, typeInput: string, placeholder: string, isMother: boolean }>
 };
 
 export type TableCreator = {

@@ -42,18 +42,13 @@ const TableLine: React.FC<ITableLine> & ITableLineComposition =
      }) => {
         const forceUpdate = useForceUpdate();
         // const localReduxObjectState = useTypedSelector(state => state.category.storage.newCategory.data[index])
-        const [rowState, setRowState] = useState<RowItem>()
+        // const [rowState, setRowState] = useState<RowItem>()
+        // debugger
+        const rowState:RowItem = useMemo(():RowItem=>{
+            return outerReduxObjState
+        },[])
         console.log(rowState)
-        useEffect(() => {
-            setRowState(outerReduxObjState)
-            // if (localReduxObjectState) {
-            //     setState(localReduxObjectState)
-            // } else if (outerReduxObjState) {
-            //     setState(outerReduxObjState)
-            // } else {
-            //     throw new Error('TableLine немає states')
-            // }
-        }, [outerReduxObjState])
+        console.log(outerReduxObjState)
 
     const lineColor = useMemo(() => {
         if (isNew) {

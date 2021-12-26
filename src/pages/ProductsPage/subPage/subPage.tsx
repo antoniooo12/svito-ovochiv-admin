@@ -13,6 +13,7 @@ const SubPage = () => {
     const location = useLocation();
     const behavior: TypeColumn = location.pathname.split('/').pop() as TypeTable
     const {storage} = useTypedSelector(state => state.category)
+
     try {
         const onChange =  useCallback((recruitment: IOnChange) => {
             dispatch(changeCategory(recruitment))

@@ -21,7 +21,7 @@ interface ILineContent {
     typeRows?: TypeColumn,
     onChange?: ({id, value, typeTable, typeColumn, status}: IOnChange) => void,
     forceUpdate?: any,
-    rowState?: RowItem,
+    rowState: RowItem,
 }
-
+//@ts-ignore
 export const LineContent = createContext<ILineContent>({})

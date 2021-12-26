@@ -1,4 +1,5 @@
 import {TableCreator} from "./types/TableCreatorTypes";
+import {RowItem} from "./types/categoryReducerTypes";
 
 export const DataEntitiesCatalog = {
     categories: "категорія",
@@ -24,8 +25,20 @@ export const TableCreatorMokData: TableCreator = {
         header: [{title: 'Підкатегорія'}, {title: 'Категорія'}],
         row: [
             {typeColumn: "subCategories", typeInput: 'text', placeholder: 'підкатегорія', isMother: true},
-            {typeColumn: "subCategories", typeInput: 'text', placeholder: 'категорія', isMother: true},
-
+            {typeColumn: "categories", typeInput: 'text', placeholder: 'категорія', isMother: false},
         ]
     },
 }
+
+
+export const AllCategories: Array<RowItem>= [
+    {id: 't1', toDelete: false, wasEdit: false, columns:[
+            {typeColumn: "categories", wasEdit: false, value:"вода"}
+        ]},
+    {id: 't2', toDelete: false, wasEdit: false, columns:[
+            {typeColumn: "categories", wasEdit: false, value:"фрукти"}
+        ]},
+    {id: 't3', toDelete: false, wasEdit: false, columns:[
+            {typeColumn: "categories", wasEdit: false, value:"овочі"}
+        ]}
+]

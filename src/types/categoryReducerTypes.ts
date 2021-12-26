@@ -1,7 +1,7 @@
 import {IOnChange} from "../components/Table/TableLine/LineContext";
 import {IOnClick} from "./TableBtnTypes";
 import {} from "../API";
-import {IDataColumn, TableCreator, TypeTable} from "./TableCreatorTypes";
+import {IDataColumn, TableCreator, TypeColumn, TypeTable} from "./TableCreatorTypes";
 import {DataEntitiesCatalog, DataColumn} from "../mokData";
 
 export enum EnumCategoryReducer {
@@ -60,7 +60,7 @@ export interface IItems {
 }
 
 export interface Item {
-    typeColumn: any;
+    typeColumn: TypeColumn;
     value: string | number | boolean;
     wasEdit: boolean;
 }

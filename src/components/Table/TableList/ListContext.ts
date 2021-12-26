@@ -3,7 +3,6 @@ import {TypeTable} from "../../../types/TableCreatorTypes";
 
 interface IListContent {
     categories?: any,
-    isMother?: any,
     enteredDropDownList?: any,
     typeTable?: TypeTable,
 }

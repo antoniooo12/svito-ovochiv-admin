@@ -16,7 +16,7 @@ const TableList: React.FC<ITableList> = React.memo(({children, isMother, entered
         return children
     }, [children])
     return (
-        <ListContent.Provider value={{enteredDropDownList, isMother, typeTable}}>
+        <ListContent.Provider value={{enteredDropDownList,  typeTable}}>
             <div className={cl.wrapper}>
                 {childrenMemo}
             </div>

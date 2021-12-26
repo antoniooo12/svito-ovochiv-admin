@@ -9,8 +9,8 @@ import {
 } from "../types/categoryReducerTypes";
 import {IOnClick} from "../types/TableBtnTypes";
 import {findIndexById} from "./helpers/helper";
-import {DataEntitiesCatalog, TableCreatorMokData} from "../mokData";
-import {TableCreator, TypeTable} from "../types/TableCreatorTypes";
+import {AllCategories, DataEntitiesCatalog, TableCreatorMokData} from "../mokData";
+import {TypeTable} from "../types/TableCreatorTypes";
 
 const CREATE_CATEGORY = 'CREATE_CATEGORY'
 const CHANGE_CATEGORY = "CHANGE_CATEGORY"
@@ -33,6 +33,7 @@ Object.keys(DataEntitiesCatalog).forEach((el: string) => {
         isAll: {
             forceRender: 0,
             data: [],
+            //AllCategories
         }
     }
 })
@@ -51,9 +52,9 @@ export default function tableReducer(state: CategoryState = defaultState, action
 
     switch (action.type) {
         case EnumCategoryReducer.CREATE_CATEGORY: {
-            debugger
+
             const typeTable: any = action.payload
-            debugger
+
 
             console.log(typeTable)
             console.log()
