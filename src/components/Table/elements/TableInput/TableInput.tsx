@@ -46,7 +46,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
         const [value, setValue] = useState<string>('')
 
         if (!rowState || !id || !typeTable || !status || !onChange || !typeColumn) {
-
+            debugger
             throw new Error('Уупс!');
         }
         const state = useMemo<Item>((): Item => {
@@ -54,20 +54,11 @@ export const TableInput: React.FC<ITableInput> = React.memo(
         }, [rowState])
         const data: Array<RowItem> = useTypedSelector(state => state.tableReducer.storage[typeColumn].isAll.data)
 
-        const dropDownList: Array<{ value: string | boolean | number, id: string | number }> = useMemo(() => {
-            if (!isMother) {
-                return data.map(row => {
-                    return {
-                        id: row.columns[0].id,
-                        value: row.columns[0].value,
-                    }
-                })
-            } else {
-                return []
-            }
+        const dropDownList = useMemo(() => {
+            data.map(row => {
+                return row.columns.filter(column => column.typeColumn === typeColumn)[0]
+            })
         }, [data])
-
-        console.log(dropDownList)
         useEffect(() => {
             if (state && typeof state.value === typeof value) {
                 setValue(state.value as typeof value)
@@ -95,7 +86,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
             }
             return []
         }, [dropDownList])
-        console.log(datalist)
+
 
         const isInputDisable = useMemo(() => {
             console.log(isNew)
@@ -106,7 +97,9 @@ export const TableInput: React.FC<ITableInput> = React.memo(
             }
         }, [isNew, state && state.wasEdit])
 
-
+        const isShowDataList = useMemo(() => {
+            return !isMother
+        }, [])
 
 
         return (
@@ -120,14 +113,16 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                             onChange={setTitleCallback}
                             disabled={isInputDisable}
                             placeholder={placeholder}
-                            list={`${typeColumn} + ${state && id}`}
+                            // list={`${typeColumn} + ${state && id}`}
                             type={typeInput}
                         />
-                        {dropDownList.length > 0 &&
+                        {isShowDataList &&
                             <TableDataList
-                                link={`${typeColumn} + ${state && id}`}
-                                dropDownList={dropDownList}
+                                link={`${typeColumn} `}
+                                // exampleFilter={filterByExample}
                                 filterBy={filterBy}
+                                type={typeColumn}
+                                data={datalist}
                             />
                         }
                     </>
