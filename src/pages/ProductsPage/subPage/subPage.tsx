@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react';
 import {useLocation} from "react-router-dom";
 import {useTypedSelector} from "../../../hooks/hooks";
 import {TableCreator} from "../../../components/Table/TableCreator/TableCreator";
-import {AllCategories, TableCreatorMokData} from "../../../mokData";
+import {AllCategories, AllSubCategories, TableCreatorMokData} from "../../../mokData";
 import {IOnChange} from "../../../components/Table/TableLine/LineContext";
 import {changeCategory, setCategories} from "../../../reducer/tableReducer";
 import {useDispatch} from "react-redux";
@@ -20,7 +20,9 @@ const SubPage = () => {
     }, [behavior])
     useEffect(() => {
         dispatch(setCategories({rowItem: AllCategories, typeTable: "categories"}))
+        dispatch(setCategories({rowItem: AllSubCategories, typeTable: "subCategories"}))
     }, [behavior])
+
     return (
         <div>
             {TableCreatorMokData[behavior] &&

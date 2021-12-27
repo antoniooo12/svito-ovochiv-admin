@@ -65,6 +65,7 @@ export interface Item {
     typeColumn: TypeColumn;
     value: string | number | boolean;
     wasEdit: boolean;
+    dependencyId?: number | string;
 }
 
 

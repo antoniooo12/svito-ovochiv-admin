@@ -10,6 +10,11 @@ import {TypeColumn} from "../../../../types/TableCreatorTypes";
 import {Item, RowItem} from "../../../../types/categoryReducerTypes";
 import {Simulate} from "react-dom/test-utils";
 
+export interface DropDownListItem {
+    value: string,
+    id: string | number,
+    dependencyId?: number | string | undefined
+}
 
 export enum EnumInput {
     string = 'string',
@@ -20,10 +25,10 @@ export interface ITableInput {
     typeInput?: keyof typeof EnumInput,
     placeholder?: string,
     width?: number,
-    filterBy?: string,
     typeColumn: TypeColumn,
     isMother?: boolean,
     index: number,
+    filterByColumn?: TypeColumn,
 }
 
 export const TableInput: React.FC<ITableInput> = React.memo(
@@ -34,31 +39,37 @@ export const TableInput: React.FC<ITableInput> = React.memo(
          typeColumn,
          placeholder,
          width,
-         filterBy = '',
+         filterByColumn,
          isMother,
      }) => {
 
 
         const {isHeader} = useContext(HeaderContent)
-        const {onChange, rowState, isNew, status, id} = useContext(LineContent)
+        const {onChange, rowState, isNew, status, id, forceUpdate} = useContext(LineContent)
         const {enteredDropDownList, typeTable} = useContext(ListContent)
 
         const [value, setValue] = useState<string>('')
-
         if (!rowState || !id || !typeTable || !status || !onChange || !typeColumn) {
-            debugger
             throw new Error('Уупс!');
         }
+
         const state = useMemo<Item>((): Item => {
-            return rowState.columns[index]
+            return rowState.columns.filter(item => item.typeColumn === typeColumn)[0]
         }, [rowState])
         const data: Array<RowItem> = useTypedSelector(state => state.tableReducer.storage[typeColumn].isAll.data)
 
-        const dropDownList = useMemo(() => {
-            data.map(row => {
-                return row.columns.filter(column => column.typeColumn === typeColumn)[0]
-            })
+        const dropDownList: DropDownListItem[] | undefined = useMemo(() => {
+            if (!isMother)
+                return data.map(row => {
+                    return {
+                        id: row.columns[0].id,
+                        value: row.columns[0].value as string,
+                        dependencyId: row.columns[0].dependencyId,
+                    }
+                })
         }, [data])
+
+        console.log(dropDownList)
         useEffect(() => {
             if (state && typeof state.value === typeof value) {
                 setValue(state.value as typeof value)
@@ -74,11 +85,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
             console.log(value)
         }, [value])
 
-        useEffectSkipMount(() => {
-            if (!isHeader && isNew) {
-               onChange({value: value, id, typeTable: typeTable, typeColumn, status})
-            }
-        }, [value])
+
 
         const datalist = useMemo(() => {
             if (enteredDropDownList && typeColumn && enteredDropDownList[typeColumn]) {
@@ -86,20 +93,40 @@ export const TableInput: React.FC<ITableInput> = React.memo(
             }
             return []
         }, [dropDownList])
-
+        console.log(datalist)
 
         const isInputDisable = useMemo(() => {
             console.log(isNew)
-            if ( status === 'isNew') {
+            if (status === 'isNew') {
                 return false
-            }else if( status === 'isAll' ) {
+            } else if (status === 'isAll') {
                 return true
             }
         }, [isNew, state && state.wasEdit])
 
-        const isShowDataList = useMemo(() => {
-            return !isMother
-        }, [])
+
+        useEffectSkipMount(() => {
+            if (!isHeader) {
+                onChange({value: value, id, typeTable: typeTable, typeColumn, status})
+            }
+        }, [value])
+
+        // const filteredDropDownList = useMemo(() => {
+        //     if (filterById) {
+        //         return dropDownList.filter(item => {
+        //             if (item.dependencyId && item.dependencyId.toString() === filterById.toString()) {
+        //                 return {
+        //                     value: item.value,
+        //                     id: item.id,
+        //                 }
+        //             }
+        //         })
+        //     } else {
+        //         return dropDownList
+        //     }
+        // }, [])
+        //
+
 
 
         return (
@@ -111,18 +138,17 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                         <input
                             value={value}
                             onChange={setTitleCallback}
+                            onClick={forceUpdate}
                             disabled={isInputDisable}
                             placeholder={placeholder}
-                            // list={`${typeColumn} + ${state && id}`}
+                            list={`${typeColumn} + ${state && id}`}
                             type={typeInput}
                         />
-                        {isShowDataList &&
+                        {dropDownList &&
                             <TableDataList
-                                link={`${typeColumn} `}
-                                // exampleFilter={filterByExample}
-                                filterBy={filterBy}
-                                type={typeColumn}
-                                data={datalist}
+                                link={`${typeColumn} + ${state && id}`}
+                                dropDownList={dropDownList}
+                                filterByColumn={filterByColumn}
                             />
                         }
                     </>

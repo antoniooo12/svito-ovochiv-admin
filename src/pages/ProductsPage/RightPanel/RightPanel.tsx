@@ -20,6 +20,7 @@ const RightPanelInner = () => {
         <div className={cl.wrapper}>
             <div className={cl.rightMainSection}>
                 <BtnBlue onClick={onCreate}>
+                    Нове поле
                     <IconSave/>
                 </BtnBlue>
             </div>

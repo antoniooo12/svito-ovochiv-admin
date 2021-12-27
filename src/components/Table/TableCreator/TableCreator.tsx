@@ -5,7 +5,7 @@ import {TableHeader} from '../TableHeader/TableHeader';
 import {TableLine} from "../TableLine/TableLine";
 import {EnumStatus, TableEntityStructure} from "../../../types/categoryReducerTypes";
 import {IOnChange} from "../TableLine/LineContext";
-import {TypeColumn, TypeTable} from "../../../types/TableCreatorTypes";
+import {DataEntitiesTableStructure, TypeColumn, TypeTable} from "../../../types/TableCreatorTypes";
 
 interface column {
     column: Array<{ width: number }>
@@ -16,15 +16,12 @@ interface TableCreator {
     actions: {
         onChange: ({}: IOnChange) => void,
     }
-    params: {
-        column: Array<{ width: number }>,
-        header: Array<{ title: string }>,
-        row: Array<{ typeColumn: TypeColumn, typeInput: string, placeholder: string, isMother: boolean }>,
-    },
+    params: DataEntitiesTableStructure,
     data: TableEntityStructure,
 }
 
 const TableCreator: React.FC<TableCreator> = ({params, data, actions, typeTable}) => {
+    console.log(data)
     return (
         <div className={cl.wrapper}>
             <TableList
@@ -43,13 +40,12 @@ const TableCreator: React.FC<TableCreator> = ({params, data, actions, typeTable}
                             return (
                                 <TableLine
                                     typeTable={typeTable}
-                                    isNew={true}
                                     index={index}
                                     id={row.id}
                                     outerReduxObjState={row}
                                     key={row.id}
                                     onChange={actions.onChange}
-                                status={status as EnumStatus}
+                                    status={status as EnumStatus}
                             >
                                     {params.row.map((column, index) =>
                                         <TableLine.Input
@@ -58,6 +54,7 @@ const TableCreator: React.FC<TableCreator> = ({params, data, actions, typeTable}
                                             width={params.column[index].width}
                                             typeColumn={column.typeColumn}
                                             placeholder={column.placeholder}
+                                            filterByColumn={column.filterByColumn}
                                         />
                                     )}
                                 </TableLine>

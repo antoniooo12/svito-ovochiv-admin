@@ -1,6 +1,7 @@
-import {useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {TypedUseSelectorHook, useSelector} from "react-redux";
 import {RootState} from "../reducer";
+import {getIdFromValueString1} from "../reducer/helpers/helper";
 
 export function useEffectSkipMount(cb: any, deps: any) {
     const mounted = useRef(true)
@@ -14,6 +15,10 @@ export function useEffectSkipMount(cb: any, deps: any) {
 
 
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector
+
+export function useTest(value: string | number | boolean) {
+    return getIdFromValueString1(value)
+}
 
 
 export function useForceUpdate() {

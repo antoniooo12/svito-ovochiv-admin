@@ -16,7 +16,7 @@ export type TypeTable = keyof typeof DataEntitiesCatalog
 export type TypeColumn = keyof typeof DataColumn
 
 
-type DataEntitiesTableStructure = {
+export type DataEntitiesTableStructure = {
     title: string
     column: Array<{ width: number }>
     header: Array<{ title: string }>

@@ -41,17 +41,13 @@ const TableLine: React.FC<ITableLine> & ITableLineComposition =
          status,
      }) => {
         const forceUpdate = useForceUpdate();
-        // const localReduxObjectState = useTypedSelector(state => state.category.storage.newCategory.data[index])
-        // const [rowState, setRowState] = useState<RowItem>()
-        // debugger
-        const rowState:RowItem = useMemo(():RowItem=>{
+        const rowState:RowItem = useMemo((): RowItem => {
             return outerReduxObjState
-        },[])
-        console.log(rowState)
-        console.log(outerReduxObjState)
+        }, [outerReduxObjState])
+
 
     const lineColor = useMemo(() => {
-        if (isNew) {
+        if (status === EnumStatus.isNew) {
             if (index % 2 === 0) {
                 return cl.LineDontSaveNew
             } else {

@@ -4,12 +4,13 @@ import {
     CategoryState,
     EnumCategoryReducer,
     Item,
-    RowItem, RowsToSelectedTable,
+    RowItem,
+    RowsToSelectedTable,
     TableEntity
 } from "../types/categoryReducerTypes";
 import {IOnClick} from "../types/TableBtnTypes";
-import {findIndexById} from "./helpers/helper";
-import {AllCategories, DataEntitiesCatalog, TableCreatorMokData} from "../mokData";
+import {findIndexById, getIdFromValueString} from "./helpers/helper";
+import {DataEntitiesCatalog, TableCreatorMokData} from "../mokData";
 import {TypeTable} from "../types/TableCreatorTypes";
 
 const CREATE_CATEGORY = 'CREATE_CATEGORY'
@@ -99,15 +100,24 @@ export default function tableReducer(state: CategoryState = defaultState, action
             const oldRow = oldData.filter(obj => obj.id === id)[0]
             const oldColumn = oldRow.columns.filter(column => column.typeColumn === typeColumn)[0]
             const indexOldColumn = oldRow.columns.findIndex(column => column.typeColumn === typeColumn)
+            // debugger
+
+            const {
+                pulledId,
+                separatedValue
+            }: { pulledId?: number, separatedValue?: string } = getIdFromValueString(value)
+
+
             const changedColumn = {
                 ...oldColumn,
-                value,
+                id: pulledId && pulledId,
+                value: separatedValue ? pulledId + ": " + separatedValue.trim() : value,
             }
+
             const changedRow = {
                 ...oldRow,
                 columns: [...oldRow.columns.slice(0, indexOldColumn), changedColumn, ...oldRow.columns.slice(indexOldColumn + 1)]
             }
-            console.log(changedRow)
             const changedData = [...oldData.slice(0, indexRow), changedRow, ...oldData.slice(indexRow + 1)]
 
             return {

@@ -22,6 +22,8 @@ interface ILineContent {
     onChange?: ({id, value, typeTable, typeColumn, status}: IOnChange) => void,
     forceUpdate?: any,
     rowState: RowItem,
+    filterBy?: { typeColumn: TypeColumn, id: number | string }
+    // localState?: RowItem,
 }
 //@ts-ignore
-export const LineContent = createContext<ILineContent>({})
+export const LineContent = createContext<ILineContent>({filterBy: {typeColumn: {}, id: Number}})
