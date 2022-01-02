@@ -81,17 +81,9 @@ const TableLine: React.FC<ITableLine> & ITableLineComposition =
 };
 
 TableLine.Header = TableHeader
-
-
 TableLine.Input = TableInput
 TableLine.Btn = TableLineBtn
 
-// TableLine.Select = TableSelect
-// TableLine.Number = TableNumber
-
-// TableLine.Checkbox = TableCheckbox
-// TableLine.Delete = TableDelete
-// TableLine.Edit = TableEdit
 
 
 export {TableLine}

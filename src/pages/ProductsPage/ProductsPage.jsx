@@ -4,16 +4,11 @@ import {ProductsPageHeader} from "../../components/ProductsPageHeader/ProductsPa
 import cl from "./ProductsPage.module.scss";
 import {useDispatch} from "react-redux";
 import {RightPanel} from "./RightPanel/RightPanel";
-import {getAllCategory} from "../../actions/category";
-import {getAllSubcategories} from "../../actions/subcategory";
-import {getAllProducts} from "../../actions/productServer";
 
 const ProductsPage = () => {
     const dispatch = useDispatch()
     useMemo(() => {
-        dispatch(getAllCategory())
-        dispatch(getAllSubcategories())
-        dispatch(getAllProducts())
+
     }, [])
 
     return (

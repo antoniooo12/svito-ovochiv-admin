@@ -57,8 +57,7 @@ export default function tableReducer(state: CategoryState = defaultState, action
             const typeTable: any = action.payload
 
 
-            console.log(typeTable)
-            console.log()
+
 
             const rowItemArray: Array<Item> = TableCreatorMokData[typeTable as TypeTable].row.map((column): Item => {
                     return {
@@ -152,31 +151,67 @@ export default function tableReducer(state: CategoryState = defaultState, action
             }
         }
 
-//         case EnumCategoryReducer.DELETE_CATEGORY: {
-//             const {value, id, typeRow} = action.payload
-//             if (typeof value !== "boolean") {
-//                 throw new Error(' EnumCategoryReducer.DELETE_CATEGORY must be boolean')
-//             }
-//             const index = state.storage[typeRow].data.findIndex(obj => obj.id === id)
-//             const oldObj = state.storage[typeRow].data.filter(obj => obj.id === id)[0]
-//             const changedObj = {
-//                 ...oldObj,
-//                 toDelete: value,
-//             }
-//             const testIndex = findIndexById<Item>(state.storage[typeRow].data, id)
-//             console.log(testIndex)
-//             const newArr: Array<Item> = [...state.storage[typeRow].data.slice(0, index), changedObj, ...state.storage[typeRow].data.slice(index + 1)]
-//             return {
-//                 ...state,
-//                 storage: {
-//                     ...state.storage,
-//                     [EnumTypeCategory.newCategory]: {
-//                         ...[state.storage[EnumTypeCategory.newCategory]][0],
-//                         data: newArr
-//                     },
-//                 }
-//             }
-//         }
+        case EnumCategoryReducer.DELETE_CATEGORY: {
+            const {id, typeTable, rowStatus} = action.payload
+            const editRows = state.storage[typeTable][rowStatus].data
+            const index = editRows.findIndex(obj => obj.id === id)
+            const oldObj = editRows.find(obj => obj.id === id)
+            if (!oldObj) {
+                throw new Error('Cant find old object in Delete')
+            }
+            const changedObj = {
+                ...oldObj,
+                toDelete: !oldObj.toDelete,
+            }
+            const changedRows = [...editRows.slice(0, index), changedObj, ...editRows.slice(index + 1)]
+            console.log(editRows)
+
+            return {
+                ...state,
+                storage: {
+                    ...state.storage,
+                    [typeTable]: {
+                        ...state.storage[typeTable],
+                        [rowStatus]: {
+                            ...state.storage[typeTable][rowStatus],
+                            data: changedRows
+                        }
+                    }
+                }
+            }
+        }
+
+        case EnumCategoryReducer.EDIT_CATEGORY: {
+            const {id, typeTable, rowStatus} = action.payload
+            const editRows = state.storage[typeTable][rowStatus].data
+            const index = editRows.findIndex(obj => obj.id === id)
+            const oldObj = editRows.find(obj => obj.id === id)
+
+            if (!oldObj) {
+                throw new Error('Cant find old object in Delete')
+            }
+
+            const changedObj = {
+                ...oldObj,
+                wasEdit: !oldObj.wasEdit,
+            }
+            const changedRows = [...editRows.slice(0, index), changedObj, ...editRows.slice(index + 1)]
+            console.log(editRows)
+
+            return {
+                ...state,
+                storage: {
+                    ...state.storage,
+                    [typeTable]: {
+                        ...state.storage[typeTable],
+                        [rowStatus]: {
+                            ...state.storage[typeTable][rowStatus],
+                            data: changedRows
+                        }
+                    }
+                }
+            }
+        }
         default:
             return state
     }
@@ -199,13 +234,15 @@ export const setCategories = (recruitment: RowsToSelectedTable) => ({
     type: EnumCategoryReducer.SET_CATEGORIES,
     payload: recruitment,
 })
+export const editCategory = (recruitment: IOnClick) => ({
+    type: EnumCategoryReducer.EDIT_CATEGORY,
+    payload: recruitment,
+})
 
 export const bulkDeleteCategories = (arrOfId: any) => ({type: BULK_DELETE_CATEGORY, payload: arrOfId})
-export const cleanCategories = () => ({type: CLEAN_NEW_CATEGORY})
 export const editOldCategory = (recruitment: any) => ({type: EDIT_OLD_CATEGORY, payload: recruitment})
 
 
 function getProperty<Context, K extends keyof Context>(obj: Context, key: K): Context[K] {
-    console.log(typeof key)
     return obj[key];
 }

@@ -6,15 +6,25 @@
   color: #fff;
   background: #0A65FF;
   border-radius: 11px;
-  display:  flex;
+  display: flex;
   align-items: center;
   cursor: pointer;
-  & > * {
-    vertical-align: middle;
-    display: inline-block;
+
+  & > *:not(:last-child) {
     margin-left: 5px;
   }
 
+  & > * {
+    vertical-align: middle;
+    display: inline-block;
+  }
 
+  .text {
 
+    display: none;
+  }
+
+  .text {
+    display: none;
+  }
 }

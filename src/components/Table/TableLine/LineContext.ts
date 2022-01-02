@@ -23,7 +23,6 @@ interface ILineContent {
     forceUpdate?: any,
     rowState: RowItem,
     filterBy?: { typeColumn: TypeColumn, id: number | string }
-    // localState?: RowItem,
 }
 //@ts-ignore
 export const LineContent = createContext<ILineContent>({filterBy: {typeColumn: {}, id: Number}})

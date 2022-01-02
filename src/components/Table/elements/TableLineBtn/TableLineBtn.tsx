@@ -1,36 +1,30 @@
-import React, {memo, ReactNode, useCallback, useContext, useEffect, useState} from 'react';
+import React, {ReactNode, useCallback, useContext, useState} from 'react';
 import cl from './TableLineBtnInner.module.scss'
 import {LineContent} from "../../TableLine/LineContext";
 import isEqual from "react-fast-compare";
-import {useEffectSkipMount, useForceUpdate} from "../../../../hooks/hooks";
+import {useEffectSkipMount} from "../../../../hooks/hooks";
 import {EnumTableBtn, IOnClick} from "../../../../types/TableBtnTypes";
+import {ListContent} from "../../TableList/ListContext";
 
 
 export interface ITableBtn {
-    icon: ReactNode,
+    icon?: ReactNode,
     onClick: ({}: IOnClick) => void,
     type: EnumTableBtn,
 }
 
 const TableLineBtn: React.FC<ITableBtn> = React.memo(({icon, onClick, type}) => {
-    const {id, isNew, wasEdit, typeRows, forceUpdate} = useContext(LineContent)
+    const {id, status} = useContext(LineContent)
+    const {typeTable} = useContext(ListContent)
     const [isActive, setIsActive] = useState(false)
 
-
-    const setIsActiveCallback = useCallback(() => {
-        forceUpdate()
-        setIsActive(!isActive)
-    }, [isActive])
-
-    useEffectSkipMount(() => {
-        if (id && typeRows) {
-            onClick && onClick({id, typeRows, value: isActive})
-        }
-    }, [isActive])
+    if (!id || !typeTable || !status) {
+        throw new Error()
+    }
 
     return (
         <div
-            onClick={setIsActiveCallback}
+            onClick={() => onClick({id, typeTable, rowStatus: status})}
             className={cl.wrapper}
         >
             {icon}

@@ -69,7 +69,6 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                 })
         }, [data])
 
-        console.log(dropDownList)
         useEffect(() => {
             if (state && typeof state.value === typeof value) {
                 setValue(state.value as typeof value)
@@ -82,7 +81,6 @@ export const TableInput: React.FC<ITableInput> = React.memo(
 
         const setTitleCallback = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
             setValue(event.target.value)
-            console.log(value)
         }, [value])
 
 
@@ -96,7 +94,6 @@ export const TableInput: React.FC<ITableInput> = React.memo(
         console.log(datalist)
 
         const isInputDisable = useMemo(() => {
-            console.log(isNew)
             if (status === 'isNew') {
                 return false
             } else if (status === 'isAll') {

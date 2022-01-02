@@ -4,9 +4,10 @@ import {useTypedSelector} from "../../../hooks/hooks";
 import {TableCreator} from "../../../components/Table/TableCreator/TableCreator";
 import {AllCategories, AllSubCategories, TableCreatorMokData} from "../../../mokData";
 import {IOnChange} from "../../../components/Table/TableLine/LineContext";
-import {changeCategory, setCategories} from "../../../reducer/tableReducer";
+import {changeCategory, deleteCategory, setCategories} from "../../../reducer/tableReducer";
 import {useDispatch} from "react-redux";
 import {TypeColumn, TypeTable} from "../../../types/TableCreatorTypes";
+import {IOnClick} from "../../../types/TableBtnTypes";
 
 const SubPage = () => {
     const dispatch = useDispatch()
@@ -18,6 +19,9 @@ const SubPage = () => {
     const onChange = useCallback((recruitment: IOnChange) => {
         dispatch(changeCategory(recruitment))
     }, [behavior])
+    const onDelete = useCallback((recruitment: IOnClick) => {
+        dispatch(deleteCategory(recruitment))
+    }, [])
     useEffect(() => {
         dispatch(setCategories({rowItem: AllCategories, typeTable: "categories"}))
         dispatch(setCategories({rowItem: AllSubCategories, typeTable: "subCategories"}))
@@ -28,7 +32,7 @@ const SubPage = () => {
             {TableCreatorMokData[behavior] &&
                 <TableCreator
                     typeTable={behavior}
-                    actions={{onChange}}
+                    actions={{onChange, onDelete}}
                     data={storage[behavior]}
                     params={TableCreatorMokData[behavior]}
                 />}

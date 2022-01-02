@@ -9,6 +9,7 @@ export enum EnumCategoryReducer {
     CHANGE_CATEGORY = "CHANGE_CATEGORY",
     DELETE_CATEGORY = "DELETE_CATEGORY",
     SET_CATEGORIES = "SET_CATEGORIES",
+    EDIT_CATEGORY = "EDIT_CATEGORY",
 }
 
 
@@ -94,4 +95,9 @@ interface SetCategories {
     payload: RowsToSelectedTable,
 }
 
-export type CategoryReducerActions = CreateCategory | ChangeCategory | DeleteCategory | SetCategories
+interface editCategory {
+    readonly  type: EnumCategoryReducer.EDIT_CATEGORY,
+    readonly  payload: IOnClick,
+}
+
+export type CategoryReducerActions = CreateCategory | ChangeCategory | DeleteCategory | SetCategories | editCategory

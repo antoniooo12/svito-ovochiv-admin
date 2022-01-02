@@ -8,7 +8,6 @@ const ProductsPageHeaderInner = () => {
     const navs = useMemo(() => {
         return DataEntitiesCatalog
     }, [DataEntitiesCatalog])
-    console.log(navs);
     return (
         <div className={cl.wrapper}>
             {Object.keys(navs).map(el =>

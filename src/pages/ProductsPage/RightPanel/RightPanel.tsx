@@ -19,9 +19,11 @@ const RightPanelInner = () => {
     return (
         <div className={cl.wrapper}>
             <div className={cl.rightMainSection}>
-                <BtnBlue onClick={onCreate}>
+                <BtnBlue
+                    onClick={onCreate}
+                    icon={<IconSave/>}
+                >
                     Нове поле
-                    <IconSave/>
                 </BtnBlue>
             </div>
 

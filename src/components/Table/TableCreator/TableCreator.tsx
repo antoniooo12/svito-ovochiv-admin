@@ -5,7 +5,10 @@ import {TableHeader} from '../TableHeader/TableHeader';
 import {TableLine} from "../TableLine/TableLine";
 import {EnumStatus, TableEntityStructure} from "../../../types/categoryReducerTypes";
 import {IOnChange} from "../TableLine/LineContext";
-import {DataEntitiesTableStructure, TypeColumn, TypeTable} from "../../../types/TableCreatorTypes";
+import {DataEntitiesTableStructure, TypeTable} from "../../../types/TableCreatorTypes";
+import {IconTrash} from "../../UI/icons/Trash/Trash";
+import {EnumTableBtn, IOnClick} from "../../../types/TableBtnTypes";
+import {IconNotePencil} from "../../UI/icons/NotePencil/IconNotePencil";
 
 interface column {
     column: Array<{ width: number }>
@@ -15,13 +18,13 @@ interface TableCreator {
     typeTable?: TypeTable,
     actions: {
         onChange: ({}: IOnChange) => void,
+        onDelete: ({}: IOnClick) => void,
     }
     params: DataEntitiesTableStructure,
     data: TableEntityStructure,
 }
 
 const TableCreator: React.FC<TableCreator> = ({params, data, actions, typeTable}) => {
-    console.log(data)
     return (
         <div className={cl.wrapper}>
             <TableList
@@ -57,6 +60,18 @@ const TableCreator: React.FC<TableCreator> = ({params, data, actions, typeTable}
                                             filterByColumn={column.filterByColumn}
                                         />
                                     )}
+                                    <TableLine.Btn
+                                        icon={<IconTrash/>}
+                                        onClick={actions.onDelete}
+                                        type={EnumTableBtn.delete}
+                                    />
+                                    {EnumStatus.isAll === status &&
+                                        <TableLine.Btn
+                                            icon={<IconNotePencil/>}
+                                            onClick={actions.onDelete}
+                                            type={EnumTableBtn.delete}
+                                        />
+                                    }
                                 </TableLine>
                             )
                         })
