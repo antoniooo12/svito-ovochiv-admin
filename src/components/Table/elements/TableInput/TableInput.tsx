@@ -105,7 +105,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                     <>
                         {typeof value === 'number' &&
                             <input
-                                value={value}
+                                value={Number(value).toString()}
                                 onChange={setTitleCallback}
                                 onClick={forceUpdate}
                                 disabled={isInputDisable}

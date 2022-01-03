@@ -37,7 +37,7 @@ const SubPage = () => {
     }, [table.isAll.data.length, table.isNew.data.length])
 
     return (
-        <div>
+        <>
             {TableCreatorMokData[behavior] &&
                 <TableCreator
                     typeTable={behavior}
@@ -45,7 +45,7 @@ const SubPage = () => {
                     data={tableMemo}
                     params={TableCreatorMokData[behavior]}
                 />}
-        </div>
+        </>
     );
 
 
