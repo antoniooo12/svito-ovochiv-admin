@@ -14,7 +14,7 @@ export interface ITableBtn {
 }
 
 const TableLineBtn: React.FC<ITableBtn> = React.memo(({icon, onClick, type}) => {
-    const {id, status} = useContext(LineContent)
+    const {id, status, forceUpdate} = useContext(LineContent)
     const {typeTable} = useContext(ListContent)
     const [isActive, setIsActive] = useState(false)
 
@@ -24,7 +24,10 @@ const TableLineBtn: React.FC<ITableBtn> = React.memo(({icon, onClick, type}) => 
 
     return (
         <div
-            onClick={() => onClick({id, typeTable, rowStatus: status})}
+            onClick={() => {
+                forceUpdate()
+                onClick({id, typeTable, rowStatus: status})
+            }}
             className={cl.wrapper}
         >
             {icon}

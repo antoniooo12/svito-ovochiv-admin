@@ -3,15 +3,17 @@ import cl from './TableLine.module.scss'
 import {IOnChange, LineContent} from "./LineContext";
 import {ITableInput, TableInput} from "../elements/TableInput/TableInput";
 import {ITableHeader, TableHeader} from "../TableHeader/TableHeader";
-import {useForceUpdate} from "../../../hooks/hooks";
+import {useForceUpdate, useTypedSelector} from "../../../hooks/hooks";
 import {EnumStatus, RowItem} from "../../../types/categoryReducerTypes";
 import {ITableBtn, TableLineBtn} from "../elements/TableLineBtn/TableLineBtn";
 import {TypeColumn, TypeTable} from "../../../types/TableCreatorTypes";
+import {ITableSelect, TableSelect} from "../elements/TableSelect/TableSelect";
 
 interface ITableLineComposition {
     Header: React.FC<ITableHeader>,
     Input: React.FC<ITableInput>,
     Btn: React.FC<ITableBtn>,
+    Select: React.FC<ITableSelect>,
 }
 
 type ITableLine = {
@@ -20,10 +22,10 @@ type ITableLine = {
     outerReduxObjState: RowItem,
     isNew?: boolean,
     onChange?: ({}: IOnChange) => void,
-    typeTable?: TypeTable,
+    typeTable: TypeTable,
     typeRows?: TypeColumn,
     children?: ReactNode,
-    status?: keyof typeof EnumStatus,
+    status: keyof typeof EnumStatus,
 
 }
 
@@ -41,49 +43,54 @@ const TableLine: React.FC<ITableLine> & ITableLineComposition =
          status,
      }) => {
         const forceUpdate = useForceUpdate();
-        const rowState:RowItem = useMemo((): RowItem => {
-            return outerReduxObjState
-        }, [outerReduxObjState])
-
-
-    const lineColor = useMemo(() => {
-        if (status === EnumStatus.isNew) {
-            if (index % 2 === 0) {
-                return cl.LineDontSaveNew
+        const localState = useTypedSelector(state => state.tableReducer.storage[typeTable][status].data[index])
+        const rowState: RowItem = useMemo((): RowItem => {
+            if (localState) {
+                return localState
             } else {
-                return cl.LineDontSaveNew2
+                return outerReduxObjState
             }
-        } else {
-            if (index % 2 === 0) {
-                return cl.LineDontSaveOld
-            } else {
-                return cl.LineDontSaveOld2
-            }
-        }
-    }, [index, isNew])
+        }, [outerReduxObjState, localState])
 
-    return (<LineContent.Provider
-        value={{
-            id,
-            rowState,
-            isNew,
-            onChange,
-            typeRows,
-            wasEdit: false,
-            forceUpdate,
-            status,
-        }}>
-        <div
-            className={[cl.wrapper, lineColor, rowState && rowState.toDelete && cl.toDelete,].join(' ')}>
-            {children}
-        </div>
-    </LineContent.Provider>);
-};
+
+        const lineColor = useMemo(() => {
+            if (status === EnumStatus.isNew) {
+                if (index % 2 === 0) {
+                    return cl.LineDontSaveNew
+                } else {
+                    return cl.LineDontSaveNew2
+                }
+            } else {
+                if (index % 2 === 0) {
+                    return cl.LineDontSaveOld
+                } else {
+                    return cl.LineDontSaveOld2
+                }
+            }
+        }, [index, isNew])
+
+        return (<LineContent.Provider
+            value={{
+                id,
+                rowState,
+                isNew,
+                onChange,
+                typeRows,
+                wasEdit: false,
+                forceUpdate,
+                status,
+            }}>
+            <div
+                className={[cl.wrapper, lineColor, rowState && rowState.toDelete && cl.toDelete,].join(' ')}>
+                {children}
+            </div>
+        </LineContent.Provider>);
+    };
 
 TableLine.Header = TableHeader
 TableLine.Input = TableInput
 TableLine.Btn = TableLineBtn
-
+TableLine.Select = TableSelect
 
 
 export {TableLine}

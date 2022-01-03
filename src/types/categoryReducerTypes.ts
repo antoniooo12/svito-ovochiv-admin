@@ -29,8 +29,8 @@ export interface CategoryState {
 }
 
 export enum EnumStatus {
-    isNew = "isNew",
     isAll = "isAll",
+    isNew = "isNew",
 }
 
 
@@ -86,8 +86,8 @@ interface DeleteCategory {
 }
 
 export interface RowsToSelectedTable {
-   readonly rowItem: Array<RowItem>,
-   readonly typeTable: TypeTable,
+    readonly rowItem: Array<RowItem> ,
+    readonly typeTable: TypeTable,
 }
 
 interface SetCategories {

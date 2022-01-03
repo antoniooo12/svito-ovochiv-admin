@@ -1,15 +1,15 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {Outlet} from "react-router-dom";
 import {ProductsPageHeader} from "../../components/ProductsPageHeader/ProductsPageHeader";
 import cl from "./ProductsPage.module.scss";
 import {useDispatch} from "react-redux";
 import {RightPanel} from "./RightPanel/RightPanel";
+import {setCategories} from "../../reducer/tableReducer";
+import {AllCategories, AllSubCategories} from "../../mokData";
 
 const ProductsPage = () => {
     const dispatch = useDispatch()
-    useMemo(() => {
 
-    }, [])
 
     return (
         <div className={cl.wrapper}>

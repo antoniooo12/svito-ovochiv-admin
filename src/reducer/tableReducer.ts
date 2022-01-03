@@ -13,14 +13,7 @@ import {findIndexById, getIdFromValueString} from "./helpers/helper";
 import {DataEntitiesCatalog, TableCreatorMokData} from "../mokData";
 import {TypeTable} from "../types/TableCreatorTypes";
 
-const CREATE_CATEGORY = 'CREATE_CATEGORY'
-const CHANGE_CATEGORY = "CHANGE_CATEGORY"
-const CHANGE_OLD_CATEGORY = "CHANGE_OLD_CATEGORY"
-const SET_CATEGORIES = 'SET_CATEGORIES'
-const BULK_DELETE_CATEGORY = 'BULK_DELETE_CATEGORY'
-const DELETE_CATEGORY = 'DELETE_CATEGORY'
-const CLEAN_NEW_CATEGORY = "CLEAN_NEW_CATEGORY"
-const EDIT_OLD_CATEGORY = 'EDIT_OLD_CATEGORY'
+
 
 let implementedTableEntities: TableEntity = {}
 
@@ -39,7 +32,6 @@ Object.keys(DataEntitiesCatalog).forEach((el: string) => {
     }
 })
 
-console.log(implementedTableEntities)
 
 const defaultState: CategoryState = {
     storage: {
@@ -53,12 +45,7 @@ export default function tableReducer(state: CategoryState = defaultState, action
 
     switch (action.type) {
         case EnumCategoryReducer.CREATE_CATEGORY: {
-
             const typeTable: any = action.payload
-
-
-
-
             const rowItemArray: Array<Item> = TableCreatorMokData[typeTable as TypeTable].row.map((column): Item => {
                     return {
                         id: Date.now(),
@@ -94,6 +81,7 @@ export default function tableReducer(state: CategoryState = defaultState, action
 
         case EnumCategoryReducer.CHANGE_CATEGORY: {
             const {value, id, typeTable, typeColumn, status} = action.payload
+            console.log(typeof value)
             const oldData = state.storage[typeTable][status].data
             const indexRow = findIndexById<RowItem>(oldData, id)
             const oldRow = oldData.filter(obj => obj.id === id)[0]
@@ -239,8 +227,8 @@ export const editCategory = (recruitment: IOnClick) => ({
     payload: recruitment,
 })
 
-export const bulkDeleteCategories = (arrOfId: any) => ({type: BULK_DELETE_CATEGORY, payload: arrOfId})
-export const editOldCategory = (recruitment: any) => ({type: EDIT_OLD_CATEGORY, payload: recruitment})
+// export const bulkDeleteCategories = (arrOfId: any) => ({type: BULK_DELETE_CATEGORY, payload: arrOfId})
+// export const editOldCategory = (recruitment: any) => ({type: EDIT_OLD_CATEGORY, payload: recruitment})
 
 
 function getProperty<Context, K extends keyof Context>(obj: Context, key: K): Context[K] {

@@ -2,6 +2,14 @@
 
 .wrapper {
   position: relative;
+
+  .rotate50 {
+    transform: translateY(-70%) rotate(-50deg);
+  }
+  .fontSize14{
+    font-size: 14px;
+  }
+
   .left {
     width: 100%;
 

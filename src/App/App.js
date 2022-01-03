@@ -9,7 +9,7 @@ import {SubPage} from "../pages/ProductsPage/subPage/subPage";
 
 function App() {
     return (
-            <>
+            <React.StrictMode>
                 <Routes>
                     <Route path='/' element={<Layout/>}>
                         <Route path='products/*' element={<ProductsPage/>}>
@@ -20,7 +20,7 @@ function App() {
                         <Route path='orders' element={<OrdersPage/>}/>
                     </Route>
                 </Routes>
-            </>
+            </React.StrictMode>
 
 
     )
