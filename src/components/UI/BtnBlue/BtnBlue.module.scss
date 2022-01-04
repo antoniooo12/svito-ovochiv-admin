@@ -6,15 +6,23 @@
   color: #fff;
   background: #0A65FF;
   border-radius: 11px;
-  display:  flex;
+  display: flex;
+  //justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  & > * {
-    vertical-align: middle;
-    display: inline-block;
+
+  & > *:not(:last-child) {
     margin-left: 5px;
   }
 
+  .icon {
+
+  }
+
+  & > * {
+    vertical-align: middle;
+    display: inline-block;
+  }
 
 
 }

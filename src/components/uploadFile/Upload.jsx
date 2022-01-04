@@ -7,7 +7,7 @@ const Upload = () => {
     const [file, setFile] = useState()
 
     const fileUploadHandler = async () => {
-        console.log(file)
+
         await uploadFile(file)
     }
 

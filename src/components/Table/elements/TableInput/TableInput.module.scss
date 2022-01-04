@@ -1,5 +1,67 @@
 .wrapper {
+  padding: 0;
+
   & > * {
+
+    height: 100%;
     width: 100%;
   }
+
+
+
+
+}
+
+
+div label input {
+  margin-right: 100px;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+.toggleButton {
+  user-select: none;
+  position: relative;
+  margin: 4px;
+  background-color: inherit;
+  border: none;
+  overflow: hidden;
+  float: left;
+}
+
+
+.toggleButton label span {
+  display: block;
+  height: 20px;
+  cursor: pointer;
+  font-size: 9px;
+  text-align: center;
+  padding: 3px 0px;
+  vertical-align: middle;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 11px;
+  transition: background-color .2s, color .1s;
+
+}
+
+.toggleButton label span:before {
+  content: "";
+  display: block;
+  height: 17%;
+}
+
+.toggleButton input {
+  border: none;
+  position: absolute;
+  top: -20px;
+}
+
+.toggleButton input:checked + span {
+
+  border: none !important;
+  background-color: #0A65FF;
+  color: #fff;
 }

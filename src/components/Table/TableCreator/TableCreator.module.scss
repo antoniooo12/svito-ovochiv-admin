@@ -1,0 +1,35 @@
+@import "src/variablesGlobal";
+
+.wrapper {
+  position: relative;
+
+  .rotate50 {
+    transform: translateY(-70%) rotate(-50deg);
+  }
+  .fontSize14{
+    font-size: 14px;
+  }
+
+  .left {
+    width: 100%;
+
+    .leftHeader {
+      margin-left: $marginSide + 60px;
+      margin-top: $headerProductTableMargin;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 22px;
+    }
+
+    .leftLine {
+
+    }
+
+    .lineCategory {
+      width: fit-content;
+    }
+    .lineCheckbox{
+      margin-right: 15px;
+    }
+  }
+}
