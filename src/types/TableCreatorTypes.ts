@@ -21,21 +21,23 @@ export enum EnumInput {
     number = 'number',
 }
 
-export enum EnumStyleHeader {
+export enum EnumStyles {
     align = 'align',
     hyphenation = 'hyphenation',
     fontSize14 = '14',
+    toggleButton = 'toggleButton',
 }
 
 export enum EnumStyleHeader {
 
 }
+export  interface InputParams{ typeColumn: TypeColumn, isDropDownList: boolean, filterByColumn?: TypeColumn, typeInput: EnumInput, placeholder?: string, isMother?: boolean, numberStep?: number, bigNumberStep?: number, style?: EnumStyles[] }
 
 export type DataEntitiesTableStructure = {
     title: string
     column: Array<{ width: number }>
-    header: Array<{ title: string, style?: EnumStyleHeader[], }>
-    row: Array<{ typeColumn: TypeColumn, isDropDownList: boolean, filterByColumn?: TypeColumn, typeInput: EnumInput, placeholder?: string, isMother?: boolean, numberStep?: number, bigNumberStep?: number }>
+    header: Array<{ title: string, style?: EnumStyles[], }>
+    row: Array<InputParams>
 };
 
 export type TableCreator = {

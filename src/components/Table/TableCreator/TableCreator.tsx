@@ -5,7 +5,7 @@ import {TableHeader} from '../TableHeader/TableHeader';
 import {TableLine} from "../TableLine/TableLine";
 import {EnumStatus, TableEntityStructure} from "../../../types/categoryReducerTypes";
 import {IOnChange} from "../TableLine/LineContext";
-import {DataEntitiesTableStructure, EnumInput, EnumStyleHeader, TypeTable} from "../../../types/TableCreatorTypes";
+import {DataEntitiesTableStructure, EnumInput, EnumStyles, TypeTable} from "../../../types/TableCreatorTypes";
 import {IconTrash} from "../../UI/icons/Trash/Trash";
 import {EnumTableBtn, IOnClick} from "../../../types/TableBtnTypes";
 import {IconNotePencil} from "../../UI/icons/NotePencil/IconNotePencil";
@@ -36,8 +36,8 @@ const TableCreator: React.FC<TableCreator> = React.memo(({params, data, actions,
                 <TableHeader>
                     {params.header.map((el, index) => {
                             const headerStyle = clsx({
-                                [cl.rotate50]: el.style && el.style.includes(EnumStyleHeader.align),
-                                [cl.fontSize14]: el.style && el.style.includes(EnumStyleHeader.fontSize14),
+                                [cl.rotate50]: el.style && el.style.includes(EnumStyles.align),
+                                [cl.fontSize14]: el.style && el.style.includes(EnumStyles.fontSize14),
                             })
                             return (
                                 <div className={headerStyle} style={{width: `${params.column[index].width}px`}}>
@@ -72,6 +72,7 @@ const TableCreator: React.FC<TableCreator> = React.memo(({params, data, actions,
                                                     filterByColumn={column.filterByColumn}
                                                     isDropDownList={column.isDropDownList}
                                                     typeInput={column.typeInput}
+                                                    inputParams={column}
                                                 />)
 
                                         }

@@ -1,4 +1,4 @@
-import {EnumInput, EnumStyleHeader, TableCreator, TypeTable} from "./types/TableCreatorTypes";
+import {EnumInput, EnumStyles, TableCreator, TypeTable} from "./types/TableCreatorTypes";
 import {RowItem} from "./types/categoryReducerTypes";
 
 export const DataEntitiesCatalog = {
@@ -55,7 +55,7 @@ export const TableCreatorMokData: TableCreator = {
         column: [{width: 150}, {width: 150}, {width: 150}, {width: 70}, {width: 70}],
         header: [{title: 'Продукти'}, {title: 'Категорія'}, {title: 'Підкатегорія'}, {title: 'Ціна'}, {
             title: `Актуаль- ність`,
-            style: [EnumStyleHeader.fontSize14],
+            style: [EnumStyles.fontSize14],
         }],
         row: [
             {
@@ -73,6 +73,7 @@ export const TableCreatorMokData: TableCreator = {
                 isMother: false
             },
             {
+
                 typeColumn: "subCategories",
                 isDropDownList: true,
                 filterByColumn: "categories",
@@ -88,7 +89,13 @@ export const TableCreatorMokData: TableCreator = {
                 numberStep: 0.1,
                 bigNumberStep: 1,
             },
-            {typeColumn: "actual", isDropDownList: false, typeInput: EnumInput.checkbox, placeholder: 'актуальність'},
+            {
+                typeColumn: "actual",
+                isDropDownList: false,
+                typeInput: EnumInput.checkbox,
+                placeholder: 'актуальність',
+                style: [EnumStyles.toggleButton],
+            },
         ]
     }
 }

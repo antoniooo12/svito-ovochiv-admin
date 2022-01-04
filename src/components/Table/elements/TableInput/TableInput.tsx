@@ -6,9 +6,10 @@ import cl from './TableInput.module.scss'
 import {TableDataList} from "./TableDataList/TableDataList";
 import isEqual from "react-fast-compare";
 import {useEffectSkipMount, useTypedSelector} from "../../../../hooks/hooks";
-import {EnumInput, TypeColumn} from "../../../../types/TableCreatorTypes";
+import {EnumInput, EnumStyles, InputParams, TypeColumn} from "../../../../types/TableCreatorTypes";
 import {EnumStatus, Item, RowItem} from "../../../../types/categoryReducerTypes";
 import {Simulate} from "react-dom/test-utils";
+import clsx from "clsx";
 
 
 export interface DropDownListItem {
@@ -27,6 +28,7 @@ export interface ITableInput {
     index: number,
     filterByColumn?: TypeColumn,
     isDropDownList: boolean,
+    inputParams: InputParams,
 }
 
 const initials: { [name in EnumInput]: string | number | boolean } = {
@@ -43,6 +45,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
          width,
          filterByColumn,
          isDropDownList,
+         inputParams,
      }) => {
 
 
@@ -99,7 +102,10 @@ export const TableInput: React.FC<ITableInput> = React.memo(
 
         return (
             <div style={{width: `${width}px`}}
-                 className={cl.wrapper}
+                 className={clsx({
+                     [cl.wrapper]: true,
+                     [cl.toggleButton]: inputParams.style && inputParams.style.includes(EnumStyles.toggleButton),
+                 })}
             >
                 {isVisibleHeader ?
                     <>
@@ -128,15 +134,18 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                         }
 
                         {typeof value === 'boolean' &&
-                            <input
-                                checked={value}
-                                onChange={setTitleCallback}
-                                onClick={forceUpdate}
-                                disabled={isInputDisable}
-                                placeholder={placeholder}
-                                list={`${typeColumn} + ${state && id}`}
-                                type={typeInput}
-                            />
+                            <label>
+                                <input
+                                    checked={value}
+                                    onChange={setTitleCallback}
+                                    onClick={forceUpdate}
+                                    disabled={isInputDisable}
+                                    placeholder={placeholder}
+                                    list={`${typeColumn} + ${state && id}`}
+                                    type={typeInput}
+                                />
+                                <span>продається</span>
+                            </label>
                         }
                         {isDropDownList &&
                             <TableDataList

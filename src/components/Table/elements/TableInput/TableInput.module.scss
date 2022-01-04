@@ -2,4 +2,48 @@
   & > * {
     width: 100%;
   }
+
+
+}
+
+
+div label input {
+  margin-right: 100px;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+.toggleButton {
+  position: relative;
+  margin: 4px;
+  background-color: #EFEFEF;
+  border: 1px solid #D0D0D0;
+  border-radius: 11px;
+  overflow: hidden;
+  float: left;
+}
+
+.toggleButton label {
+
+}
+
+.toggleButton label span {
+  height: 20px;
+  cursor: pointer;
+  font-size: 9px;
+  text-align: center;
+  padding: 3px 0px;
+  display: block;
+}
+
+.toggleButton label input {
+  position: absolute;
+  top: -20px;
+}
+
+.toggleButton input:checked + span {
+  background-color: #0A65FF;
+  color: #fff;
 }
