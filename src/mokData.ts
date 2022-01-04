@@ -2,9 +2,9 @@ import {EnumInput, EnumStyles, TableCreator, TypeTable} from "./types/TableCreat
 import {RowItem} from "./types/categoryReducerTypes";
 
 export const DataEntitiesCatalog = {
+    products: 'продукти',
     categories: "категорія",
     subCategories: "підкатегорії",
-    products: 'продукти',
     typesOfProducts: 'тип продуктів',
 }
 

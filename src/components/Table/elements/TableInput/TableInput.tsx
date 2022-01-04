@@ -90,12 +90,14 @@ export const TableInput: React.FC<ITableInput> = React.memo(
 
 
         const isInputDisable = useMemo(() => {
-            if (rowState.toDelete || status === 'isAll') {
-                return true
-            } else if (status === 'isNew') {
+            if (!rowState.toDelete && rowState.wasEdit || status === 'isNew') {
                 return false
             }
-        }, [isNew, state && state.wasEdit, rowState.toDelete])
+            if (rowState.toDelete || status === 'isAll'  ) {
+                return true
+            }
+
+        }, [isNew, rowState && rowState.wasEdit, rowState.toDelete])
 
 
         useEffectSkipMount(() => {

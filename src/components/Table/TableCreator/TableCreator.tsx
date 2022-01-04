@@ -22,6 +22,7 @@ interface TableCreator {
     actions: {
         onChange: ({}: IOnChange) => void,
         onDelete: ({}: IOnClick) => void,
+        onEdit: ({}: IOnClick) => void,
     }
     params: DataEntitiesTableStructure,
     data: TableEntityStructure,
@@ -85,7 +86,7 @@ const TableCreator: React.FC<TableCreator> = React.memo(({params, data, actions,
                                     {EnumStatus.isAll === status &&
                                         <TableLine.Btn
                                             icon={<IconNotePencil/>}
-                                            onClick={actions.onDelete}
+                                            onClick={actions.onEdit}
                                             type={EnumTableBtn.delete}
                                         />
                                     }
