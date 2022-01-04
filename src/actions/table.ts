@@ -8,18 +8,22 @@ interface SaveTable {
     behavior: TypeTable,
     allToDelete: Array<RowItem>,
     newToServer: Array<RowItem>,
+    allToUpdate: Array<RowItem>,
 }
 
 export const saveTable = (
     {
         behavior,
         allToDelete,
-        newToServer
+        newToServer,
+        allToUpdate,
     }: SaveTable): any => {
     return async (dispatch: Dispatch<CategoryReducerActions>) => {
         try {
-            const newLines = {s: [1, 2]}
-            const res = await axios.post(`/api/table/${behavior}`, {newLines})
+
+            console.log(newToServer)
+            const res = await axios.post(`/api/goods/table`,
+                {behavior, allToDelete, newToServer, allToUpdate})
         } catch (e) {
             console.log(e)
         }

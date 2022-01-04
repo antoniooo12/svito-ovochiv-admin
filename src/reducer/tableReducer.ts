@@ -38,7 +38,6 @@ const defaultState: CategoryState = {
         ...implementedTableEntities
     }
 }
-console.log(defaultState)
 
 
 export default function tableReducer(state: CategoryState = defaultState, action: CategoryReducerActions): CategoryState {
@@ -152,7 +151,6 @@ export default function tableReducer(state: CategoryState = defaultState, action
                 toDelete: !oldObj.toDelete,
             }
             const changedRows = [...editRows.slice(0, index), changedObj, ...editRows.slice(index + 1)]
-            console.log(editRows)
 
             return {
                 ...state,

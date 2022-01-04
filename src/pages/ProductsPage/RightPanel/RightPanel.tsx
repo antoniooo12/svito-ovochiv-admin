@@ -22,9 +22,9 @@ const RightPanel = memo(() => {
 
 
     const {onClick} = useSaveTable(behavior)
-    const onSave = useCallback(() => {
-        onClick()
-    }, [behavior])
+    // const onSave = useCallback(() => {
+    //     onClick()
+    // }, [behavior])
 
     return (
         <div className={cl.wrapper}>
@@ -40,7 +40,7 @@ const RightPanel = memo(() => {
 
             <div className={cl.rightBottom}>
                 <BtnBlue
-                    onClick={onSave}
+                    onClick={onClick}
                 >
                     зберегти
                 </BtnBlue>
