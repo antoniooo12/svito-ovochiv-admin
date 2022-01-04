@@ -14,7 +14,7 @@ import {RowItem} from "../../../types/categoryReducerTypes";
 const SubPage = () => {
     const dispatch = useDispatch()
     const location = useLocation();
-    const behavior: TypeColumn = location.pathname.split('/').pop() as TypeTable
+    const behavior = location.pathname.split('/').pop() as TypeTable
     const {storage} = useTypedSelector(state => state.tableReducer)
     const table = useTypedSelector(state => state.tableReducer.storage[behavior])
 

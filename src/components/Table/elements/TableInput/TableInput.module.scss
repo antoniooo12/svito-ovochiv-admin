@@ -1,7 +1,13 @@
 .wrapper {
+  padding: 0;
+
   & > * {
+
+    height: 100%;
     width: 100%;
   }
+
+
 
 
 }
@@ -16,34 +22,46 @@ body {
 }
 
 .toggleButton {
+  user-select: none;
   position: relative;
   margin: 4px;
-  background-color: #EFEFEF;
-  border: 1px solid #D0D0D0;
-  border-radius: 11px;
+  background-color: inherit;
+  border: none;
   overflow: hidden;
   float: left;
 }
 
-.toggleButton label {
-
-}
 
 .toggleButton label span {
+  display: block;
   height: 20px;
   cursor: pointer;
   font-size: 9px;
   text-align: center;
   padding: 3px 0px;
-  display: block;
+  vertical-align: middle;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 11px;
+  transition: background-color .2s, color .1s;
+
 }
 
-.toggleButton label input {
+.toggleButton label span:before {
+  content: "";
+  display: block;
+  height: 17%;
+}
+
+.toggleButton input {
+  border: none;
   position: absolute;
   top: -20px;
 }
 
 .toggleButton input:checked + span {
+
+  border: none !important;
   background-color: #0A65FF;
   color: #fff;
 }

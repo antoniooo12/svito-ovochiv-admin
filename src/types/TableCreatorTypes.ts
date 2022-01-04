@@ -19,12 +19,14 @@ export enum EnumInput {
     text = 'text',
     checkbox = 'checkbox',
     number = 'number',
+    select = 'select',
 }
 
 export enum EnumStyles {
     align = 'align',
     hyphenation = 'hyphenation',
     fontSize14 = '14',
+    fontSizeSmall = '9',
     toggleButton = 'toggleButton',
 }
 

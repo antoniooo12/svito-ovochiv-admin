@@ -3,6 +3,7 @@ import {HeaderContent} from "../../TableHeader/TableHeaderContext";
 import {LineContent} from "../../TableLine/LineContext";
 import {ListContent} from "../../TableList/ListContext";
 import cl from './TableInput.module.scss'
+import globalCl from '../../../../globalStyles.module.scss';
 import {TableDataList} from "./TableDataList/TableDataList";
 import isEqual from "react-fast-compare";
 import {useEffectSkipMount, useTypedSelector} from "../../../../hooks/hooks";
@@ -10,6 +11,7 @@ import {EnumInput, EnumStyles, InputParams, TypeColumn} from "../../../../types/
 import {EnumStatus, Item, RowItem} from "../../../../types/categoryReducerTypes";
 import {Simulate} from "react-dom/test-utils";
 import clsx from "clsx";
+import {TableSelect} from "../TableSelect/TableSelect";
 
 
 export interface DropDownListItem {
@@ -35,6 +37,7 @@ const initials: { [name in EnumInput]: string | number | boolean } = {
     [EnumInput.text]: 's',
     [EnumInput.number]: 0,
     [EnumInput.checkbox]: true,
+    [EnumInput.select]: 'вибрати',
 }
 export const TableInput: React.FC<ITableInput> = React.memo(
     ({
@@ -87,12 +90,12 @@ export const TableInput: React.FC<ITableInput> = React.memo(
 
 
         const isInputDisable = useMemo(() => {
-            if (status === 'isNew') {
-                return false
-            } else if (status === 'isAll') {
+            if (rowState.toDelete || status === 'isAll') {
                 return true
+            } else if (status === 'isNew') {
+                return false
             }
-        }, [isNew, state && state.wasEdit])
+        }, [isNew, state && state.wasEdit, rowState.toDelete])
 
 
         useEffectSkipMount(() => {
@@ -105,11 +108,18 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                  className={clsx({
                      [cl.wrapper]: true,
                      [cl.toggleButton]: inputParams.style && inputParams.style.includes(EnumStyles.toggleButton),
+                     [globalCl.fontSizeSmall]: inputParams.style && inputParams.style.includes(EnumStyles.fontSizeSmall)
                  })}
             >
                 {isVisibleHeader ?
                     <>
-                        {typeof value === 'number' &&
+                        {inputParams.typeInput === EnumInput.select &&
+                            <TableSelect
+                                setValue={setValue}
+                                typeColumn={typeColumn}
+                            />
+                        }
+                        {inputParams.typeInput === EnumInput.number &&
                             <input
                                 value={Number(value).toString()}
                                 onChange={setTitleCallback}
@@ -121,7 +131,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                                 min={0}
                             />
                         }
-                        {typeof value === 'string' &&
+                        {inputParams.typeInput === EnumInput.text && typeof value === 'string' &&
                             <input
                                 value={value}
                                 onChange={setTitleCallback}
@@ -133,7 +143,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                             />
                         }
 
-                        {typeof value === 'boolean' &&
+                        {inputParams.typeInput === EnumInput.checkbox && typeof value === 'boolean' &&
                             <label>
                                 <input
                                     checked={value}

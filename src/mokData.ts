@@ -5,6 +5,7 @@ export const DataEntitiesCatalog = {
     categories: "категорія",
     subCategories: "підкатегорії",
     products: 'продукти',
+    typesOfProducts: 'тип продуктів',
 }
 
 export const DataColumn = {
@@ -13,6 +14,8 @@ export const DataColumn = {
     products: "продукти",
     actual: "актуальность",
     price: 'ціна',
+    priority: 'пріорітет',
+    typesOfProducts: 'тип',
 }
 
 export const TableCreatorMokData: TableCreator = {
@@ -52,11 +55,17 @@ export const TableCreatorMokData: TableCreator = {
     },
     products: {
         title: 'продукти',
-        column: [{width: 150}, {width: 150}, {width: 150}, {width: 70}, {width: 70}],
+        column: [{width: 150}, {width: 150}, {width: 150}, {width: 70}, {width: 70}, {width: 50}, {width: 70}],
         header: [{title: 'Продукти'}, {title: 'Категорія'}, {title: 'Підкатегорія'}, {title: 'Ціна'}, {
+            title: 'Пріорітет',
+            style: [EnumStyles.fontSize14],
+        }, {
+            title: 'тип',
+            style: [EnumStyles.fontSize14],
+        }, {
             title: `Актуаль- ність`,
             style: [EnumStyles.fontSize14],
-        }],
+        },],
         row: [
             {
                 typeColumn: "products",
@@ -73,7 +82,6 @@ export const TableCreatorMokData: TableCreator = {
                 isMother: false
             },
             {
-
                 typeColumn: "subCategories",
                 isDropDownList: true,
                 filterByColumn: "categories",
@@ -90,6 +98,18 @@ export const TableCreatorMokData: TableCreator = {
                 bigNumberStep: 1,
             },
             {
+                typeColumn: "priority",
+                isDropDownList: false,
+                typeInput: EnumInput.number,
+                isMother: false,
+            },
+            {
+                typeColumn: 'typesOfProducts',
+                style: [EnumStyles.fontSizeSmall],
+                isDropDownList: false,
+                typeInput: EnumInput.select,
+            },
+            {
                 typeColumn: "actual",
                 isDropDownList: false,
                 typeInput: EnumInput.checkbox,
@@ -97,6 +117,18 @@ export const TableCreatorMokData: TableCreator = {
                 style: [EnumStyles.toggleButton],
             },
         ]
+    },
+    typesOfProducts: {
+        title: 'тип продуткти',
+        column: [{width: 150}],
+        header: [{title: 'Категорія'}],
+        row: [{
+            typeColumn: "typesOfProducts",
+            isDropDownList: false,
+            typeInput: EnumInput.text,
+            placeholder: 'тип продуткти',
+            isMother: true,
+        }]
     }
 }
 
@@ -151,12 +183,34 @@ export const AllCategories: ServerTable = {
         }
     ]
 }
+export const AllTypesOfProduct: ServerTable = {
+    dependency: [],
+    rows: [
+        {
+            id: 't1', toDelete: false, wasEdit: false, columns: [
+                {id: 1, typeColumn: "typesOfProducts", wasEdit: false, value: "кіло грами"},
+            ]
+        },
+        {
+            id: 't2', toDelete: false, wasEdit: false, columns: [
+                {id: 31, typeColumn: "typesOfProducts", wasEdit: false, value: "грами"},
+            ]
+        },
+        {
+            id: 't3', toDelete: false, wasEdit: false, columns: [
+                {id: 2, typeColumn: "typesOfProducts", wasEdit: false, value: "штука"},
+            ]
+        }
+    ]
+}
+
 export const AllProducts: ServerTable = {
-    dependency: ["categories", "subCategories"],
+    dependency: ["categories", "subCategories", "typesOfProducts"],
     rows: []
 }
 export const AllData: { [name in TypeTable]: ServerTable } = {
     subCategories: AllSubCategories,
     categories: AllCategories,
     products: AllProducts,
+    typesOfProducts: AllTypesOfProduct,
 }
