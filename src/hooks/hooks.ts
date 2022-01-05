@@ -15,6 +15,15 @@ export function useEffectSkipMount(cb: any, deps: any) {
     }, deps)
 }
 
+export function useEffectSkipAll(cb: any, deps: any) {
+    const mounted = useRef(false)
+    useEffect(() => {
+        if (mounted.current) {
+            return cb()
+        }
+        mounted.current = true
+    }, deps)
+}
 
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector
 // export const useTypedSelectorMemo = (deps: any) => {

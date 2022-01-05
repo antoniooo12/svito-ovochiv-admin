@@ -34,10 +34,10 @@ export interface ITableInput {
 }
 
 const initials: { [name in EnumInput]: string | number | boolean } = {
-    [EnumInput.text]: 's',
+    [EnumInput.text]: '',
     [EnumInput.number]: 0,
     [EnumInput.checkbox]: true,
-    [EnumInput.select]: 'вибрати',
+    [EnumInput.select]: '',
 }
 export const TableInput: React.FC<ITableInput> = React.memo(
     ({
@@ -58,25 +58,6 @@ export const TableInput: React.FC<ITableInput> = React.memo(
         const initial = initials[typeInput]
 
         const [value, setValue] = useState<typeof initial>(initial)
-
-        if (!rowState || !id || !typeTable || !status || !onChange || !typeColumn) {
-            throw new Error('Уупс!');
-        }
-
-        const state = useMemo<Item>((): Item => {
-            return rowState.columns.filter(item => item.typeColumn === typeColumn)[0]
-        }, [rowState])
-
-        useEffect(() => {
-            if (state && typeof state.value === typeof value) {
-                setValue(state.value as typeof value)
-            }
-        }, [state])
-
-        const isVisibleHeader = useMemo(() => {
-            return isHeader !== true && true
-        }, [isHeader])
-
         const setTitleCallback = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
             if (typeof value === "string") {
                 setValue(event.target.value)
@@ -87,6 +68,26 @@ export const TableInput: React.FC<ITableInput> = React.memo(
             }
             console.log(typeof value)
         }, [value])
+        console.log(value)
+        if (!rowState || !id || !typeTable || !status || !onChange || !typeColumn) {
+            throw new Error('Уупс!');
+        }
+
+        const state = useMemo<Item>((): Item => {
+            return rowState.columns.filter(item => item.typeColumn === typeColumn)[0]
+        }, [rowState])
+        // console.log(value)
+        useEffect(() => {
+            if (state && typeof state.value === typeof value && typeof value === "string" && value.length !== 0) {
+                setValue(state.value as typeof value)
+            }
+        }, [state])
+
+        const isVisibleHeader = useMemo(() => {
+            return isHeader !== true && true
+        }, [isHeader])
+
+
 
 
         const isInputDisable = useMemo(() => {
@@ -115,8 +116,9 @@ export const TableInput: React.FC<ITableInput> = React.memo(
             >
                 {isVisibleHeader ?
                     <>
-                        {inputParams.typeInput === EnumInput.select &&
+                        {inputParams.typeInput === EnumInput.select && typeof value === 'string' &&
                             <TableSelect
+                                value={value}
                                 setValue={setValue}
                                 typeColumn={typeColumn}
                             />
