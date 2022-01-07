@@ -33,9 +33,21 @@ export enum EnumStyles {
 export enum EnumStyleHeader {
 
 }
-export  interface InputParams{ typeColumn: TypeColumn, isDropDownList: boolean, filterByColumn?: TypeColumn, typeInput: EnumInput, placeholder?: string, isMother?: boolean, numberStep?: number, bigNumberStep?: number, style?: EnumStyles[] }
+export interface InputParams {
+    typeColumn: TypeColumn,
+    isDropDownList: boolean,
+    filterByColumn?: TypeColumn,
+    typeInput: EnumInput,
+    placeholder?: string,
+    isMother?: boolean,
+    numberStep?: number,
+    bigNumberStep?: number,
+    style?: EnumStyles[],
+    defaultState?: boolean | string | number,
+}
 
 export type DataEntitiesTableStructure = {
+    dependency: TypeTable[]
     title: string
     column: Array<{ width: number }>
     header: Array<{ title: string, style?: EnumStyles[], }>

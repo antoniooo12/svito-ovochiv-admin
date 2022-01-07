@@ -2,7 +2,7 @@ import React, {useContext, useMemo} from 'react';
 import {LineContent} from "../../../TableLine/LineContext";
 import {TypeColumn} from "../../../../../types/TableCreatorTypes";
 import {DropDownListItem} from "../TableInput";
-import {Item, RowItem} from "../../../../../types/categoryReducerTypes";
+import {Item, Line} from "../../../../../types/categoryReducerTypes";
 import {useTypedSelector} from "../../../../../hooks/hooks";
 
 interface ITableDataList {
@@ -16,7 +16,7 @@ const TableDataList: React.FC<ITableDataList> = ({link, typeColumn, filterByColu
     // debugger
     const {rowState} = useContext(LineContent)
 
-    const dataDropDownList: Array<RowItem> = useTypedSelector(state => state.tableReducer.storage[typeColumn].isAll.data)
+    const dataDropDownList: Array<Line> = useTypedSelector(state => state.tableReducer.storage[typeColumn].isAll.data)
 
     const dropDownList: DropDownListItem[] = useMemo(() => {
         return dataDropDownList.map(row => {

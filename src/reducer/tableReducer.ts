@@ -4,8 +4,8 @@ import {
     CategoryState,
     EnumCategoryReducer,
     Item,
-    RowItem,
-    RowsToSelectedTable,
+    Line,
+    RowsToChosenTable,
     TableEntity
 } from "../types/categoryReducerTypes";
 import {IOnClick} from "../types/TableBtnTypes";
@@ -55,7 +55,7 @@ export default function tableReducer(state: CategoryState = defaultState, action
                 }
             )
 
-            const row: RowItem = {
+            const row: Line = {
                 id: Date.now(),
                 toDelete: false,
                 wasEdit: false,
@@ -82,7 +82,7 @@ export default function tableReducer(state: CategoryState = defaultState, action
             const {value, id, typeTable, typeColumn, status} = action.payload
             console.log(typeof value)
             const oldData = state.storage[typeTable][status].data
-            const indexRow = findIndexById<RowItem>(oldData, id)
+            const indexRow = findIndexById<Line>(oldData, id)
             const oldRow = oldData.filter(obj => obj.id === id)[0]
             const oldColumn = oldRow.columns.filter(column => column.typeColumn === typeColumn)[0]
             const indexOldColumn = oldRow.columns.findIndex(column => column.typeColumn === typeColumn)
@@ -123,6 +123,15 @@ export default function tableReducer(state: CategoryState = defaultState, action
 
         case EnumCategoryReducer.SET_CATEGORIES: {
             const {typeTable, rowItem} = action.payload
+            const lines: any = rowItem.map(row => {
+                return {
+                    id: row[0].id,
+                    columns: row,
+                    wasEdit: false,
+                    toDelete: false,
+                }
+            })
+            console.log(lines)
             return {
                 ...state,
                 storage: {
@@ -131,7 +140,7 @@ export default function tableReducer(state: CategoryState = defaultState, action
                         ...state.storage[typeTable],
                         isAll: {
                             ...state.storage[typeTable].isAll,
-                            data: rowItem
+                            data: lines
                         }
                     }
                 }
@@ -216,7 +225,7 @@ export const deleteCategory = (recruitment: IOnClick) => ({
     type: EnumCategoryReducer.DELETE_CATEGORY,
     payload: recruitment,
 })
-export const setCategories = (recruitment: RowsToSelectedTable) => ({
+export const setCategories = (recruitment: RowsToChosenTable) => ({
     type: EnumCategoryReducer.SET_CATEGORIES,
     payload: recruitment,
 })

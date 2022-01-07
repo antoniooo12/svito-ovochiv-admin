@@ -54,7 +54,7 @@ export const useSaveTable = (initial: TypeTable): { onClick: any } => {
         return initial
     }, [initial])
     const {isNew, isAll} = useTypedSelector(state => state.tableReducer.storage[behavior])
-    console.log(isNew)
+    
     const {allToDelete, newToServer, allToUpdate} = useMemo(() => {
         const allToDelete = isAll.data.filter(line => line.toDelete)
         const newToServer = isNew.data.filter(line => !line.toDelete)

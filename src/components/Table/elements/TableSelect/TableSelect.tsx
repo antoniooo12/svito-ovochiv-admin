@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useCallback, useEffect, useMemo, useState} from 'react';
 import isEqual from "react-fast-compare";
 import {TypeColumn} from "../../../../types/TableCreatorTypes";
-import {RowItem} from "../../../../types/categoryReducerTypes";
+import {Line} from "../../../../types/categoryReducerTypes";
 import {
     useEffectSkipAll,
     useEffectSkipMount,
@@ -18,7 +18,7 @@ export interface ITableSelect {
 }
 
 const TableSelect: React.FC<ITableSelect> = React.memo(({typeColumn, setValue, value}) => {
-    const dataDropDownList: Array<RowItem> = useTypedSelector(state => state.tableReducer.storage[typeColumn].isAll.data)
+    const dataDropDownList: Array<Line> = useTypedSelector(state => state.tableReducer.storage[typeColumn].isAll.data)
     const {forceUpdate} = useForceUpdateALl()
     const dropDownList: DropDownListItem[] = useMemo(() => {
         return dataDropDownList.map(row => {
@@ -32,8 +32,7 @@ const TableSelect: React.FC<ITableSelect> = React.memo(({typeColumn, setValue, v
 
 
     useEffect(() => {
-        console.log(dropDownList[0].value)
-        setValue(dropDownList[0].value)
+        setValue(dropDownList.length > 0 ? dropDownList[0].value : '')
     }, [dropDownList])
     console.log(dropDownList)
     const setTitleCallback = useCallback((event: ChangeEvent<HTMLSelectElement>): void => {

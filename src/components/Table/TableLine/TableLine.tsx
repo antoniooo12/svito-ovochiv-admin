@@ -4,7 +4,7 @@ import {IOnChange, LineContent} from "./LineContext";
 import {ITableInput, TableInput} from "../elements/TableInput/TableInput";
 import {ITableHeader, TableHeader} from "../TableHeader/TableHeader";
 import {useForceUpdate, useTypedSelector} from "../../../hooks/hooks";
-import {EnumStatus, RowItem} from "../../../types/categoryReducerTypes";
+import {EnumStatus, Line} from "../../../types/categoryReducerTypes";
 import {ITableBtn, TableLineBtn} from "../elements/TableLineBtn/TableLineBtn";
 import {TypeColumn, TypeTable} from "../../../types/TableCreatorTypes";
 import {ITableSelect, TableSelect} from "../elements/TableSelect/TableSelect";
@@ -19,7 +19,7 @@ interface ITableLineComposition {
 type ITableLine = {
     index: number,
     id: number | string,
-    outerReduxObjState: RowItem,
+    outerReduxObjState: Line,
     isNew?: boolean,
     onChange?: ({}: IOnChange) => void,
     typeTable: TypeTable,
@@ -44,7 +44,7 @@ const TableLine: React.FC<ITableLine> & ITableLineComposition =
      }) => {
         const forceUpdate = useForceUpdate();
         const localState = useTypedSelector(state => state.tableReducer.storage[typeTable][status].data[index])
-        const rowState: RowItem = useMemo((): RowItem => {
+        const rowState: Line = useMemo((): Line => {
             if (localState) {
                 return localState
             } else {

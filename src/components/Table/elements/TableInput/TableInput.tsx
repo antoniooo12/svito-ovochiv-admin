@@ -8,7 +8,7 @@ import {TableDataList} from "./TableDataList/TableDataList";
 import isEqual from "react-fast-compare";
 import {useEffectSkipMount, useTypedSelector} from "../../../../hooks/hooks";
 import {EnumInput, EnumStyles, InputParams, TypeColumn} from "../../../../types/TableCreatorTypes";
-import {EnumStatus, Item, RowItem} from "../../../../types/categoryReducerTypes";
+import {EnumStatus, Item, Line} from "../../../../types/categoryReducerTypes";
 import {Simulate} from "react-dom/test-utils";
 import clsx from "clsx";
 import {TableSelect} from "../TableSelect/TableSelect";
@@ -36,7 +36,7 @@ export interface ITableInput {
 const initials: { [name in EnumInput]: string | number | boolean } = {
     [EnumInput.text]: '',
     [EnumInput.number]: 0,
-    [EnumInput.checkbox]: true,
+    [EnumInput.checkbox]: false,
     [EnumInput.select]: '',
 }
 export const TableInput: React.FC<ITableInput> = React.memo(
@@ -57,7 +57,9 @@ export const TableInput: React.FC<ITableInput> = React.memo(
         const {typeTable} = useContext(ListContent)
         const initial = initials[typeInput]
 
-        const [value, setValue] = useState<typeof initial>(initial)
+        const [value, setValue] = useState<typeof initial>(inputParams.defaultState || initial)
+
+
         const setTitleCallback = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
             if (typeof value === "string") {
                 setValue(event.target.value)
@@ -76,33 +78,38 @@ export const TableInput: React.FC<ITableInput> = React.memo(
         const state = useMemo<Item>((): Item => {
             return rowState.columns.filter(item => item.typeColumn === typeColumn)[0]
         }, [rowState])
-        // console.log(value)
+
+        // useEffect(() => {
+        //     console.log(inputParams.defaultState)
+        //     if (inputParams.defaultState) {
+        //         setValue(inputParams.defaultState)
+        //     }
+        // }, [])
         useEffect(() => {
-            if (state && typeof state.value === typeof value && typeof value === "string" && value.length !== 0) {
+            if (state && typeof state.value === "string" && state.value.length > 0 || typeof state.value !== "string") {
                 setValue(state.value as typeof value)
             }
         }, [state])
+
 
         const isVisibleHeader = useMemo(() => {
             return isHeader !== true && true
         }, [isHeader])
 
 
-
-
         const isInputDisable = useMemo(() => {
             if (!rowState.toDelete && rowState.wasEdit || status === 'isNew') {
                 return false
             }
-            if (rowState.toDelete || status === 'isAll'  ) {
+            if (rowState.toDelete || status === 'isAll') {
                 return true
             }
 
         }, [isNew, rowState && rowState.wasEdit, rowState.toDelete])
 
 
-        useEffectSkipMount(() => {
-                onChange({value: value, id, typeTable: typeTable, typeColumn, status})
+        useEffect(() => {
+            onChange({value: value, id, typeTable: typeTable, typeColumn, status})
         }, [value])
 
 
@@ -113,6 +120,8 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                      [cl.toggleButton]: inputParams.style && inputParams.style.includes(EnumStyles.toggleButton),
                      [globalCl.fontSizeSmall]: inputParams.style && inputParams.style.includes(EnumStyles.fontSizeSmall)
                  })}
+
+
             >
                 {isVisibleHeader ?
                     <>
@@ -138,6 +147,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                         {inputParams.typeInput === EnumInput.text && typeof value === 'string' &&
                             <input
                                 value={value}
+
                                 onChange={setTitleCallback}
                                 onClick={forceUpdate}
                                 disabled={isInputDisable}
@@ -150,6 +160,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                         {inputParams.typeInput === EnumInput.checkbox && typeof value === 'boolean' &&
                             <label>
                                 <input
+
                                     checked={value}
                                     onChange={setTitleCallback}
                                     onClick={forceUpdate}
@@ -158,7 +169,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                                     list={`${typeColumn} + ${state && id}`}
                                     type={typeInput}
                                 />
-                                <span>продається</span>
+                                <span>{inputParams.placeholder}</span>
                             </label>
                         }
                         {isDropDownList &&

@@ -47,10 +47,10 @@ export enum EnumTypeCategory {
 
 export interface ICategoryTypeStructure {
     forceRender: number,
-    data: Array<RowItem>,
+    data: Array<Line>,
 }
 
-export interface RowItem {
+export interface Line {
     id: number | string,
     toDelete: boolean,
     wasEdit: boolean,
@@ -85,17 +85,17 @@ interface DeleteCategory {
     payload: IOnClick,
 }
 
-export interface RowsToSelectedTable {
-    readonly rowItem: Array<RowItem> ,
+export interface RowsToChosenTable {
+    readonly rowItem: Item[][],
     readonly typeTable: TypeTable,
 }
 
-interface SetCategories {
+export interface SetCategories {
     type: EnumCategoryReducer.SET_CATEGORIES,
-    payload: RowsToSelectedTable,
+    payload: RowsToChosenTable,
 }
 
-interface editCategory {
+export interface editCategory {
     readonly  type: EnumCategoryReducer.EDIT_CATEGORY,
     readonly  payload: IOnClick,
 }

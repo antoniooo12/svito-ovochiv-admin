@@ -6,22 +6,21 @@ import {useDispatch} from "react-redux";
 import {useLocation} from "react-router-dom";
 import {createNewRow} from "../../../reducer/tableReducer";
 import {TypeTable} from "../../../types/TableCreatorTypes";
-import {useActions} from "../../../hooks/useActions";
-import {useSaveTable, useTypedSelector} from "../../../hooks/hooks";
+import {useSaveTable} from "../../../hooks/hooks";
 import isEqual from "react-fast-compare";
 
-const RightPanel = memo(() => {
+const RightPanel: React.FC<{typeTable: TypeTable}> = memo(({typeTable}) => {
     const dispatch = useDispatch()
     let location = useLocation();
-    const behavior = useMemo(() => {
-        return location.pathname.split('/').pop() as TypeTable
-    }, [location.pathname])
+    // const behavior = useMemo(() => {
+    //     return location.pathname.split('/').pop() as TypeTable
+    // }, [location.pathname])
     const onCreate = useCallback(() => {
-        dispatch(createNewRow(behavior))
-    }, [behavior])
+        dispatch(createNewRow(typeTable))
+    }, [typeTable])
 
 
-    const {onClick} = useSaveTable(behavior)
+    const {onClick} = useSaveTable(typeTable)
     // const onSave = useCallback(() => {
     //     onClick()
     // }, [behavior])

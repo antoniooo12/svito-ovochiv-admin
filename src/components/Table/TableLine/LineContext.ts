@@ -1,5 +1,5 @@
 import {createContext} from "react";
-import {EnumStatus, Item, RowItem} from "../../../types/categoryReducerTypes";
+import {EnumStatus, Item, Line} from "../../../types/categoryReducerTypes";
 import {TypeTable, TypeColumn} from "../../../types/TableCreatorTypes";
 
 export interface IOnChange {
@@ -21,7 +21,7 @@ interface ILineContent {
     typeRows?: TypeColumn,
     onChange?: ({id, value, typeTable, typeColumn, status}: IOnChange) => void,
     forceUpdate?: any,
-    rowState: RowItem,
+    rowState: Line,
     filterBy?: { typeColumn: TypeColumn, id: number | string }
 }
 //@ts-ignore

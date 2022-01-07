@@ -1,14 +1,16 @@
-import React, {useEffect, useMemo} from 'react';
-import {Outlet} from "react-router-dom";
+import React from 'react';
+import {Outlet, useLocation} from "react-router-dom";
 import {ProductsPageHeader} from "../../components/ProductsPageHeader/ProductsPageHeader";
 import cl from "./ProductsPage.module.scss";
 import {useDispatch} from "react-redux";
 import {RightPanel} from "./RightPanel/RightPanel";
-import {setCategories} from "../../reducer/tableReducer";
-import {AllCategories, AllSubCategories} from "../../mokData";
+import {TypeTable} from "../../types/TableCreatorTypes";
+import {DataEntitiesCatalog} from "../../mokData";
 
 const ProductsPage = () => {
     const dispatch = useDispatch()
+    let location = useLocation();
+    const behavior = location.pathname.split('/').pop() as TypeTable
 
 
     return (
@@ -21,7 +23,7 @@ const ProductsPage = () => {
             </div>
 
             <div className={cl.right}>
-                <RightPanel/>
+                <RightPanel typeTable={behavior}/>
             </div>
         </div>
     );

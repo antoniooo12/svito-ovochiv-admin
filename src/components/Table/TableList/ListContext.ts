@@ -8,4 +8,4 @@ interface IListContent {
 }
 
 
-export const ListContent = createContext<IListContent>({categories: []})
+export const ListContent = createContext<IListContent>({typeTable: "Category"})
