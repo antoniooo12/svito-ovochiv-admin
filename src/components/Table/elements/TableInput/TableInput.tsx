@@ -76,11 +76,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
         }
 
         const state = useMemo<Item>((): Item => {
-            if (!rowState.columns[typeColumn]) {
-                throw new Error()
-            }
             return rowState.columns[typeColumn] as Item
-            // return rowState.columns.filter(item => item.typeColumn === typeColumn)[0]
         }, [rowState])
 
         // useEffect(() => {
@@ -90,7 +86,9 @@ export const TableInput: React.FC<ITableInput> = React.memo(
         //     }
         // }, [])
         useEffect(() => {
-            if (state && typeof state.value === "string" && state.value.length > 0 || typeof state.value !== "string") {
+            console.log(rowState)
+            console.log(state)
+            if (rowState && typeof state.value === "string" && state.value.length > 0 || typeof state.value !== "string") {
                 setValue(state.value as typeof value)
             }
         }, [state])
@@ -112,7 +110,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
         }, [isNew, rowState && rowState.wasEdit, rowState.toDelete])
 
 
-        useEffect(() => {
+        useEffectSkipMount(() => {
             onChange({value: value, id, typeTable: typeTable, typeColumn, status})
         }, [value])
 

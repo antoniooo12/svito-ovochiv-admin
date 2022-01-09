@@ -56,7 +56,7 @@ export const getAllRowsByTableName = ({behavior}: { behavior: TypeTable }) => {
 
             const temp: RowsToChosenTable = {rowItem: toUI, typeTable: behavior}
             console.log(temp)
-            // dispatch(setCategories(temp))
+            dispatch(setCategories(temp))
 
         } catch (e) {
             console.log(e)

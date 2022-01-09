@@ -56,7 +56,6 @@ export default function tableReducer(state: CategoryState = defaultState, action
                         accumulator[key as TypeColumn] = column
                         return accumulator
                     }
-
                     , {})
 
             const row: Line = {
@@ -164,10 +163,8 @@ export default function tableReducer(state: CategoryState = defaultState, action
         case EnumCategoryReducer.SET_CATEGORIES: {
             const {typeTable, rowItem} = action.payload
             const lines: Line & any = rowItem.map(row => {
-                const rowToRedux = row.reduce((accumulator: any[], dbTable, index) => {
-                    console.log(dbTable)
+                const rowToRedux = row.reduce((accumulator: any, dbTable, index) => {
                     const otherColumns = Object.keys(dbTable).filter(param => Object.keys(DataColumn).includes(param))
-                    console.log(otherColumns)
                     if (otherColumns.length > 0) {
                         const column = {
                             value: dbTable.value,
@@ -176,15 +173,14 @@ export default function tableReducer(state: CategoryState = defaultState, action
                             wasEdit: false,
                             dependencyId: dbTable.dependencyId ? dbTable.dependencyId : -1,
                         }
-                        accumulator.push(column)
+                        accumulator[column.typeColumn] = column
                         const subTables = otherColumns.map(columnName => {
-                            return {
+                            accumulator[columnName] = {
                                 value: dbTable[columnName],
                                 typeColumn: columnName as TypeColumn,
                                 id: -1 - index,
                             }
                         })
-                        accumulator.push(...subTables)
                     } else {
                         const column = {
                             value: dbTable.value,
@@ -193,22 +189,22 @@ export default function tableReducer(state: CategoryState = defaultState, action
                             wasEdit: false,
                             dependencyId: dbTable.dependencyId ? dbTable.dependencyId : -1,
                         }
-                        accumulator.push(column)
+                        accumulator[column.typeColumn] = column
                     }
                     return accumulator
-                }, [])
-                const sorting = Object.keys(TableCreatorMokData[typeTable].row)
-                const sorted = rowToRedux.map(function (item) {
-                    const n = sorting.indexOf(item[1]);
-                    sorting[n] = '';
-                    return [n, item]
-                }).sort().map(function (j) {
-                    return j[1]
-                })
-                console.log(Object.keys(TableCreatorMokData[typeTable].row))
+                }, {})
+                // const sorting = Object.keys(TableCreatorMokData[typeTable].row)
+                // const sorted = rowToRedux.sort((a, b) => {
+                //     return sorting.indexOf(a.typeColumn) - sorting.indexOf(b.typeColumn);
+                // });
+                // console.log(sorting)
+                setTimeout(() => {
+                    console.log(rowToRedux)
+                }, 300);
+                // console.log(sorted)
                 return {
                     id: row[0].id,
-                    columns: sorted,
+                    columns: rowToRedux,
                     wasEdit: false,
                     toDelete: false,
                 }
