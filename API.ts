@@ -1,4 +1,4 @@
-import {TableCreator} from "./src/types/TableCreatorTypes";
+import {TablesCreator} from "./src/types/TableCreatorTypes";
 
 // export const DataEntitiesTable: TableCreator = {
 //     categories: {

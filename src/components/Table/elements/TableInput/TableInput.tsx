@@ -76,7 +76,11 @@ export const TableInput: React.FC<ITableInput> = React.memo(
         }
 
         const state = useMemo<Item>((): Item => {
-            return rowState.columns.filter(item => item.typeColumn === typeColumn)[0]
+            if (!rowState.columns[typeColumn]) {
+                throw new Error()
+            }
+            return rowState.columns[typeColumn] as Item
+            // return rowState.columns.filter(item => item.typeColumn === typeColumn)[0]
         }, [rowState])
 
         // useEffect(() => {

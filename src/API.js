@@ -1,5 +1,5 @@
 // const URL = 'http://localhost:4800'
-import {TableCreator} from "./types/TableCreatorTypes";
+import {TablesCreator} from "./types/TableCreatorTypes";
 
 const URL = 'http://localhost:3300'
 

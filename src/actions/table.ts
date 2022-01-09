@@ -1,7 +1,14 @@
 import Axios from "../core/axios";
 import {TypeTable} from "../types/TableCreatorTypes";
 import {Dispatch} from "redux";
-import {CategoryReducerActions, Item, Line, RowsToChosenTable, SetCategories} from "../types/categoryReducerTypes";
+import {
+    CategoryReducerActions,
+    ColumnReduxStructure,
+    Item,
+    Line,
+    RowsToChosenTable,
+    SetCategories
+} from "../types/categoryReducerTypes";
 import axios from "../core/axios";
 import {setCategories} from "../reducer/tableReducer";
 // import {AllData} from "../mokData";
@@ -9,8 +16,8 @@ import {log} from "util";
 
 interface SaveTable {
     behavior: TypeTable,
-    allToDelete: Array<Line>,
-    newToServer: Array<Line>,
+    allToDelete: Array<any>,
+    newToServer: Array<ColumnReduxStructure>,
     allToUpdate: Array<Line>,
 }
 
@@ -49,7 +56,7 @@ export const getAllRowsByTableName = ({behavior}: { behavior: TypeTable }) => {
 
             const temp: RowsToChosenTable = {rowItem: toUI, typeTable: behavior}
             console.log(temp)
-            dispatch(setCategories(temp))
+            // dispatch(setCategories(temp))
 
         } catch (e) {
             console.log(e)

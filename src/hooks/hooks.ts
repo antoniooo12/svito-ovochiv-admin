@@ -4,6 +4,7 @@ import {RootState} from "../reducer";
 import {getIdFromValueString1} from "../reducer/helpers/helper";
 import {TypeTable} from "../types/TableCreatorTypes";
 import {useActions} from "./useActions";
+import {ColumnReduxStructure, Line} from "../types/categoryReducerTypes";
 
 export function useEffectSkipMount(cb: any, deps: any) {
     const mounted = useRef(true)
@@ -57,10 +58,15 @@ export const useSaveTable = (initial: TypeTable): { onClick: any } => {
     
     const {allToDelete, newToServer, allToUpdate} = useMemo(() => {
         const allToDelete = isAll.data.filter(line => line.toDelete)
-        const newToServer = isNew.data.filter(line => !line.toDelete)
+        // debugger
+        const newToServer: ColumnReduxStructure[] = isNew.data.filter(line => !line.wasEdit)
+            .map((line: Line) => {
+                return line.columns
+            })
         const allToUpdate = isAll.data.filter(line => line.wasEdit)
+        console.log(newToServer)
         return {allToDelete, newToServer, allToUpdate}
-    }, [behavior, isNew, isAll])
+    }, [behavior, isNew.data, isAll])
 
     const onSave = useCallback(async () => {
         await forceUpdate()

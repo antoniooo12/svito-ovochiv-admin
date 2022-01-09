@@ -5,7 +5,13 @@ import {TableHeader} from '../TableHeader/TableHeader';
 import {TableLine} from "../TableLine/TableLine";
 import {EnumStatus, TableEntityStructure} from "../../../types/categoryReducerTypes";
 import {IOnChange} from "../TableLine/LineContext";
-import {DataEntitiesTableStructure, EnumInput, EnumStyles, TypeTable} from "../../../types/TableCreatorTypes";
+import {
+    DataEntitiesTableStructure,
+    EnumInput,
+    EnumStyles, InputParams,
+    TableStructure, TypeColumn,
+    TypeTable
+} from "../../../types/TableCreatorTypes";
 import {IconTrash} from "../../UI/icons/Trash/Trash";
 import {EnumTableBtn, IOnClick} from "../../../types/TableBtnTypes";
 import {IconNotePencil} from "../../UI/icons/NotePencil/IconNotePencil";
@@ -41,7 +47,7 @@ const TableCreator: React.FC<TableCreator> = React.memo(({params, data, actions,
                                 [cl.fontSize14]: el.style && el.style.includes(EnumStyles.fontSize14),
                             })
                             return (
-                                <div className={headerStyle} style={{width: `${params.column[index].width}px`}}>
+                                <div className={headerStyle} style={{width: `${params.columnParams[index].width}px`}}>
                                     {el.title}
                                 </div>
                             )
@@ -61,18 +67,18 @@ const TableCreator: React.FC<TableCreator> = React.memo(({params, data, actions,
                                     onChange={actions.onChange}
                                     status={status as EnumStatus}
                                 >
-                                    {params.row.map((column, index) => {
-
-                                            return (
-                                                <TableLine.Input
-                                                    index={index}
-                                                    isMother={column.isMother}
-                                                    width={params.column[index].width}
-                                                    typeColumn={column.typeColumn}
-                                                    placeholder={column.placeholder}
-                                                    filterByColumn={column.filterByColumn}
-                                                    isDropDownList={column.isDropDownList}
-                                                    typeInput={column.typeInput}
+                                    {Object.keys(params.row).map((key, index) => {
+                                        const column = params.row[key as TypeColumn] as InputParams
+                                        return (
+                                            <TableLine.Input
+                                                index={index}
+                                                isMother={column.isMother}
+                                                width={params.columnParams[index].width}
+                                                typeColumn={column.typeColumn}
+                                                placeholder={column.placeholder}
+                                                filterByColumn={column.filterByColumn}
+                                                isDropDownList={column.isDropDownList}
+                                                typeInput={column.typeInput}
                                                     inputParams={column}
                                                 />)
 

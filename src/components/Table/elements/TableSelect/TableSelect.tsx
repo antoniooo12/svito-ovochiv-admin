@@ -21,13 +21,15 @@ const TableSelect: React.FC<ITableSelect> = React.memo(({typeColumn, setValue, v
     const dataDropDownList: Array<Line> = useTypedSelector(state => state.tableReducer.storage[typeColumn].isAll.data)
     const {forceUpdate} = useForceUpdateALl()
     const dropDownList: DropDownListItem[] = useMemo(() => {
-        return dataDropDownList.map(row => {
-            return {
-                id: row.columns[0].id,
-                value: row.columns[0].value as string,
-                dependencyId: row.columns[0].dependencyId,
-            }
-        })
+        return []
+        // return dataDropDownList.map(row => {
+        //
+        //     // return {
+        //     //     id: row.columns[0].id,
+        //     //     value: row.columns[0].value as string,
+        //     //     dependencyId: row.columns[0].dependencyId,
+        //     // }
+        // })
     }, [dataDropDownList])
 
 

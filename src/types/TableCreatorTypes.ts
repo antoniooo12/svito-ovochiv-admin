@@ -1,7 +1,5 @@
-import {DataColumn, DataEntitiesCatalog} from "../mokData";
-
-
-
+import {Columns, DataColumn, DataEntitiesCatalog} from "../mokData";
+import {Item} from "./categoryReducerTypes";
 
 
 // export interface IDataEntitiesCatalog {
@@ -14,6 +12,7 @@ export type IDataColumn = {
 }
 export type TypeTable = keyof typeof DataEntitiesCatalog
 export type TypeColumn = keyof typeof DataColumn
+export type TypeColumnOfTable = keyof typeof Columns
 
 export enum EnumInput {
     text = 'text',
@@ -46,14 +45,18 @@ export interface InputParams {
     defaultState?: boolean | string | number,
 }
 
+export type TableStructure = {
+    [name in TypeColumn]?: InputParams
+}
 export type DataEntitiesTableStructure = {
     dependency: TypeTable[]
     title: string
-    column: Array<{ width: number }>
+    columnParams: Array<{ width: number }>
     header: Array<{ title: string, style?: EnumStyles[], }>
-    row: Array<InputParams>
+    row: TableStructure
 };
 
-export type TableCreator = {
+
+export type TablesCreator = {
     [name in TypeTable]: DataEntitiesTableStructure;
 };

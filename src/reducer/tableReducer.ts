@@ -1,7 +1,7 @@
 import {IOnChange} from "../components/Table/TableLine/LineContext";
 import {
     CategoryReducerActions,
-    CategoryState,
+    CategoryState, ColumnReduxStructure,
     EnumCategoryReducer,
     Item,
     Line,
@@ -11,7 +11,7 @@ import {
 import {IOnClick} from "../types/TableBtnTypes";
 import {findIndexById, getIdFromValueString} from "./helpers/helper";
 import {DataColumn, DataEntitiesCatalog, TableCreatorMokData} from "../mokData";
-import {TypeColumn, TypeTable} from "../types/TableCreatorTypes";
+import {InputParams, TableStructure, TypeColumn, TypeTable} from "../types/TableCreatorTypes";
 
 
 let implementedTableEntities: TableEntity = {}
@@ -44,21 +44,26 @@ export default function tableReducer(state: CategoryState = defaultState, action
     switch (action.type) {
         case EnumCategoryReducer.CREATE_CATEGORY: {
             const typeTable: any = action.payload
-            const rowItemArray: Array<Item> = TableCreatorMokData[typeTable as TypeTable].row.map((column): Item => {
-                    return {
-                        id: Date.now(),
-                        typeColumn: column.typeColumn,
-                        wasEdit: false,
-                        value: '',
+            const rowItemArray: ColumnReduxStructure =
+                Object.keys(TableCreatorMokData[typeTable as TypeTable].row).reduce((accumulator: ColumnReduxStructure, key) => {
+
+                        const column = {
+                            id: '__00__' + Date.now(),
+                            typeColumn: key as TypeColumn,
+                            wasEdit: false,
+                            value: '',
+                        }
+                        accumulator[key as TypeColumn] = column
+                        return accumulator
                     }
-                }
-            )
+
+                    , {})
 
             const row: Line = {
-                id: Date.now(),
+                id: '__00__' + Date.now(),
                 toDelete: false,
                 wasEdit: false,
-                columns: [...rowItemArray]
+                columns: rowItemArray
             }
 
             return {
@@ -79,41 +84,47 @@ export default function tableReducer(state: CategoryState = defaultState, action
 
         case EnumCategoryReducer.CHANGE_CATEGORY: {
             const {value, id, typeTable, typeColumn, status} = action.payload
+            console.log({value, id, typeTable, typeColumn, status})
             const oldData = state.storage[typeTable][status].data
             const indexRow = findIndexById<Line>(oldData, id)
-            const oldRow = oldData.filter(obj => obj.id === id)[0]
-            const oldColumn = oldRow.columns.filter(column => column.typeColumn === typeColumn)[0]
-            const indexOldColumn = oldRow.columns.findIndex(column => column.typeColumn === typeColumn)
-            // debugger
+            const oldLine = oldData.find(obj => obj.id === id) as Line
 
+            const oldColumn = oldLine.columns[typeColumn]
+            // const indexOldColumn = oldRow.columns.findIndex(column => column.typeColumn === typeColumn)
+            // debugger
+            console.log(indexRow)
+            console.log(oldLine)
             const {
                 pulledId,
                 separatedValue
             }: { pulledId?: number, separatedValue?: string } = getIdFromValueString(value)
-
-
             const changedColumn = {
                 ...oldColumn,
                 id: pulledId && pulledId,
                 value: separatedValue ? pulledId + ": " + separatedValue.trim() : value,
             }
-            const changedRow = {
-                ...oldRow,
-                columns: [...oldRow.columns.slice(0, indexOldColumn), changedColumn, ...oldRow.columns.slice(indexOldColumn + 1)]
+            const changedLine: Line = {
+                ...oldLine,
+                columns: {
+                    ...oldLine.columns,
+                    [typeColumn]: changedColumn,
+                }
             }
-            const changedData = [...oldData.slice(0, indexRow), changedRow, ...oldData.slice(indexRow + 1)]
+            console.log(changedLine)
+
+            const changedData = [...oldData.slice(0, indexRow), changedLine, ...oldData.slice(indexRow + 1)]
             return {
                 ...state,
-                // storage: {
-                //     ...state.storage,
-                //     [typeTable]: {
-                //         ...state.storage[typeTable],
-                //         [status]: {
-                //             ...state.storage[typeTable][status],
-                //             data: changedData
-                //         }
-                //     }
-                // }
+                storage: {
+                    ...state.storage,
+                    [typeTable]: {
+                        ...state.storage[typeTable],
+                        [status]: {
+                            ...state.storage[typeTable][status],
+                            data: changedData
+                        }
+                    }
+                }
             }
         }
         // const lines: any = rowItem.map(row => {
@@ -186,11 +197,18 @@ export default function tableReducer(state: CategoryState = defaultState, action
                     }
                     return accumulator
                 }, [])
-                const sorted = rowToRedux.sort((a, b) => Object.keys(TableCreatorMokData.Product.row).indexOf(a) - Object.keys(TableCreatorMokData.Product.row).indexOf(b));
-                console.log(sorted)
+                const sorting = Object.keys(TableCreatorMokData[typeTable].row)
+                const sorted = rowToRedux.map(function (item) {
+                    const n = sorting.indexOf(item[1]);
+                    sorting[n] = '';
+                    return [n, item]
+                }).sort().map(function (j) {
+                    return j[1]
+                })
+                console.log(Object.keys(TableCreatorMokData[typeTable].row))
                 return {
                     id: row[0].id,
-                    columns: rowToRedux,
+                    columns: sorted,
                     wasEdit: false,
                     toDelete: false,
                 }

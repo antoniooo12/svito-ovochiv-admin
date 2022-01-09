@@ -19,18 +19,23 @@ const TableDataList: React.FC<ITableDataList> = ({link, typeColumn, filterByColu
     const dataDropDownList: Array<Line> = useTypedSelector(state => state.tableReducer.storage[typeColumn].isAll.data)
 
     const dropDownList: DropDownListItem[] = useMemo(() => {
-        return dataDropDownList.map(row => {
-            return {
-                id: row.columns[0].id,
-                value: row.columns[0].value as string,
-                dependencyId: row.columns[0].dependencyId,
-            }
-        })
+        return []
+        // return dataDropDownList.map(row => {
+        //     if (row.columns[typeColumn]) {
+        //         throw  new Error()
+        //     }
+        //     return {
+        //         id: row.columns[typeColumn].id,
+        //         value: row.columns[typeColumn].value as string,
+        //         dependencyId: row.columns[typeColumn].dependencyId,
+        //     }
+        // })
     }, [dataDropDownList])
 
 
     const state: Item = useMemo(() => {
-        return rowState.columns.filter(item => item.typeColumn === filterByColumn)[0]
+        return rowState.columns[typeColumn] as Item
+        // return rowState.columns.filter(item => item.typeColumn === filterByColumn)[0]
     }, [rowState])
 
     const filterById = useMemo(() => {

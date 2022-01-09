@@ -1,7 +1,7 @@
 import {IOnChange} from "../components/Table/TableLine/LineContext";
 import {IOnClick} from "./TableBtnTypes";
 import {} from "../API";
-import {IDataColumn, TableCreator, TypeColumn, TypeTable} from "./TableCreatorTypes";
+import {IDataColumn, TablesCreator, TypeColumn, TypeTable} from "./TableCreatorTypes";
 import {DataEntitiesCatalog, DataColumn} from "../mokData";
 
 export enum EnumCategoryReducer {
@@ -54,9 +54,12 @@ export interface Line {
     id: number | string,
     toDelete: boolean,
     wasEdit: boolean,
-    columns: Array<Item>,
+    columns: ColumnReduxStructure,
 }
 
+export type ColumnReduxStructure = {
+    [name in  TypeColumn]?: Item
+}
 export interface IItems {
     Items: Array<Item>
 }
