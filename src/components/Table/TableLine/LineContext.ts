@@ -25,4 +25,4 @@ interface ILineContent {
     filterBy?: { typeColumn: TypeColumn, id: number | string }
 }
 //@ts-ignore
-export const LineContent = createContext<ILineContent>({filterBy: {typeColumn: {}, id: Number}})
+export const LineContent = createContext<ILineContent>()

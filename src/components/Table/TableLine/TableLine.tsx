@@ -8,6 +8,7 @@ import {EnumStatus, Line} from "../../../types/categoryReducerTypes";
 import {ITableBtn, TableLineBtn} from "../elements/TableLineBtn/TableLineBtn";
 import {TypeColumn, TypeTable} from "../../../types/TableCreatorTypes";
 import {ITableSelect, TableSelect} from "../elements/TableSelect/TableSelect";
+import isEqual from "react-fast-compare";
 
 interface ITableLineComposition {
     Header: React.FC<ITableHeader>,
@@ -68,10 +69,10 @@ const TableLine: React.FC<ITableLine> & ITableLineComposition =
                 }
             }
         }, [index, isNew])
-
+const classes = [cl.wrapper, lineColor, rowState && rowState.toDelete && cl.toDelete,]
         return (<LineContent.Provider
             value={{
-                id,
+                id: rowState.id,
                 rowState,
                 isNew,
                 onChange,
@@ -85,7 +86,7 @@ const TableLine: React.FC<ITableLine> & ITableLineComposition =
                 {children}
             </div>
         </LineContent.Provider>);
-    };
+    }
 
 TableLine.Header = TableHeader
 TableLine.Input = TableInput

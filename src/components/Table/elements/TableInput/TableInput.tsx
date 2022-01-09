@@ -111,7 +111,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
 
 
         useEffectSkipMount(() => {
-            onChange({value: value, id, typeTable: typeTable, typeColumn, status})
+            onChange({value: value, id: id, typeTable: typeTable, typeColumn, status})
         }, [value])
 
 

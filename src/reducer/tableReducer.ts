@@ -87,6 +87,7 @@ export default function tableReducer(state: CategoryState = defaultState, action
             const oldData = state.storage[typeTable][status].data
             const indexRow = findIndexById<Line>(oldData, id)
             const oldLine = oldData.find(obj => obj.id === id) as Line
+// debugger
 
             const oldColumn = oldLine.columns[typeColumn]
             // const indexOldColumn = oldRow.columns.findIndex(column => column.typeColumn === typeColumn)
@@ -126,39 +127,6 @@ export default function tableReducer(state: CategoryState = defaultState, action
                 }
             }
         }
-        // const lines: any = rowItem.map(row => {
-        //     const rowToRedux = row.map(dbTable => {
-        //         console.log(dbTable)
-        //         const otherColumns = Object.keys(dbTable).filter(param => Object.keys(DataColumn).includes(param))
-        //         console.log(otherColumns)
-        //         if (otherColumns.length > 0) {
-        //             const subTables = otherColumns.map(columnName => {
-        //                 return {
-        //                     value: dbTable[columnName],
-        //                     typeColumn: columnName,
-        //                     id: -1,
-        //                     dependencyId: -1,
-        //                 }
-        //             })
-        //             return [...subTables][0]
-        //         } else {
-        //             return {
-        //                 value: dbTable.value,
-        //                 id: dbTable.id,
-        //                 wasEdit: false,
-        //                 typeColumn: dbTable.typeColumn as TypeColumn,
-        //                 dependencyId: dbTable.dependencyId ? dbTable.dependencyId : -1,
-        //             }
-        //         }
-        //     })
-        //     console.log(rowToRedux)
-        //     return {
-        //         id: row[0].id,
-        //         columns: rowToRedux,
-        //         wasEdit: false,
-        //         toDelete: false,
-        //     }
-        // })
 
         case EnumCategoryReducer.SET_CATEGORIES: {
             const {typeTable, rowItem} = action.payload
