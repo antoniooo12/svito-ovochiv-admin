@@ -86,7 +86,7 @@ interface DeleteCategory {
 }
 
 export interface RowsToChosenTable {
-    readonly rowItem: Item[][],
+    readonly rowItem: any[][],
     readonly typeTable: TypeTable,
 }
 
