@@ -255,6 +255,22 @@ export default function tableReducer(state: CategoryState = defaultState, action
                 }
             }
         }
+        case EnumCategoryReducer.DELETE_ALL_NEW_INSTANCE: {
+            const {typeTable} = action.payload
+            return {
+                ...state,
+                storage: {
+                    ...state.storage,
+                    [typeTable]: {
+                        ...state.storage[typeTable],
+                        isNew: {
+                            forceRender: 0,
+                            data: []
+                        }
+                    }
+                }
+            }
+        }
         default:
             return state
     }
@@ -281,16 +297,13 @@ export const editCategory = (recruitment: IOnClick) => ({
     type: EnumCategoryReducer.EDIT_CATEGORY,
     payload: recruitment,
 })
-
+export const deleteAllNewInstance = (recruitment: { typeTable: TypeTable }) => ({
+    type: EnumCategoryReducer.DELETE_ALL_NEW_INSTANCE,
+    payload: recruitment,
+})
 // export const bulkDeleteCategories = (arrOfId: any) => ({type: BULK_DELETE_CATEGORY, payload: arrOfId})
 // export const editOldCategory = (recruitment: any) => ({type: EDIT_OLD_CATEGORY, payload: recruitment})
 
 
-function getProperty<Context, K extends keyof Context>(obj: Context, key: K): Context[K] {
-    return obj[key];
-}
 
-function instanceOfItem(object: any): object is Item {
-    return object.discriminator === 'I-AM-A';
-}
 

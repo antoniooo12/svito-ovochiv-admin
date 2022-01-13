@@ -1,1 +1,1 @@
-export const defaultLink = '/goods/Subcategory'
+export const defaultLink = '/goods/Category'

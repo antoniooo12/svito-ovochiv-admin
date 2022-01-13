@@ -1,10 +1,11 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
-import {TypedUseSelectorHook, useSelector} from "react-redux";
+import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {RootState} from "../reducer";
 import {getIdFromValueString1} from "../reducer/helpers/helper";
 import {TypeTable} from "../types/TableCreatorTypes";
 import {useActions} from "./useActions";
 import {ColumnReduxStructure, Line} from "../types/categoryReducerTypes";
+import {deleteAllNewInstance} from "../reducer/tableReducer";
 
 export function useEffectSkipMount(cb: any, deps: any) {
     const mounted = useRef(true)
@@ -49,20 +50,17 @@ export function useForceUpdateALl() {
 }
 
 export const useSaveTable = (initial: TypeTable): { onClick: any } => {
-    const {saveTable} = useActions()
+    const dispatch = useDispatch()
+    const {saveTable, getAllRowsByTableName} = useActions()
     const {forceUpdate, forceUpdateValue} = useForceUpdateALl()
     const behavior: TypeTable = useMemo(() => {
         return initial
     }, [initial])
     const {isNew, isAll} = useTypedSelector(state => state.tableReducer.storage[behavior])
-    
+
     const {allToDelete, newToServer, allToUpdate} = useMemo(() => {
-        const allToDelete = isAll.data.filter(line => line.toDelete)
-        // debugger
-        const newToServer: ColumnReduxStructure[] = isNew.data.filter(line => !line.wasEdit)
-            .map((line: Line) => {
-                return line.columns
-            })
+        const allToDelete: Array<number | string> = isAll.data.flatMap(line => line.toDelete ? line.id : [])
+        const newToServer: ColumnReduxStructure[] = isNew.data.flatMap(line => !line.toDelete ? line.columns : [])
         const allToUpdate = isAll.data.filter(line => line.wasEdit)
         console.log(newToServer)
         return {allToDelete, newToServer, allToUpdate}
@@ -71,6 +69,8 @@ export const useSaveTable = (initial: TypeTable): { onClick: any } => {
     const onSave = useCallback(async () => {
         await forceUpdate()
         await saveTable({behavior, allToDelete, newToServer, allToUpdate})
+        await getAllRowsByTableName({behavior})
+        dispatch(deleteAllNewInstance({typeTable: behavior}))
     }, [isNew.data, isAll.data])
 
     return {onClick: onSave}

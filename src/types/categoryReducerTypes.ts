@@ -10,6 +10,7 @@ export enum EnumCategoryReducer {
     DELETE_CATEGORY = "DELETE_CATEGORY",
     SET_CATEGORIES = "SET_CATEGORIES",
     EDIT_CATEGORY = "EDIT_CATEGORY",
+    DELETE_ALL_NEW_INSTANCE = "DELETE_ALL_NEW_INSTANCE"
 }
 
 
@@ -103,4 +104,15 @@ export interface editCategory {
     readonly  payload: IOnClick,
 }
 
-export type CategoryReducerActions = CreateCategory | ChangeCategory | DeleteCategory | SetCategories | editCategory
+export interface deleteAllNewInstance {
+    readonly  type: EnumCategoryReducer.DELETE_ALL_NEW_INSTANCE,
+    readonly  payload: { typeTable: TypeTable },
+}
+
+export type CategoryReducerActions =
+    CreateCategory
+    | ChangeCategory
+    | DeleteCategory
+    | SetCategories
+    | editCategory
+    | deleteAllNewInstance
