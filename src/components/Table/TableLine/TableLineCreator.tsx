@@ -20,7 +20,7 @@ type TableLineCreator = {
     }
     status: keyof typeof EnumStatus
 }
-const TableLineCreator: React.FC<TableLineCreator> = ({index, row, actions, typeTable, params, status}) => {
+const TableLineCreator: React.FC<TableLineCreator> = React.memo(({index, row, actions, typeTable, params, status}) => {
     console.log(row)
     return (
         <TableLine
@@ -63,6 +63,6 @@ const TableLineCreator: React.FC<TableLineCreator> = ({index, row, actions, type
             }
         </TableLine>
     );
-};
+},isEqual)
 
 export {TableLineCreator};
