@@ -17,43 +17,40 @@ const TableDataList: React.FC<ITableDataList> = ({link, typeColumn, filterByColu
     const {rowState} = useContext(LineContent)
 
     const dataDropDownList: Array<Line> = useTypedSelector(state => state.tableReducer.storage[typeColumn].isAll.data)
-
     const dropDownList: DropDownListItem[] = useMemo(() => {
-        return []
-        // return dataDropDownList.map(row => {
-        //     if (row.columns[typeColumn]) {
-        //         throw  new Error()
-        //     }
-        //     return {
-        //         id: row.columns[typeColumn].id,
-        //         value: row.columns[typeColumn].value as string,
-        //         dependencyId: row.columns[typeColumn].dependencyId,
-        //     }
-        // })
-    }, [dataDropDownList])
+        return dataDropDownList.map(row => {
+            const item = row.columns[typeColumn]
+            if (!item) {
+                throw  new Error()
+            }
+            return {
+                id: row.id,
+                value: item.value as string,
+                dependencyId: item.dependencyId,
+            }
+        })
+    }, [dataDropDownList, rowState])
 
-
-    const state: Item = useMemo(() => {
-        return rowState.columns[typeColumn] as Item
-        // return rowState.columns.filter(item => item.typeColumn === filterByColumn)[0]
+    const state = useMemo(() => {
+        return filterByColumn && rowState.columns[filterByColumn] as Item
     }, [rowState])
 
     const filterById = useMemo(() => {
         return state && state.id
-    }, [rowState, state])
+    }, [rowState, state, dropDownList])
 
     const filteredDropDownList = useMemo(() => {
-        if (filterById) {
+        if (filterByColumn && filterById) {
             return dropDownList.filter(item => item.dependencyId && item.dependencyId.toString() === filterById.toString())
         }
         return dropDownList
     }, [link, dropDownList, filterById])
 
-
     return (
         <datalist id={link}>
             {filteredDropDownList
                 .map(item => <option
+                    key={item.id}
                         value={`${item.id}:  ${item.value}`}
                     />
                 )}

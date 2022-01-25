@@ -18,7 +18,7 @@ interface SaveTable {
     behavior: TypeTable,
     allToDelete: Array<any>,
     newToServer: Array<ColumnReduxStructure>,
-    allToUpdate: Array<Line>,
+    allToUpdate: Array<ColumnReduxStructure>,
 }
 
 export const saveTable = (
@@ -31,7 +31,6 @@ export const saveTable = (
     return async (dispatch: Dispatch<CategoryReducerActions>) => {
         try {
 
-            console.log(newToServer)
             const res = await axios.post(`/api/goods/table`,
                 {behavior, allToDelete, newToServer, allToUpdate})
         } catch (e) {
@@ -49,13 +48,11 @@ export const getAllRowsByTableName = ({behavior}: { behavior: TypeTable }) => {
             })
 
             const toUI = response.data as Item[][]
-            await setTimeout(() => {
-                console.log(toUI)
-            }, 200);
+
 
 
             const temp: RowsToChosenTable = {rowItem: toUI, typeTable: behavior}
-            console.log(temp)
+
             dispatch(setCategories(temp))
 
         } catch (e) {

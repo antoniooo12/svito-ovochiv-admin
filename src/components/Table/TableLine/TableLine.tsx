@@ -1,14 +1,15 @@
-import React, {ReactNode, useEffect, useMemo, useState} from 'react';
-import cl from './TableLine.module.scss'
+import React, {ReactNode, useMemo} from 'react';
 import {IOnChange, LineContent} from "./LineContext";
 import {ITableInput, TableInput} from "../elements/TableInput/TableInput";
 import {ITableHeader, TableHeader} from "../TableHeader/TableHeader";
-import {useForceUpdate, useTypedSelector} from "../../../hooks/hooks";
 import {EnumStatus, Line} from "../../../types/categoryReducerTypes";
 import {ITableBtn, TableLineBtn} from "../elements/TableLineBtn/TableLineBtn";
 import {TypeColumn, TypeTable} from "../../../types/TableCreatorTypes";
 import {ITableSelect, TableSelect} from "../elements/TableSelect/TableSelect";
+import {TableLineView} from "./TableLineView";
+import fastDeepEqual from 'fast-deep-equal'
 import isEqual from "react-fast-compare";
+import {useForceUpdate} from "../../../hooks/hooks";
 
 interface ITableLineComposition {
     Header: React.FC<ITableHeader>,
@@ -31,7 +32,7 @@ type ITableLine = {
 }
 
 
-const TableLine: React.FC<ITableLine> & ITableLineComposition =
+const TableLine: ITableLineComposition & React.FC<ITableLine> =
     ({
          children,
          index,
@@ -40,36 +41,14 @@ const TableLine: React.FC<ITableLine> & ITableLineComposition =
          isNew,
          onChange,
          typeRows,
-        typeTable,
+         typeTable,
          status,
      }) => {
         const forceUpdate = useForceUpdate();
-        const localState = useTypedSelector(state => state.tableReducer.storage[typeTable][status].data[index])
         const rowState: Line = useMemo((): Line => {
-            if (localState) {
-                return localState
-            } else {
-                return outerReduxObjState
-            }
-        }, [outerReduxObjState, localState])
+            return outerReduxObjState
+        }, [outerReduxObjState])
 
-
-        const lineColor = useMemo(() => {
-            if (status === EnumStatus.isNew) {
-                if (index % 2 === 0) {
-                    return cl.LineDontSaveNew
-                } else {
-                    return cl.LineDontSaveNew2
-                }
-            } else {
-                if (index % 2 === 0) {
-                    return cl.LineDontSaveOld
-                } else {
-                    return cl.LineDontSaveOld2
-                }
-            }
-        }, [index, isNew])
-const classes = [cl.wrapper, lineColor, rowState && rowState.toDelete && cl.toDelete,]
         return (<LineContent.Provider
             value={{
                 id: rowState.id,
@@ -78,13 +57,18 @@ const classes = [cl.wrapper, lineColor, rowState && rowState.toDelete && cl.toDe
                 onChange,
                 typeRows,
                 wasEdit: false,
-                forceUpdate,
                 status,
+                typeTable,
+                forceUpdate,
             }}>
-            <div
-                className={[cl.wrapper, lineColor, rowState && rowState.toDelete && cl.toDelete,].join(' ')}>
+
+            <TableLineView
+                status={status}
+                index={index}>
                 {children}
-            </div>
+            </TableLineView>
+
+
         </LineContent.Provider>);
     }
 

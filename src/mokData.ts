@@ -62,7 +62,7 @@ export const TableCreatorMokData: TablesCreator = {
         }
     },
     Product: {
-        dependency: ["Category", 'Subcategory'],
+        dependency: ["Category", 'Subcategory', "TypeOfProduct"],
         title: 'продукти',
         columnParams: [{width: 150}, {width: 150}, {width: 150}, {width: 70}, {width: 70}, {width: 80}, {width: 70}],
         header: [{title: 'Продукти'}, {title: 'Категорія'}, {title: 'Підкатегорія'}, {title: 'Ціна'}, {

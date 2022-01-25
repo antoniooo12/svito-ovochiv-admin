@@ -35,14 +35,19 @@ const SubPage = () => {
 
     const tableMemo = useMemo(() => {
         return table
-    }, [table.isAll.data.length, table.isNew.data.length])
-
+    }, [table])
+    const actions = useMemo(() => {
+        return {onChange, onDelete, onEdit}
+    }, [behavior])
+    const typeTable = useMemo(() => {
+        return behavior
+    }, [behavior])
     return (
         <>
             {TableCreatorMokData[behavior] &&
                 <TableCreator
                     typeTable={behavior}
-                    actions={{onChange, onDelete, onEdit}}
+                    actions={actions}
                     data={tableMemo}
                     params={TableCreatorMokData[behavior]}
                 />}

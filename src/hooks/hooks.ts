@@ -60,9 +60,8 @@ export const useSaveTable = (initial: TypeTable): { onClick: any } => {
 
     const {allToDelete, newToServer, allToUpdate} = useMemo(() => {
         const allToDelete: Array<number | string> = isAll.data.flatMap(line => line.toDelete ? line.id : [])
-        const newToServer: ColumnReduxStructure[] = isNew.data.flatMap(line => !line.toDelete ? line.columns : [])
-        const allToUpdate = isAll.data.filter(line => line.wasEdit)
-        console.log(newToServer)
+        const newToServer = isNew.data.flatMap(line => !line.toDelete ? line.columns : [])
+        const allToUpdate = isAll.data.flatMap(line => !line.toDelete && line.wasEdit ? line.columns : [])
         return {allToDelete, newToServer, allToUpdate}
     }, [behavior, isNew.data, isAll])
 

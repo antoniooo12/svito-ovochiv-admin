@@ -1,17 +1,16 @@
 import React, {ChangeEvent, useCallback, useContext, useEffect, useMemo, useState} from 'react';
 import {HeaderContent} from "../../TableHeader/TableHeaderContext";
 import {LineContent} from "../../TableLine/LineContext";
-import {ListContent} from "../../TableList/ListContext";
 import cl from './TableInput.module.scss'
 import globalCl from '../../../../globalStyles.module.scss';
 import {TableDataList} from "./TableDataList/TableDataList";
 import isEqual from "react-fast-compare";
-import {useEffectSkipMount, useTypedSelector} from "../../../../hooks/hooks";
+import {useEffectSkipMount} from "../../../../hooks/hooks";
 import {EnumInput, EnumStyles, InputParams, TypeColumn} from "../../../../types/TableCreatorTypes";
-import {EnumStatus, Item, Line} from "../../../../types/categoryReducerTypes";
-import {Simulate} from "react-dom/test-utils";
+import {Item} from "../../../../types/categoryReducerTypes";
 import clsx from "clsx";
 import {TableSelect} from "../TableSelect/TableSelect";
+import {TableCheckBox} from "./TableCheckBox/TableCheckBox";
 
 
 export interface DropDownListItem {
@@ -49,12 +48,13 @@ export const TableInput: React.FC<ITableInput> = React.memo(
          filterByColumn,
          isDropDownList,
          inputParams,
+         isMother,
      }) => {
 
 
         const {isHeader} = useContext(HeaderContent)
-        const {onChange, rowState, isNew, status, id, forceUpdate} = useContext(LineContent)
-        const {typeTable} = useContext(ListContent)
+        const {onChange, rowState, isNew, status, id, forceUpdate, typeTable} = useContext(LineContent)
+        // const {typeTable} = useContext(ListContent)
         const initial = initials[typeInput]
 
         const [value, setValue] = useState<typeof initial>(inputParams.defaultState || initial)
@@ -68,30 +68,32 @@ export const TableInput: React.FC<ITableInput> = React.memo(
             } else if (typeof value === "boolean") {
                 setValue(event.target.checked)
             }
-            console.log(typeof value)
         }, [value])
-        console.log(value)
         if (!rowState || !id || !typeTable || !status || !onChange || !typeColumn) {
             throw new Error('Уупс!');
         }
+        useEffect(() => {
+            onChange({value: value, id: id, typeTable: typeTable, typeColumn, status})
+        }, [value])
 
         const state = useMemo<Item>((): Item => {
             return rowState.columns[typeColumn] as Item
         }, [rowState])
 
-        // useEffect(() => {
-        //     console.log(inputParams.defaultState)
-        //     if (inputParams.defaultState) {
-        //         setValue(inputParams.defaultState)
-        //     }
-        // }, [])
+
         useEffect(() => {
-            console.log(rowState)
-            console.log(state)
-            if (rowState && typeof state.value === "string" && state.value.length > 0 || typeof state.value !== "string") {
+            if (rowState && typeof state.value === "string" && state.value.length > 0) {
+                if (status === 'isAll' || !isMother) {
+                    setValue(`${state.id}:${state.value}` as typeof value)
+                } else {
+                    setValue(`${state.value}` as typeof value)
+                }
+            } else if (typeof state.value === "number" && state.value > 0) {
+                setValue(state.value as typeof value)
+            } else if (typeof state.value !== "string" && typeof state.value !== "number") {
                 setValue(state.value as typeof value)
             }
-        }, [state])
+        }, [rowState.columns])
 
 
         const isVisibleHeader = useMemo(() => {
@@ -103,16 +105,13 @@ export const TableInput: React.FC<ITableInput> = React.memo(
             if (!rowState.toDelete && rowState.wasEdit || status === 'isNew') {
                 return false
             }
-            if (rowState.toDelete || status === 'isAll') {
-                return true
-            }
+            return true
+
 
         }, [isNew, rowState && rowState.wasEdit, rowState.toDelete])
 
 
-        useEffectSkipMount(() => {
-            onChange({value: value, id: id, typeTable: typeTable, typeColumn, status})
-        }, [value])
+
 
 
         return (
@@ -129,6 +128,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                     <>
                         {inputParams.typeInput === EnumInput.select && typeof value === 'string' &&
                             <TableSelect
+
                                 value={value}
                                 setValue={setValue}
                                 typeColumn={typeColumn}
@@ -160,25 +160,26 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                         }
 
                         {inputParams.typeInput === EnumInput.checkbox && typeof value === 'boolean' &&
-                            <label>
-                                <input
-
-                                    checked={value}
-                                    onChange={setTitleCallback}
-                                    onClick={forceUpdate}
-                                    disabled={isInputDisable}
-                                    placeholder={placeholder}
-                                    list={`${typeColumn} + ${state && id}`}
-                                    type={typeInput}
-                                />
-                                <span>{inputParams.placeholder}</span>
-                            </label>
+                            <TableCheckBox
+                                setValue={setValue}
+                                typeColumn={typeColumn}
+                                value={value}
+                                onChange={setTitleCallback}
+                                onClick={forceUpdate}
+                                disabled={isInputDisable}
+                                placeholder={placeholder || ''}
+                                type={typeInput}
+                                inputParams={inputParams}
+                                rowState={rowState}
+                                state={state}
+                                id={id}
+                            />
                         }
                         {isDropDownList &&
                             <TableDataList
+                                filterByColumn={filterByColumn}
                                 link={`${typeColumn} + ${state && id}`}
                                 typeColumn={typeColumn}
-                                filterByColumn={filterByColumn}
                             />}
 
                     </>

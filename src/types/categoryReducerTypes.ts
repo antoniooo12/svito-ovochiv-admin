@@ -66,7 +66,7 @@ export interface IItems {
 }
 
 export interface Item {
-    id: number | string;
+    id?: number | string;
     typeColumn: TypeColumn;
     value: string | number | boolean;
     wasEdit: boolean;

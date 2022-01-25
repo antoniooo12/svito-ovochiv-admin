@@ -17,26 +17,28 @@ export interface ITableSelect {
     value: string,
 }
 
-const TableSelect: React.FC<ITableSelect> = React.memo(({typeColumn, setValue, value}) => {
+const TableSelect: React.FC<ITableSelect> = ({typeColumn, setValue, value}) => {
     const dataDropDownList: Array<Line> = useTypedSelector(state => state.tableReducer.storage[typeColumn].isAll.data)
     const {forceUpdate} = useForceUpdateALl()
     const dropDownList: DropDownListItem[] = useMemo(() => {
-        return []
-        // return dataDropDownList.map(row => {
-        //
-        //     // return {
-        //     //     id: row.columns[0].id,
-        //     //     value: row.columns[0].value as string,
-        //     //     dependencyId: row.columns[0].dependencyId,
-        //     // }
-        // })
+        return dataDropDownList.map(row => {
+            const item = row.columns[typeColumn]
+            if (!item) {
+                throw  new Error()
+            }
+            return {
+                id: row.id,
+                value: item.value as string,
+                dependencyId: item.dependencyId,
+            }
+        })
     }, [dataDropDownList])
 
 
     useEffect(() => {
-        setValue(dropDownList.length > 0 ? dropDownList[0].value : '')
+        setValue(dropDownList.length > 0 ? `${dropDownList[0].id}:${dropDownList[0].value}` : '')
     }, [dropDownList])
-    console.log(dropDownList)
+
     const setTitleCallback = useCallback((event: ChangeEvent<HTMLSelectElement>): void => {
         setValue(event.target.value)
     }, [])
@@ -46,9 +48,9 @@ const TableSelect: React.FC<ITableSelect> = React.memo(({typeColumn, setValue, v
             <option selected>тип</option>
             {dropDownList
                 .map(item => <option
-                    >{item.value}</option>
+                    >{item.id}:{item.value}</option>
                 )}
         </select>
     )
-}, isEqual);
+}
 export {TableSelect}

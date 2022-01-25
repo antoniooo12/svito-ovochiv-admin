@@ -1,17 +1,17 @@
 import {IOnChange} from "../components/Table/TableLine/LineContext";
 import {
     CategoryReducerActions,
-    CategoryState, ColumnReduxStructure,
+    CategoryState,
+    ColumnReduxStructure,
     EnumCategoryReducer,
-    Item,
     Line,
     RowsToChosenTable,
     TableEntity
 } from "../types/categoryReducerTypes";
 import {IOnClick} from "../types/TableBtnTypes";
-import {findIndexById, getIdFromValueString} from "./helpers/helper";
+import {findIndexById, separateString} from "./helpers/helper";
 import {DataColumn, DataEntitiesCatalog, TableCreatorMokData} from "../mokData";
-import {InputParams, TableStructure, TypeColumn, TypeTable} from "../types/TableCreatorTypes";
+import {TypeColumn, TypeTable} from "../types/TableCreatorTypes";
 
 
 let implementedTableEntities: TableEntity = {}
@@ -53,7 +53,20 @@ export default function tableReducer(state: CategoryState = defaultState, action
                             wasEdit: false,
                             value: '',
                         }
-                        accumulator[key as TypeColumn] = column
+                        if (typeof key === typeTable) {
+                            accumulator[key as TypeColumn] = {
+                                id: '__00__' + Date.now(),
+                                typeColumn: key as TypeColumn,
+                                wasEdit: false,
+                                value: '',
+                            }
+                        } else {
+                            accumulator[key as TypeColumn] = {
+                                typeColumn: key as TypeColumn,
+                                wasEdit: false,
+                                value: '',
+                            }
+                        }
                         return accumulator
                     }
                     , {})
@@ -83,7 +96,6 @@ export default function tableReducer(state: CategoryState = defaultState, action
 
         case EnumCategoryReducer.CHANGE_CATEGORY: {
             const {value, id, typeTable, typeColumn, status} = action.payload
-            console.log({value, id, typeTable, typeColumn, status})
             const oldData = state.storage[typeTable][status].data
             const indexRow = findIndexById<Line>(oldData, id)
             const oldLine = oldData.find(obj => obj.id === id) as Line
@@ -92,16 +104,12 @@ export default function tableReducer(state: CategoryState = defaultState, action
             const oldColumn = oldLine.columns[typeColumn]
             // const indexOldColumn = oldRow.columns.findIndex(column => column.typeColumn === typeColumn)
             // debugger
-            console.log(indexRow)
-            console.log(oldLine)
-            const {
-                pulledId,
-                separatedValue
-            }: { pulledId?: number, separatedValue?: string } = getIdFromValueString(value)
+
+
             const changedColumn = {
                 ...oldColumn,
-                id: pulledId && pulledId,
-                value: separatedValue ? pulledId + ": " + separatedValue.trim() : value,
+                id: Number(separateString(value, ':', 0)) ? Number(separateString(value, ':', 0)) : oldColumn?.id,
+                value: separateString(value, ':', 1) && separateString(value, ':', 1),
             }
             const changedLine: Line = {
                 ...oldLine,
@@ -110,7 +118,6 @@ export default function tableReducer(state: CategoryState = defaultState, action
                     [typeColumn]: changedColumn,
                 }
             }
-            console.log(changedLine)
 
             const changedData = [...oldData.slice(0, indexRow), changedLine, ...oldData.slice(indexRow + 1)]
             return {
@@ -161,15 +168,7 @@ export default function tableReducer(state: CategoryState = defaultState, action
                     }
                     return accumulator
                 }, {})
-                // const sorting = Object.keys(TableCreatorMokData[typeTable].row)
-                // const sorted = rowToRedux.sort((a, b) => {
-                //     return sorting.indexOf(a.typeColumn) - sorting.indexOf(b.typeColumn);
-                // });
-                // console.log(sorting)
-                setTimeout(() => {
-                    console.log(rowToRedux)
-                }, 300);
-                // console.log(sorted)
+
                 return {
                     id: row[0].id,
                     columns: rowToRedux,
@@ -178,7 +177,6 @@ export default function tableReducer(state: CategoryState = defaultState, action
                 }
             })
             setTimeout(() => {
-                console.log(lines)
             }, 1000);
             return {
                 ...state,
