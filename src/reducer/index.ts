@@ -13,3 +13,4 @@ const rootReducer = combineReducers<{tableReducer:CategoryState}>({
 export type RootState = ReturnType<typeof rootReducer>
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))
+

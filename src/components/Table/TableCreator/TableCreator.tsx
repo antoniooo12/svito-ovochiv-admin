@@ -1,17 +1,25 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import cl from './TableCreator.module.scss'
 import {TableList} from "../TableList/TableList";
 import {TableHeader} from '../TableHeader/TableHeader';
 import {TableLine} from "../TableLine/TableLine";
 import {EnumStatus, TableEntityStructure} from "../../../types/categoryReducerTypes";
 import {IOnChange} from "../TableLine/LineContext";
-import {DataEntitiesTableStructure, EnumInput, EnumStyles, TypeTable} from "../../../types/TableCreatorTypes";
+import {
+    DataEntitiesTableStructure,
+    EnumStyles,
+    InputParams,
+    TypeColumn,
+    TypeTable
+} from "../../../types/TableCreatorTypes";
 import {IconTrash} from "../../UI/icons/Trash/Trash";
 import {EnumTableBtn, IOnClick} from "../../../types/TableBtnTypes";
 import {IconNotePencil} from "../../UI/icons/NotePencil/IconNotePencil";
-import {is} from "immutable";
 import isEqual from "react-fast-compare";
 import clsx from "clsx";
+import {TableLineCreator} from "../TableLine/TableLineCreator";
+import TableLines from "../TableLine/TableLines";
+import {useActions} from "../../../hooks/useActions";
 
 interface column {
     column: Array<{ width: number }>
@@ -28,76 +36,35 @@ interface TableCreator {
     data: TableEntityStructure,
 }
 
-const TableCreator: React.FC<TableCreator> = React.memo(({params, data, actions, typeTable}) => {
+const TableCreator: React.FC<TableCreator> = ({params, data, actions, typeTable}) => {
+    const {getAllRowsByTableName} = useActions()
+    useEffect(() => {
+        params.dependency.forEach(dependency => {
+            getAllRowsByTableName({behavior: dependency})
+        })
+    }, [typeTable])
+
     return (
         <div className={cl.wrapper}>
-            <TableList
-                typeTable={typeTable}
-            >
-                <TableHeader>
-                    {params.header.map((el, index) => {
-                            const headerStyle = clsx({
-                                [cl.rotate50]: el.style && el.style.includes(EnumStyles.align),
-                                [cl.fontSize14]: el.style && el.style.includes(EnumStyles.fontSize14),
-                            })
-                            return (
-                                <div className={headerStyle} style={{width: `${params.column[index].width}px`}}>
-                                    {el.title}
-                                </div>
-                            )
-                        }
-                    )}
-                </TableHeader>
-                {
-                    Object.keys(EnumStatus).map(status =>
-                        data[status as EnumStatus].data.map((row, index) => {
-                            return (
-                                <TableLine
-                                    typeTable={typeTable}
-                                    index={index}
-                                    id={row.id}
-                                    outerReduxObjState={row}
-                                    key={row.id}
-                                    onChange={actions.onChange}
-                                    status={status as EnumStatus}
-                                >
-                                    {params.row.map((column, index) => {
 
-                                            return (
-                                                <TableLine.Input
-                                                    index={index}
-                                                    isMother={column.isMother}
-                                                    width={params.column[index].width}
-                                                    typeColumn={column.typeColumn}
-                                                    placeholder={column.placeholder}
-                                                    filterByColumn={column.filterByColumn}
-                                                    isDropDownList={column.isDropDownList}
-                                                    typeInput={column.typeInput}
-                                                    inputParams={column}
-                                                />)
+            <TableHeader>
 
-                                        }
-                                    )}
-                                    <TableLine.Btn
-                                        icon={<IconTrash/>}
-                                        onClick={actions.onDelete}
-                                        type={EnumTableBtn.delete}
-                                    />
-                                    {EnumStatus.isAll === status &&
-                                        <TableLine.Btn
-                                            icon={<IconNotePencil/>}
-                                            onClick={actions.onEdit}
-                                            type={EnumTableBtn.delete}
-                                        />
-                                    }
-                                </TableLine>
-                            )
+                {params.header.map((el, index) => {
+                        const headerStyle = clsx({
+                            [cl.rotate50]: el.style && el.style.includes(EnumStyles.align),
+                            [cl.fontSize14]: el.style && el.style.includes(EnumStyles.fontSize14),
                         })
-                    )
-                }
-            </TableList>
+                        return (
+                            <div className={headerStyle} style={{width: `${params.columnParams[index].width}px`}}>
+                                {el.title}
+                            </div>
+                        )
+                    }
+                )}
+            </TableHeader>
+            <TableLines data={data} typeTable={typeTable} actions={actions} params={params}/>
         </div>
     );
-}, isEqual)
+}
 
 export {TableCreator};

@@ -1,7 +1,5 @@
-import {DataColumn, DataEntitiesCatalog} from "../mokData";
-
-
-
+import {ColumnId, Columns, DataColumn, DataEntitiesCatalog} from "../mokData";
+import {Item} from "./categoryReducerTypes";
 
 
 // export interface IDataEntitiesCatalog {
@@ -14,6 +12,8 @@ export type IDataColumn = {
 }
 export type TypeTable = keyof typeof DataEntitiesCatalog
 export type TypeColumn = keyof typeof DataColumn
+export type TypeColumnId = keyof typeof ColumnId
+export type TypeColumnOfTable = keyof typeof Columns
 
 export enum EnumInput {
     text = 'text',
@@ -33,15 +33,31 @@ export enum EnumStyles {
 export enum EnumStyleHeader {
 
 }
-export  interface InputParams{ typeColumn: TypeColumn, isDropDownList: boolean, filterByColumn?: TypeColumn, typeInput: EnumInput, placeholder?: string, isMother?: boolean, numberStep?: number, bigNumberStep?: number, style?: EnumStyles[] }
+export interface InputParams {
+    typeColumn: TypeColumn,
+    isDropDownList: boolean,
+    filterByColumn?: TypeColumn,
+    typeInput: EnumInput,
+    placeholder?: string,
+    isMother?: boolean,
+    numberStep?: number,
+    bigNumberStep?: number,
+    style?: EnumStyles[],
+    defaultState?: boolean | string | number,
+}
 
+export type TableStructure = {
+    [name in TypeColumn]?: InputParams
+}
 export type DataEntitiesTableStructure = {
+    dependency: TypeTable[]
     title: string
-    column: Array<{ width: number }>
+    columnParams: Array<{ width: number }>
     header: Array<{ title: string, style?: EnumStyles[], }>
-    row: Array<InputParams>
+    row: TableStructure
 };
 
-export type TableCreator = {
+
+export type TablesCreator = {
     [name in TypeTable]: DataEntitiesTableStructure;
 };

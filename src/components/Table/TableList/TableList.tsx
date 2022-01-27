@@ -10,20 +10,20 @@ interface ITableList {
     typeTable?: TypeTable,
 }
 
-const TableList: React.FC<ITableList> = React.memo(({children, isMother, enteredDropDownList, typeTable}) => {
+const TableList: React.FC<ITableList> = ({children, typeTable}) => {
 
-    const childrenMemo = useMemo(() => {
-        return children
-    }, [children])
+    const typeTableB = useMemo(() => {
+        return typeTable
+    }, [typeTable])
     return (
-        <ListContent.Provider value={{enteredDropDownList,  typeTable}}>
+        <ListContent.Provider value={{typeTable: typeTableB}}>
             <div className={cl.wrapper}>
-                {childrenMemo}
+                {children}
             </div>
         </ListContent.Provider>
 
     );
-}, isEqual);
+}
 
 export { TableList}
 

@@ -1,8 +1,8 @@
 import {IOnChange} from "../components/Table/TableLine/LineContext";
 import {IOnClick} from "./TableBtnTypes";
 import {} from "../API";
-import {IDataColumn, TableCreator, TypeColumn, TypeTable} from "./TableCreatorTypes";
-import {DataEntitiesCatalog, DataColumn} from "../mokData";
+import {IDataColumn, TablesCreator, TypeColumn, TypeColumnId, TypeTable} from "./TableCreatorTypes";
+import {DataEntitiesCatalog, DataColumn, ColumnId} from "../mokData";
 
 export enum EnumCategoryReducer {
     CREATE_CATEGORY = "CREATE_CATEGORY",
@@ -10,6 +10,7 @@ export enum EnumCategoryReducer {
     DELETE_CATEGORY = "DELETE_CATEGORY",
     SET_CATEGORIES = "SET_CATEGORIES",
     EDIT_CATEGORY = "EDIT_CATEGORY",
+    DELETE_ALL_NEW_INSTANCE = "DELETE_ALL_NEW_INSTANCE"
 }
 
 
@@ -47,28 +48,30 @@ export enum EnumTypeCategory {
 
 export interface ICategoryTypeStructure {
     forceRender: number,
-    data: Array<RowItem>,
+    data: Array<Line>,
 }
 
-export interface RowItem {
+export interface Line {
     id: number | string,
     toDelete: boolean,
     wasEdit: boolean,
-    columns: Array<Item>,
+    columns: ColumnReduxStructure,
 }
 
+export type ColumnReduxStructure = {
+    [name in  TypeColumn]?: Item
+}
 export interface IItems {
     Items: Array<Item>
 }
 
-export interface Item {
-    id: number | string;
+export interface Item  {
+    id?: number | string;
     typeColumn: TypeColumn;
     value: string | number | boolean;
     wasEdit: boolean;
-    dependencyId?: number | string;
+    dependencyId?: Record<TypeColumnId, number>
 }
-
 
 interface CreateCategory {
     type: EnumCategoryReducer.CREATE_CATEGORY,
@@ -85,19 +88,30 @@ interface DeleteCategory {
     payload: IOnClick,
 }
 
-export interface RowsToSelectedTable {
-    readonly rowItem: Array<RowItem> ,
+export interface RowsToChosenTable {
+    readonly rowItem: any[][],
     readonly typeTable: TypeTable,
 }
 
-interface SetCategories {
+export interface SetCategories {
     type: EnumCategoryReducer.SET_CATEGORIES,
-    payload: RowsToSelectedTable,
+    payload: RowsToChosenTable,
 }
 
-interface editCategory {
+export interface editCategory {
     readonly  type: EnumCategoryReducer.EDIT_CATEGORY,
     readonly  payload: IOnClick,
 }
 
-export type CategoryReducerActions = CreateCategory | ChangeCategory | DeleteCategory | SetCategories | editCategory
+export interface deleteAllNewInstance {
+    readonly  type: EnumCategoryReducer.DELETE_ALL_NEW_INSTANCE,
+    readonly  payload: { typeTable: TypeTable },
+}
+
+export type CategoryReducerActions =
+    CreateCategory
+    | ChangeCategory
+    | DeleteCategory
+    | SetCategories
+    | editCategory
+    | deleteAllNewInstance

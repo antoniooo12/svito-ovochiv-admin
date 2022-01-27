@@ -15,6 +15,7 @@ const TableHeader: React.FC<ITableHeader> = ({children}) => {
             </div>
         </HeaderContent.Provider>
     );
+
 };
 
 export {
