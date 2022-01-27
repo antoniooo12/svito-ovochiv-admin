@@ -110,6 +110,7 @@ export default function tableReducer(state: CategoryState = defaultState, action
                 ...oldColumn,
                 id: Number(separateString(value, ':', 0)) ? Number(separateString(value, ':', 0)) : oldColumn?.id,
                 value: separateString(value, ':', 1) && separateString(value, ':', 1),
+                wasEdit: true
             }
             const changedLine: Line = {
                 ...oldLine,
