@@ -143,58 +143,7 @@ export default function tableReducer(state: CategoryState = defaultState, action
 
         case EnumCategoryReducer.SET_CATEGORIES: {
             const {typeTable, rowItem} = action.payload
-            const lines: Line & any = rowItem.map(row => {
-                const rowToRedux = row.reduce((accumulator: any, dbTable, index) => {
-                    const otherColumns = Object.keys(dbTable).filter(param => Object.keys(DataColumn).includes(param))
-                    console.log(dbTable)
-                    const generateDependents = dependentsIdMok.get(dbTable.typeColumn) && dependentsIdMok.get(dbTable.typeColumn)
-                        ?.reduce((accumulator: { [key: string]: number }, dependentId) => {
-                            accumulator[dependentId] = dbTable.dependencyId[dependentId]
-                            return accumulator
-                        }, {})
-                    if (otherColumns.length > 0) {
-
-
-                        const column = {
-                            value: dbTable.value,
-                            typeColumn: dbTable.typeColumn as TypeColumn,
-                            id: dbTable.id,
-                            wasEdit: false,
-                            // [dbTable]: dbTable.dependencyId ? dbTable.dependencyId : -1,
-                            dependencyId: generateDependents,
-                        }
-                        accumulator[column.typeColumn] = column
-                        const subTables = otherColumns.map(columnName => {
-                            accumulator[columnName] = {
-                                value: dbTable[columnName],
-                                typeColumn: columnName as TypeColumn,
-                                id: -1 - index,
-                                dependencyId: generateDependents,
-                            }
-                        })
-                    } else {
-                        const column = {
-                            value: dbTable.value,
-                            typeColumn: dbTable.typeColumn as TypeColumn,
-                            id: dbTable.id,
-                            wasEdit: false,
-                            // dependencyId: dbTable.dependencyId ? dbTable.dependencyId : -1,
-                            dependencyId: generateDependents,
-
-
-                        }
-                        accumulator[column.typeColumn] = column
-                    }
-                    return accumulator
-                }, {})
-
-                return {
-                    id: row[0].id,
-                    columns: rowToRedux,
-                    wasEdit: false,
-                    toDelete: false,
-                }
-            })
+            const lines: Line & any = serverToApp(rowItem)
             setTimeout(() => {
             }, 1000);
             return {
@@ -318,6 +267,64 @@ export const deleteAllNewInstance = (recruitment: { typeTable: TypeTable }) => (
     type: EnumCategoryReducer.DELETE_ALL_NEW_INSTANCE,
     payload: recruitment,
 })
+
+
+function serverToApp(array: any[]) {
+    return array.map(row => {
+        // @ts-ignore
+        const rowToRedux = row.reduce((accumulator: any, dbTable, index) => {
+            const otherColumns = Object.keys(dbTable).filter(param => Object.keys(DataColumn).includes(param))
+            console.log(dbTable)
+            const generateDependents = dependentsIdMok.get(dbTable.typeColumn) && dependentsIdMok.get(dbTable.typeColumn)
+                ?.reduce((accumulator: { [key: string]: number }, dependentId) => {
+                    accumulator[dependentId] = dbTable.dependencyId[dependentId]
+                    return accumulator
+                }, {})
+            if (otherColumns.length > 0) {
+
+
+                const column = {
+                    value: dbTable.value,
+                    typeColumn: dbTable.typeColumn as TypeColumn,
+                    id: dbTable.id,
+                    wasEdit: false,
+                    // [dbTable]: dbTable.dependencyId ? dbTable.dependencyId : -1,
+                    dependencyId: generateDependents,
+                }
+                accumulator[column.typeColumn] = column
+                const subTables = otherColumns.map(columnName => {
+                    accumulator[columnName] = {
+                        value: dbTable[columnName],
+                        typeColumn: columnName as TypeColumn,
+                        id: -1 - index,
+                        dependencyId: generateDependents,
+                    }
+                })
+            } else {
+                const column = {
+                    value: dbTable.value,
+                    typeColumn: dbTable.typeColumn as TypeColumn,
+                    id: dbTable.id,
+                    wasEdit: false,
+                    // dependencyId: dbTable.dependencyId ? dbTable.dependencyId : -1,
+                    dependencyId: generateDependents,
+
+
+                }
+                accumulator[column.typeColumn] = column
+            }
+            return accumulator
+        }, {})
+
+        return {
+            id: row[0].id,
+            columns: rowToRedux,
+            wasEdit: false,
+            toDelete: false,
+        }
+    })
+}
+
 // export const bulkDeleteCategories = (arrOfId: any) => ({type: BULK_DELETE_CATEGORY, payload: arrOfId})
 // export const editOldCategory = (recruitment: any) => ({type: EDIT_OLD_CATEGORY, payload: recruitment})
 
