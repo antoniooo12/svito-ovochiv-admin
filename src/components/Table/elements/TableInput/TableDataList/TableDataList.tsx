@@ -1,9 +1,10 @@
 import React, {useContext, useMemo} from 'react';
 import {LineContent} from "../../../TableLine/LineContext";
-import {TypeColumn} from "../../../../../types/TableCreatorTypes";
+import {TypeColumn, TypeColumnId, TypeTable} from "../../../../../types/TableCreatorTypes";
 import {DropDownListItem} from "../TableInput";
 import {Item, Line} from "../../../../../types/categoryReducerTypes";
 import {useTypedSelector} from "../../../../../hooks/hooks";
+import {ColumnToColumnId, dependentsIdMok} from "../../../../../mokData";
 
 interface ITableDataList {
     link: string,
@@ -23,10 +24,15 @@ const TableDataList: React.FC<ITableDataList> = ({link, typeColumn, filterByColu
             if (!item) {
                 throw  new Error()
             }
+            console.log(item)
+            // const dependentsId = dependentsIdMok.get(item.typeColumn)?.reduce((accumulator: any, dependentId) => {
+            //     accumulator[dependentId] = item[dependentId]
+            //     return accumulator
+            // }, {})
             return {
                 id: row.id,
                 value: item.value as string,
-                dependencyId: item.dependencyId,
+                dependencyId: item.dependencyId
             }
         })
     }, [dataDropDownList, rowState])
@@ -40,8 +46,18 @@ const TableDataList: React.FC<ITableDataList> = ({link, typeColumn, filterByColu
     }, [rowState, state, dropDownList])
 
     const filteredDropDownList = useMemo(() => {
+        console.log(filterById)
+        console.log(filterByColumn)
         if (filterByColumn && filterById) {
-            return dropDownList.filter(item => item.dependencyId && item.dependencyId.toString() === filterById.toString())
+            return dropDownList.filter(item => {
+                if (!item.dependencyId) {
+                    throw new Error('none dependencyId')
+                }
+                const itemId =  item.dependencyId[ColumnToColumnId[filterByColumn as TypeTable]]
+                if(itemId.toString() === filterById.toString()) {
+                    return item
+                }
+            })
         }
         return dropDownList
     }, [link, dropDownList, filterById])

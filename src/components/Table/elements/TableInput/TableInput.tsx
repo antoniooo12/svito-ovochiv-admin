@@ -6,17 +6,24 @@ import globalCl from '../../../../globalStyles.module.scss';
 import {TableDataList} from "./TableDataList/TableDataList";
 import isEqual from "react-fast-compare";
 import {useEffectSkipMount} from "../../../../hooks/hooks";
-import {EnumInput, EnumStyles, InputParams, TypeColumn} from "../../../../types/TableCreatorTypes";
+import {
+    EnumInput,
+    EnumStyles,
+    InputParams,
+    TypeColumn,
+    TypeColumnId,
+    TypeTable
+} from "../../../../types/TableCreatorTypes";
 import {Item} from "../../../../types/categoryReducerTypes";
 import clsx from "clsx";
 import {TableSelect} from "../TableSelect/TableSelect";
 import {TableCheckBox} from "./TableCheckBox/TableCheckBox";
 
 
-export interface DropDownListItem {
+export type DropDownListItem = {
     value: string,
     id: string | number,
-    dependencyId?: number | string | undefined
+    dependencyId?: Record<TypeColumnId, number>
 }
 
 

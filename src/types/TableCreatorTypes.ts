@@ -1,4 +1,4 @@
-import {Columns, DataColumn, DataEntitiesCatalog} from "../mokData";
+import {ColumnId, Columns, DataColumn, DataEntitiesCatalog} from "../mokData";
 import {Item} from "./categoryReducerTypes";
 
 
@@ -12,6 +12,7 @@ export type IDataColumn = {
 }
 export type TypeTable = keyof typeof DataEntitiesCatalog
 export type TypeColumn = keyof typeof DataColumn
+export type TypeColumnId = keyof typeof ColumnId
 export type TypeColumnOfTable = keyof typeof Columns
 
 export enum EnumInput {

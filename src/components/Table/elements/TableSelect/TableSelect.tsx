@@ -20,6 +20,7 @@ export interface ITableSelect {
 const TableSelect: React.FC<ITableSelect> = ({typeColumn, setValue, value}) => {
     const dataDropDownList: Array<Line> = useTypedSelector(state => state.tableReducer.storage[typeColumn].isAll.data)
     const {forceUpdate} = useForceUpdateALl()
+
     const dropDownList: DropDownListItem[] = useMemo(() => {
         return dataDropDownList.map(row => {
             const item = row.columns[typeColumn]
@@ -29,7 +30,6 @@ const TableSelect: React.FC<ITableSelect> = ({typeColumn, setValue, value}) => {
             return {
                 id: row.id,
                 value: item.value as string,
-                dependencyId: item.dependencyId,
             }
         })
     }, [dataDropDownList])

@@ -1,5 +1,6 @@
-import {EnumInput, EnumStyles, TablesCreator, TypeTable} from "./types/TableCreatorTypes";
+import {EnumInput, EnumStyles, TablesCreator, TypeColumn, TypeColumnId, TypeTable} from "./types/TableCreatorTypes";
 import {Line} from "./types/categoryReducerTypes";
+
 
 export const DataEntitiesCatalog = {
     Product: 'продукти',
@@ -7,6 +8,20 @@ export const DataEntitiesCatalog = {
     Subcategory: "підкатегорії",
     TypeOfProduct: 'тип продуктів',
 }
+export const ColumnId ={
+    CategoryId: ' CategoryId',
+    SubcategoryId: ' SubcategoryId',
+    ProductId: ' ProductId',
+    TypeOfProductId: ' TypeOfProductId',
+}
+
+export const ColumnToColumnId: Record<TypeTable, TypeColumnId> = {
+    'Category': 'CategoryId',
+    'Subcategory': 'SubcategoryId',
+    'Product': 'ProductId',
+    'TypeOfProduct': 'TypeOfProductId',
+}
+
 
 export const DataColumn = {
     Product: 'продукти',
@@ -151,82 +166,11 @@ interface ServerTable {
     rows: Array<Line>
 }
 
-// export const AllSubCategories: ServerTable = {
-//     rows:
-//         [
-//             // {
-//             //     id: 't1', toDelete: false, wasEdit: false, columns: [
-//             //         {id: 1, typeColumn: "subCategories", wasEdit: false, value: "вода", dependencyId: 1},
-//             //         {id: 1, typeColumn: "categories", wasEdit: false, value: "напої",},
-//             //     ]
-//             // },
-//             // {
-//             //     id: 't2', toDelete: false, wasEdit: false, columns: [
-//             //         {id: 12, typeColumn: "subCategories", wasEdit: false, value: "яблука", dependencyId: 31},
-//             //         {id: 31, typeColumn: "categories", wasEdit: false, value: "фрукти"},
-//             //     ]
-//             // },
-//             // {
-//             //     id: 't3', toDelete: false, wasEdit: false, columns: [
-//             //         {id: 12, typeColumn: "subCategories", wasEdit: false, value: "картопля", dependencyId: 2},
-//             //         {id: 2, typeColumn: "categories", wasEdit: false, value: "овочі"},
-//             //     ]
-//             // }
-//         ]
-// }
-//
-//
-// export const AllCategories: ServerTable = {
-//     rows: [
-//         // {
-//         //     id: 't1', toDelete: false, wasEdit: false, columns: [
-//         //         {id: 1, typeColumn: "categories", wasEdit: false, value: "напої"},
-//         //     ]
-//         // },
-//         // {
-//         //     id: 't2', toDelete: false, wasEdit: false, columns: [
-//         //         {id: 31, typeColumn: "categories", wasEdit: false, value: "фрукти"},
-//         //     ]
-//         // },
-//         // {
-//         //     id: 't3', toDelete: false, wasEdit: false, columns: [
-//         //         {id: 2, typeColumn: "categories", wasEdit: false, value: "овочі"},
-//         //     ]
-//         // }
-//     ]
-// }
-// export const AllTypesOfProduct: ServerTable = {
-//     rows: [
-//         {
-//             id: 't1', toDelete: false, wasEdit: false, columns: [
-//                 {id: 1, typeColumn: "TypeOfProduct", wasEdit: false, value: "кілограми"},
-//             ]
-//         },
-//         {
-//             id: 't2', toDelete: false, wasEdit: false, columns: [
-//                 {id: 31, typeColumn: "TypeOfProduct", wasEdit: false, value: "грами"},
-//             ]
-//         },
-//         {
-//             id: 't3', toDelete: false, wasEdit: false, columns: [
-//                 {id: 2, typeColumn: "TypeOfProduct", wasEdit: false, value: "штука"},
-//             ]
-//         }
-//     ]
-// }
-//
-// export const AllProducts: ServerTable = {
-//     rows: []
-// }
 
-// export const
-// export const AllData: { [name in TypeTable]: ServerTable } = {
-//     // Subcategory: AllSubCategories,
-//     // Category: AllCategories,
-//     // Product: AllProducts,
-//     // TypeOfProduct: AllTypesOfProduct,
-// }
-
+export const dependentsIdMok: Map<TypeColumn, string[]> = new Map([
+    ['Subcategory', ['CategoryId']],
+    ['Product', ['SubcategoryId', "TypeOfProductId"]]
+])
 
 export const mainPagesList = [
     {

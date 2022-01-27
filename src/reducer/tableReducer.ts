@@ -10,7 +10,7 @@ import {
 } from "../types/categoryReducerTypes";
 import {IOnClick} from "../types/TableBtnTypes";
 import {findIndexById, separateString} from "./helpers/helper";
-import {DataColumn, DataEntitiesCatalog, TableCreatorMokData} from "../mokData";
+import {DataColumn, DataEntitiesCatalog, dependentsIdMok, TableCreatorMokData} from "../mokData";
 import {TypeColumn, TypeTable} from "../types/TableCreatorTypes";
 
 
@@ -46,13 +46,12 @@ export default function tableReducer(state: CategoryState = defaultState, action
             const typeTable: any = action.payload
             const rowItemArray: ColumnReduxStructure =
                 Object.keys(TableCreatorMokData[typeTable as TypeTable].row).reduce((accumulator: ColumnReduxStructure, key) => {
-
-                        const column = {
-                            id: '__00__' + Date.now(),
-                            typeColumn: key as TypeColumn,
-                            wasEdit: false,
-                            value: '',
-                        }
+                        const generateDependents = dependentsIdMok.get(key as TypeColumn) && dependentsIdMok.get(typeTable)
+                            ?.reduce((accumulator: { [key: string]: number }, dependentId) => {
+                                accumulator[dependentId] = -1
+                                return accumulator
+                            }, {})
+                        console.log(generateDependents)
                         if (typeof key === typeTable) {
                             accumulator[key as TypeColumn] = {
                                 id: '__00__' + Date.now(),
@@ -105,12 +104,18 @@ export default function tableReducer(state: CategoryState = defaultState, action
             // const indexOldColumn = oldRow.columns.findIndex(column => column.typeColumn === typeColumn)
             // debugger
 
-
+            const generateDependents = dependentsIdMok.get(typeColumn) && dependentsIdMok.get(typeColumn)
+                ?.reduce((accumulator: { [key: string]: number }, dependentId) => {
+                    accumulator[dependentId] = -1
+                    return accumulator
+                }, {})
             const changedColumn = {
                 ...oldColumn,
+                // ...generateDependents,
                 id: Number(separateString(value, ':', 0)) ? Number(separateString(value, ':', 0)) : oldColumn?.id,
                 value: separateString(value, ':', 1) && separateString(value, ':', 1),
-                wasEdit: true
+                wasEdit: true,
+                dependencyId: generateDependents,
             }
             const changedLine: Line = {
                 ...oldLine,
@@ -141,13 +146,22 @@ export default function tableReducer(state: CategoryState = defaultState, action
             const lines: Line & any = rowItem.map(row => {
                 const rowToRedux = row.reduce((accumulator: any, dbTable, index) => {
                     const otherColumns = Object.keys(dbTable).filter(param => Object.keys(DataColumn).includes(param))
+                    console.log(dbTable)
+                    const generateDependents = dependentsIdMok.get(dbTable.typeColumn) && dependentsIdMok.get(dbTable.typeColumn)
+                        ?.reduce((accumulator: { [key: string]: number }, dependentId) => {
+                            accumulator[dependentId] = dbTable.dependencyId[dependentId]
+                            return accumulator
+                        }, {})
                     if (otherColumns.length > 0) {
+
+
                         const column = {
                             value: dbTable.value,
                             typeColumn: dbTable.typeColumn as TypeColumn,
                             id: dbTable.id,
                             wasEdit: false,
-                            dependencyId: dbTable.dependencyId ? dbTable.dependencyId : -1,
+                            // [dbTable]: dbTable.dependencyId ? dbTable.dependencyId : -1,
+                            dependencyId: generateDependents,
                         }
                         accumulator[column.typeColumn] = column
                         const subTables = otherColumns.map(columnName => {
@@ -155,6 +169,7 @@ export default function tableReducer(state: CategoryState = defaultState, action
                                 value: dbTable[columnName],
                                 typeColumn: columnName as TypeColumn,
                                 id: -1 - index,
+                                dependencyId: generateDependents,
                             }
                         })
                     } else {
@@ -163,7 +178,10 @@ export default function tableReducer(state: CategoryState = defaultState, action
                             typeColumn: dbTable.typeColumn as TypeColumn,
                             id: dbTable.id,
                             wasEdit: false,
-                            dependencyId: dbTable.dependencyId ? dbTable.dependencyId : -1,
+                            // dependencyId: dbTable.dependencyId ? dbTable.dependencyId : -1,
+                            dependencyId: generateDependents,
+
+
                         }
                         accumulator[column.typeColumn] = column
                     }

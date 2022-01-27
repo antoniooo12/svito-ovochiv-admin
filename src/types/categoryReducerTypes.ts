@@ -1,8 +1,8 @@
 import {IOnChange} from "../components/Table/TableLine/LineContext";
 import {IOnClick} from "./TableBtnTypes";
 import {} from "../API";
-import {IDataColumn, TablesCreator, TypeColumn, TypeTable} from "./TableCreatorTypes";
-import {DataEntitiesCatalog, DataColumn} from "../mokData";
+import {IDataColumn, TablesCreator, TypeColumn, TypeColumnId, TypeTable} from "./TableCreatorTypes";
+import {DataEntitiesCatalog, DataColumn, ColumnId} from "../mokData";
 
 export enum EnumCategoryReducer {
     CREATE_CATEGORY = "CREATE_CATEGORY",
@@ -65,14 +65,13 @@ export interface IItems {
     Items: Array<Item>
 }
 
-export interface Item {
+export interface Item  {
     id?: number | string;
     typeColumn: TypeColumn;
     value: string | number | boolean;
     wasEdit: boolean;
-    dependencyId?: number | string;
+    dependencyId?: Record<TypeColumnId, number>
 }
-
 
 interface CreateCategory {
     type: EnumCategoryReducer.CREATE_CATEGORY,
