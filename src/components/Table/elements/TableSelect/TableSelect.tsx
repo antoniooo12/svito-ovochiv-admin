@@ -36,8 +36,10 @@ const TableSelect: React.FC<ITableSelect> = ({typeColumn, setValue, value}) => {
 
 
     useEffect(() => {
-        setValue(dropDownList.length > 0 ? `${dropDownList[0].id}:${dropDownList[0].value}` : '')
-    }, [dropDownList])
+        // if () {
+            setValue(dropDownList.length > 0 ? `${dropDownList[0].id}:${dropDownList[0].value}` : '')
+        // }
+    }, [])
 
     const setTitleCallback = useCallback((event: ChangeEvent<HTMLSelectElement>): void => {
         setValue(event.target.value)

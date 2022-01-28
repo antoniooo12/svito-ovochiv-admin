@@ -5,7 +5,7 @@ export const orderTable = {
 }
 
 export const orderTableStructureMock: DataEntitiesTableStructure = {
-    dependency: [],
+    dependency: ['Product'],
     title: 'Замовлення',
     columnParams: [{width: 150}, {width: 150}, {width: 150}, {width: 150}],
     header: [{title: 'Назва'}, {title: 'Кількість'}, {title: 'Ціна'}, {title: 'Всього'}],

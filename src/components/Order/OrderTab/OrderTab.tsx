@@ -65,7 +65,7 @@ const OrderTab: React.FC<OrderTab> = ({closeCreateNewOrder}) => {
             }
         }))
     }, [])
-    
+
     const [productList, setProductList] = useState<TableEntityStructure>({
         [EnumStatus.isNew]: {
             data: [],
@@ -91,20 +91,21 @@ const OrderTab: React.FC<OrderTab> = ({closeCreateNewOrder}) => {
     useEffect(() => {
         let keysPressed: any = {};
         document.addEventListener('keydown', (event) => {
-            keysPressed[event.key] = true;
-            if (keysPressed['Alt'] && event.key == 'a') {
+            keysPressed[event.code] = true;
+            console.log(event.code)
+            if (keysPressed['AltLeft'] && event.code == 'KeyA') {
                 addNewProduct(productList, setProductList)
             }
         })
         document.addEventListener('keyup', (event) => {
-            delete keysPressed[event.key];
+            delete keysPressed[event.code];
         });
-        return () => {
-            document.removeEventListener('keydown', () => {
-            })
-            document.removeEventListener('keyup', () => {
-            })
-        }
+        // return () => {
+        //     document.removeEventListener('keydown', () => {
+        //     })
+        //     document.removeEventListener('keyup', () => {
+        //     })
+        // }
     }, [])
 
 
