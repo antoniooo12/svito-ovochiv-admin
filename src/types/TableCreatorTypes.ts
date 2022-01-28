@@ -1,5 +1,6 @@
 import {ColumnId, Columns, DataColumn, DataEntitiesCatalog} from "../mokData";
 import {Item} from "./categoryReducerTypes";
+import {TypeOrderTable} from "./orderTypes";
 
 
 // export interface IDataEntitiesCatalog {
@@ -10,7 +11,8 @@ import {Item} from "./categoryReducerTypes";
 export type IDataColumn = {
     readonly   [name: string]: string
 }
-export type TypeTable = keyof typeof DataEntitiesCatalog
+export type TypeGoodsTable = keyof typeof DataEntitiesCatalog
+export type TypeTable = TypeGoodsTable | TypeOrderTable
 export type TypeColumn = keyof typeof DataColumn
 export type TypeColumnId = keyof typeof ColumnId
 export type TypeColumnOfTable = keyof typeof Columns
@@ -59,5 +61,5 @@ export type DataEntitiesTableStructure = {
 
 
 export type TablesCreator = {
-    [name in TypeTable]: DataEntitiesTableStructure;
+    [name in TypeGoodsTable]: DataEntitiesTableStructure;
 };

@@ -1,11 +1,11 @@
 import React from 'react';
 
-const OrdersPage = () => {
+const RightPanelOrderPage = () => {
     return (
         <div>
-            Orders
+
         </div>
     );
 };
 
-export {OrdersPage};
+export {RightPanelOrderPage};

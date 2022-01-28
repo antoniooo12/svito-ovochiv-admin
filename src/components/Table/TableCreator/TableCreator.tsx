@@ -20,13 +20,14 @@ import clsx from "clsx";
 import {TableLineCreator} from "../TableLine/TableLineCreator";
 import TableLines from "../TableLine/TableLines";
 import {useActions} from "../../../hooks/useActions";
+import {TypeOrderTable} from "../../../types/orderTypes";
 
 interface column {
     column: Array<{ width: number }>
 }
 
 interface TableCreator {
-    typeTable: TypeTable,
+    typeTable: TypeTable  ,
     actions: {
         onChange: ({}: IOnChange) => void,
         onDelete: ({}: IOnClick) => void,
@@ -63,6 +64,7 @@ const TableCreator: React.FC<TableCreator> = ({params, data, actions, typeTable}
                 )}
             </TableHeader>
             <TableLines data={data} typeTable={typeTable} actions={actions} params={params}/>
+
         </div>
     );
 }

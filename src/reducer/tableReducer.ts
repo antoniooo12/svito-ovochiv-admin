@@ -11,7 +11,7 @@ import {
 import {IOnClick} from "../types/TableBtnTypes";
 import {findIndexById, separateString} from "./helpers/helper";
 import {DataColumn, DataEntitiesCatalog, dependentsIdMok, TableCreatorMokData} from "../mokData";
-import {TypeColumn, TypeTable} from "../types/TableCreatorTypes";
+import {TypeColumn, TypeGoodsTable, TypeTable} from "../types/TableCreatorTypes";
 
 
 let implementedTableEntities: TableEntity = {}
@@ -26,7 +26,6 @@ Object.keys(DataEntitiesCatalog).forEach((el: string) => {
         isAll: {
             forceRender: 0,
             data: [],
-            //AllCategories
         }
     }
 })
@@ -45,7 +44,7 @@ export default function tableReducer(state: CategoryState = defaultState, action
         case EnumCategoryReducer.CREATE_CATEGORY: {
             const typeTable: any = action.payload
             const rowItemArray: ColumnReduxStructure =
-                Object.keys(TableCreatorMokData[typeTable as TypeTable].row).reduce((accumulator: ColumnReduxStructure, key) => {
+                Object.keys(TableCreatorMokData[typeTable as TypeGoodsTable].row).reduce((accumulator: ColumnReduxStructure, key) => {
                         const generateDependents = dependentsIdMok.get(key as TypeColumn) && dependentsIdMok.get(typeTable)
                             ?.reduce((accumulator: { [key: string]: number }, dependentId) => {
                                 accumulator[dependentId] = -1

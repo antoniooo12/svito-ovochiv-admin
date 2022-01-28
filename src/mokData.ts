@@ -13,6 +13,7 @@ export const ColumnId ={
     SubcategoryId: ' SubcategoryId',
     ProductId: ' ProductId',
     TypeOfProductId: ' TypeOfProductId',
+    OrderTableId: 'OrderTableId'
 }
 
 export const ColumnToColumnId: Record<TypeTable, TypeColumnId> = {
@@ -20,6 +21,7 @@ export const ColumnToColumnId: Record<TypeTable, TypeColumnId> = {
     'Subcategory': 'SubcategoryId',
     'Product': 'ProductId',
     'TypeOfProduct': 'TypeOfProductId',
+    'OrderTable': 'OrderTableId',
 }
 
 
@@ -31,6 +33,8 @@ export const DataColumn = {
     actual: "актуальность",
     price: 'ціна',
     priority: 'пріорітет',
+    count: 'кількість',
+    totalSum: 'Всього',
 }
 
 export const Columns = {
@@ -180,6 +184,6 @@ export const mainPagesList = [
             return `${this.path}/${this.defaultTable}`
         }
     },
-    {id: 1, title: 'прайс', path: '/price', page: 'PricePage'},
+    // {id: 1, title: 'прайс', path: '/price', page: 'PricePage'},
     {id: 2, title: 'замовлення', path: '/orders', page: 'ProductsPage'}
 ]
