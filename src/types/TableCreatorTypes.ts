@@ -38,6 +38,7 @@ export enum EnumStyleHeader {
 export interface InputParams {
     typeColumn: TypeColumn,
     isDropDownList: boolean,
+    rightTab?: DependentColumn
     filterByColumn?: TypeColumn,
     typeInput: EnumInput,
     placeholder?: string,
@@ -46,6 +47,20 @@ export interface InputParams {
     bigNumberStep?: number,
     style?: EnumStyles[],
     defaultState?: boolean | string | number,
+    dependent?: {
+        local?: DependentColumn
+    }
+    formula?: {
+        local?: {
+            columns: Array<{ column: TypeColumn | 'previous', matchSing: (first: number, second: number) => number, onOther?: TypeColumn }>
+        }
+    }
+}
+
+export type DependentColumn = {
+    dependentByTable: TypeTable
+    parameter: TypeColumn
+    changeable: boolean
 }
 
 export type TableStructure = {
@@ -61,5 +76,5 @@ export type DataEntitiesTableStructure = {
 
 
 export type TablesCreator = {
-    [name in TypeGoodsTable]: DataEntitiesTableStructure;
+    [name in TypeTable]: DataEntitiesTableStructure;
 };

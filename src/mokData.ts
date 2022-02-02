@@ -1,5 +1,6 @@
 import {EnumInput, EnumStyles, TablesCreator, TypeColumn, TypeColumnId, TypeTable} from "./types/TableCreatorTypes";
 import {Line} from "./types/categoryReducerTypes";
+import {columns} from "./API";
 
 
 export const DataEntitiesCatalog = {
@@ -163,6 +164,61 @@ export const TableCreatorMokData: TablesCreator = {
             }
         }
 
+    },
+    OrderTable: {
+        dependency: ['Product'],
+        title: 'Замовлення',
+        columnParams: [{width: 150}, {width: 150}, {width: 150}, {width: 150}],
+        header: [{title: 'Назва'}, {title: 'Кількість'}, {title: 'Ціна'}, {title: 'Всього'}],
+        row: {
+            Product: {
+                typeColumn: "Product",
+                typeInput: EnumInput.text,
+                isDropDownList: true,
+
+            },
+            count: {
+                typeColumn: "count",
+                rightTab: {
+                    dependentByTable: "Product",
+                    changeable: false,
+                    parameter: "TypeOfProduct",
+                },
+                typeInput: EnumInput.number,
+                // placeholder: 'name of product',
+                isDropDownList: false
+            },
+            price: {
+                typeColumn: "price",
+                typeInput: EnumInput.number,
+                dependent: {
+                    local: {
+                        dependentByTable: "Product",
+                        parameter: "price",
+                        changeable: false,
+                    }
+                },
+                isDropDownList: false
+            },
+            totalSum: {
+                typeColumn: "totalSum",
+                typeInput: EnumInput.number,
+                // placeholder: 'name of product',
+                isDropDownList: false,
+
+                formula: {
+                    local: {
+                        columns: [
+                            {
+                                column: "price", onOther: 'count', matchSing: function (first: number, second: number) {
+                                    return Math.round((first * second) * 1000) / 1000
+                                },
+                            }
+                        ]
+                    }
+                },
+            }
+        },
     }
 }
 

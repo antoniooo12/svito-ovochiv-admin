@@ -1,9 +1,11 @@
-import {TypeTable} from "./TableCreatorTypes";
-import {changeOrder} from "../reducer/orderReducer";
+/* eslint-disable */
+
+import Immutable from "immutable";
 
 export enum EnumOrderReducer {
     CREATE_ORDER = 'CREATE_ORDER',
     CHANGE_ORDER = 'CHANGE_ORDER',
+    SET_ORDERS = 'SET_ORDERS',
 }
 
 export type ClientInformation = {
@@ -12,7 +14,6 @@ export type ClientInformation = {
     number: string
     address: string
     comments: string
-    timeFrame: boolean | Date
 }
 export type  OrderedGood = {
     product: string
@@ -20,18 +21,31 @@ export type  OrderedGood = {
     price: number
     totalSum: number
 }
-export type Order = {
-    numberOfOrder: number | string
-    clientInformation: ClientInformation
-    orderedGoods: Array<OrderedGood>
-    orderInformation: {
-        sum: number
-        status: string
-    }
+export type TimeFrame = {
+    deliverFrom: Date
+    deliverTo: Date
+}
+export type OrderAdditionalInformation = {
+    id?: number | string
+    sum: number
+    status: string
+    timeFrame: TimeFrame
+    orderComments: string
 }
 
+export type Order = {
+    id: number | string
+    ClientId?: number | string
+    Client: ClientInformation
+    OrderedGood: OrderedGood[]
+    OrderAdditionalInformation: OrderAdditionalInformation
+}
+
+export type OrdersFromServer = {
+    orders: Order[]
+}
 export type OrderState = {
-    orders: Array<Order>
+    orders: Immutable.List<Order>
 }
 
 type CreateOrder = {
@@ -42,4 +56,8 @@ type ChangeOrder = {
     type: EnumOrderReducer.CHANGE_ORDER
     payload: Order
 }
-export type OrderReducerActions = CreateOrder | ChangeOrder
+type SetOrders = {
+    type: EnumOrderReducer.SET_ORDERS
+    payload: OrdersFromServer,
+}
+export type OrderReducerActions = CreateOrder | ChangeOrder | SetOrders

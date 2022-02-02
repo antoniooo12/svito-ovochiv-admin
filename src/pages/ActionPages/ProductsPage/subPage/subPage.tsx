@@ -41,6 +41,13 @@ const SubPage = () => {
     const typeTable = useMemo(() => {
         return behavior
     }, [behavior])
+
+    useEffect(() => {
+        TableCreatorMokData[behavior].dependency.forEach(dependency => {
+            getAllRowsByTableName({behavior: dependency})
+        })
+    }, [typeTable])
+
     return (
         <>
             {TableCreatorMokData[behavior] &&

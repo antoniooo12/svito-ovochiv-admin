@@ -38,34 +38,36 @@ interface TableCreator {
 }
 
 const TableCreator: React.FC<TableCreator> = ({params, data, actions, typeTable}) => {
-    const {getAllRowsByTableName} = useActions()
-    useEffect(() => {
-        params.dependency.forEach(dependency => {
-            getAllRowsByTableName({behavior: dependency})
-        })
-    }, [typeTable])
+    // const {getAllRowsByTableName} = useActions()
+    // useEffect(() => {
+    //     params.dependency.forEach(dependency => {
+    //         getAllRowsByTableName({behavior: dependency})
+    //     })
+    // }, [typeTable])
 
     return (
         <div className={cl.wrapper}>
+            <TableList>
 
-            <TableHeader>
-
-                {params.header.map((el, index) => {
-                        const headerStyle = clsx({
-                            [cl.rotate50]: el.style && el.style.includes(EnumStyles.align),
-                            [cl.fontSize14]: el.style && el.style.includes(EnumStyles.fontSize14),
-                        })
-                        return (
-                            <div className={headerStyle} style={{width: `${params.columnParams[index].width}px`}}>
-                                {el.title}
-                            </div>
-                        )
-                    }
-                )}
-            </TableHeader>
-            <TableLines data={data} typeTable={typeTable} actions={actions} params={params}/>
+                <TableHeader>
+                    {params.header.map((el, index) => {
+                            const headerStyle = clsx({
+                                [cl.rotate50]: el.style && el.style.includes(EnumStyles.align),
+                                [cl.fontSize14]: el.style && el.style.includes(EnumStyles.fontSize14),
+                            })
+                            return (
+                                <div className={headerStyle} style={{width: `${params.columnParams[index].width}px`}}>
+                                    {el.title}
+                                </div>
+                            )
+                        }
+                    )}
+                </TableHeader>
+                <TableLines data={data} typeTable={typeTable} actions={actions} params={params}/>
+            </TableList>
 
         </div>
+
     );
 }
 

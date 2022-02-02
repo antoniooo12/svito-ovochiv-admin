@@ -1,51 +1,49 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import cl from "./OrdersPage.module.scss";
-import {useLocation} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {BtnBlue} from "../../../components/UI/BtnBlue/BtnBlue";
-import {RightPanel} from "../RightPanel/RightPanel";
-import {createNewOrder} from "../../../reducer/orderReducer";
+import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {socket} from "../../../soket/soket";
+import {useActions} from "../../../hooks/useActions";
 import {useTypedSelector} from "../../../hooks/hooks";
-import {OrderTab} from "../../../components/Order/OrderTab/OrderTab";
+import {OrderPageContext} from "./OrderPageContext";
+import {OrderComponent} from "../../../components/Order/OrderComponent/OrderComponent";
+
+export type SelectedOrder ={
+    isOpen: boolean
+    id: string| number
+}
 
 const OrdersPage = () => {
-    const dispatch = useDispatch()
-    let location = useLocation();
+    const {isCreateNewOrderOpen, setIsCreateNewOrderOpen} = useContext(OrderPageContext)
+
     // const behavior = location.pathname.split('/').pop() as TypeTable
     const orders = useTypedSelector(state => state.orderReducer.orders)
-    const [isCreateNewOrder, setIsCreateNewOrder] = useState(true)
+    const [isCreateNewOrder, setIsCreateNewOrder] = useState(false)
+    const [selectedOrder, setSelectedOrder] = useState<SelectedOrder>({isOpen: false, id: ''})
+
+    const {setOrders} = useActions()
     const createOrder = useCallback(() => {
-        setIsCreateNewOrder(true)
+        setIsCreateNewOrderOpen(true)
     }, [])
+
+    useEffect(() => {
+        socket.on('WEB:UPDATE:ORDERS', (orders) => {
+            console.log(orders)
+            setOrders({orders: orders})
+        })
+    }, [])
+
     const closeCreateNewOrder = useCallback(() => {
-        setIsCreateNewOrder(false)
+        setIsCreateNewOrderOpen(false)
     }, [])
 
-    console.log(orders)
     return (
-        <div className={cl.wrapper}>
-            <div className={cl.left}>
-                <div className={cl.table}>
-                    {isCreateNewOrder &&
-                        <OrderTab
-                            closeCreateNewOrder={closeCreateNewOrder}
-                        />
-                    }
-                    {/*{orders.map(order => {*/}
-                    {/*return <OrderTab/>*/}
-                    {/*})}*/}
-                </div>
-            </div>
-
-            <div className={cl.right}>
-                <RightPanel>
-                    <BtnBlue
-                        onClick={createOrder}
-                    >додати замовлення</BtnBlue>
-                </RightPanel>
-
-            </div>
-        </div>
+        <OrderPageContext.Provider
+            value={{
+                isCreateNewOrderOpen: isCreateNewOrder,
+                setIsCreateNewOrderOpen: setIsCreateNewOrder,
+                selectedOrder: selectedOrder,
+                setSelectedIdOrder: setSelectedOrder,
+            }}>
+            <OrderComponent orders={orders}/>
+        </OrderPageContext.Provider>
     );
 };
 

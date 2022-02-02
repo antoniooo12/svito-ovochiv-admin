@@ -47,7 +47,7 @@ export const getAllRowsByTableName = ({behavior}: { behavior: TypeTable }) => {
                 }
             })
 
-            const toUI = response.data as Item[][]
+            const toUI = response.data
 
 
 

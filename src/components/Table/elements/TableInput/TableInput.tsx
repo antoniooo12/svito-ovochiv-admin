@@ -1,11 +1,9 @@
 import React, {ChangeEvent, useCallback, useContext, useEffect, useMemo, useState} from 'react';
-import {HeaderContent} from "../../TableHeader/TableHeaderContext";
 import {LineContent} from "../../TableLine/LineContext";
 import cl from './TableInput.module.scss'
 import globalCl from '../../../../globalStyles.module.scss';
 import {TableDataList} from "./TableDataList/TableDataList";
 import isEqual from "react-fast-compare";
-import {useEffectSkipMount} from "../../../../hooks/hooks";
 import {
     EnumInput,
     EnumStyles,
@@ -18,6 +16,8 @@ import {Item} from "../../../../types/categoryReducerTypes";
 import clsx from "clsx";
 import {TableSelect} from "../TableSelect/TableSelect";
 import {TableCheckBox} from "./TableCheckBox/TableCheckBox";
+import {useActions} from "../../../../hooks/useActions";
+import {useTypedSelector} from "../../../../hooks/hooks";
 
 
 export type DropDownListItem = {
@@ -47,7 +47,6 @@ const initials: { [name in EnumInput]: string | number | boolean } = {
 }
 export const TableInput: React.FC<ITableInput> = React.memo(
     ({
-         children,
          typeInput,
          typeColumn,
          placeholder,
@@ -58,15 +57,29 @@ export const TableInput: React.FC<ITableInput> = React.memo(
          isMother,
      }) => {
 
-
-        const {isHeader} = useContext(HeaderContent)
+        const {changeCategory} = useActions()
         const {onChange, rowState, isNew, status, id, forceUpdate, typeTable} = useContext(LineContent)
         // const {typeTable} = useContext(ListContent)
         const initial = initials[typeInput]
+        const parentName: TypeTable = inputParams.dependent?.local && inputParams.dependent.local.dependentByTable || inputParams.rightTab && inputParams.rightTab.dependentByTable || '' as TypeTable
+        const dependParameter: TypeColumn = inputParams.dependent?.local ? inputParams.dependent.local.parameter : '' as TypeColumn
+        //від нього залежать
+        const dependentTable = useTypedSelector(state => state.tableReducer.tableAdditionalDate)
+            .get(parentName)
+        const parent = dependentTable?.find(line => line.id === rowState.columns[parentName as TypeColumn]?.id)
 
         const [value, setValue] = useState<typeof initial>(inputParams.defaultState || initial)
 
+        const [rightTab, setRightTab] = useState('')
+        useEffect(() => {
 
+            if (inputParams.rightTab) {
+                const localId = rowState.columns[inputParams?.rightTab?.dependentByTable as TypeColumn]?.id
+                const dependLine = dependentTable?.find(line => line.id === localId)
+                const localValue = dependLine?.columns[inputParams.rightTab.parameter]!.value
+                setRightTab(localValue as string)
+            }
+        }, [rowState.columns])
         const setTitleCallback = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
             if (typeof value === "string") {
                 setValue(event.target.value)
@@ -80,7 +93,10 @@ export const TableInput: React.FC<ITableInput> = React.memo(
             throw new Error('Уупс!');
         }
         useEffect(() => {
-            onChange({value: value, id: id, typeTable: typeTable, typeColumn, status})
+            // onChange({value: value, id: id, typeTable: typeTable, typeColumn, status})
+
+            changeCategory({value: value, id: id, typeTable: typeTable, typeColumn, status})
+
         }, [value])
 
         const state = useMemo<Item>((): Item => {
@@ -89,32 +105,38 @@ export const TableInput: React.FC<ITableInput> = React.memo(
 
 
         useEffect(() => {
-            if (rowState && typeof state.value === "string" && state.value.length > 0) {
+            if (inputParams.dependent) {
+                const dependValue = parent?.columns[dependParameter]?.value
+
+                setValue(dependValue as typeof value)
+            } else if (inputParams.formula) {
+                const formula = inputParams.formula.local!.columns.reduce((accumulator: number, el) => {
+                    const first = rowState.columns[el.column as TypeColumn]?.value as number
+                    const second = rowState.columns[el.onOther as TypeColumn]?.value as number
+                    accumulator += el.matchSing(first, second)
+                    return accumulator
+                }, 0)
+                console.log(formula)
+                setValue(formula as typeof value)
+            } else if (rowState && state && typeof state.value === "string" && state.value.length > 0) {
                 if (status === 'isAll' || !isMother) {
                     setValue(`${state.id}:${state.value}` as typeof value)
                 } else {
                     setValue(`${state.value}` as typeof value)
                 }
-            } else if (typeof state.value === "number" && state.value > 0) {
+            } else if (status && typeof state.value === "number" && state.value > 0) {
                 setValue(state.value as typeof value)
-            } else if (typeof state.value !== "string" && typeof state.value !== "number") {
+            } else if (status && typeof state.value !== "string" && typeof state.value !== "number") {
                 setValue(state.value as typeof value)
             }
         }, [rowState.columns])
 
 
-        const isVisibleHeader = useMemo(() => {
-            return isHeader !== true && true
-        }, [isHeader])
+
 
 
         const isInputDisable = useMemo(() => {
-            if (!rowState.toDelete && rowState.wasEdit || status === 'isNew') {
-                return false
-            }
-            return true
-
-
+            return !(!rowState.toDelete && rowState.wasEdit || status === 'isNew');
         }, [isNew, rowState && rowState.wasEdit, rowState.toDelete])
 
 
@@ -131,27 +153,35 @@ export const TableInput: React.FC<ITableInput> = React.memo(
 
 
             >
-                {isVisibleHeader ?
+                {/*{isVisibleHeader ?*/}
                     <>
                         {inputParams.typeInput === EnumInput.select && typeof value === 'string' &&
                             <TableSelect
-
+                                disabled={isInputDisable}
                                 value={value}
                                 setValue={setValue}
                                 typeColumn={typeColumn}
                             />
                         }
                         {inputParams.typeInput === EnumInput.number &&
-                            <input
-                                value={Number(value).toString()}
-                                onChange={setTitleCallback}
-                                onClick={forceUpdate}
-                                disabled={isInputDisable}
-                                placeholder={placeholder}
-                                list={`${typeColumn} + ${state && id}`}
-                                type={typeInput}
-                                min={0}
-                            />
+                            <>
+                                {inputParams.rightTab &&
+                                    <div className={cl.rightTab}>
+                                        {rightTab}
+                                    </div>
+                                }
+                                <input
+                                    className={cl.numberWrapper}
+                                    value={Number(value).toString()}
+                                    onChange={setTitleCallback}
+                                    onClick={forceUpdate}
+                                    disabled={isInputDisable}
+                                    placeholder={placeholder}
+                                    list={`${typeColumn} + ${state && id}`}
+                                    type={typeInput}
+                                    min={0}
+                                />
+                            </>
                         }
                         {inputParams.typeInput === EnumInput.text && typeof value === 'string' &&
                             <input
@@ -190,7 +220,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                             />}
 
                     </>
-                    : <div>{children}</div>}
+
             </div>
         );
     }, isEqual);

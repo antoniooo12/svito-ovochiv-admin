@@ -24,7 +24,6 @@ const TableDataList: React.FC<ITableDataList> = ({link, typeColumn, filterByColu
             if (!item) {
                 throw  new Error()
             }
-            console.log(item)
             // const dependentsId = dependentsIdMok.get(item.typeColumn)?.reduce((accumulator: any, dependentId) => {
             //     accumulator[dependentId] = item[dependentId]
             //     return accumulator

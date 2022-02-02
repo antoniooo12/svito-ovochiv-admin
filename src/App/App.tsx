@@ -27,14 +27,6 @@ function App() {
         }, 1000)
 
     }
-    useEffect(()=>{
-        socket.on('test',(m)=>{
-            console.log(m)
-        })
-        socket.on('ADD_ORDER',(m)=>{
-            console.log(m)
-        })
-    },[])
 
 
     return (

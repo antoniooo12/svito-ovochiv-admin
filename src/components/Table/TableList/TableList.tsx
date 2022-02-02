@@ -11,12 +11,8 @@ interface ITableList {
 }
 
 const TableList: React.FC<ITableList> = ({children, typeTable}) => {
-
-    const typeTableB = useMemo(() => {
-        return typeTable
-    }, [typeTable])
     return (
-        <ListContent.Provider value={{typeTable: typeTableB}}>
+        <ListContent.Provider value={{typeTable: typeTable}}>
             <div className={cl.wrapper}>
                 {children}
             </div>

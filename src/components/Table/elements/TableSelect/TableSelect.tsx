@@ -1,23 +1,18 @@
-import React, {ChangeEvent, useCallback, useEffect, useMemo, useState} from 'react';
-import isEqual from "react-fast-compare";
+import React, {ChangeEvent, useCallback, useContext, useEffect, useMemo} from 'react';
 import {TypeColumn} from "../../../../types/TableCreatorTypes";
 import {Line} from "../../../../types/categoryReducerTypes";
-import {
-    useEffectSkipAll,
-    useEffectSkipMount,
-    useForceUpdate,
-    useForceUpdateALl,
-    useTypedSelector
-} from "../../../../hooks/hooks";
+import {useForceUpdateALl, useTypedSelector} from "../../../../hooks/hooks";
 import {DropDownListItem} from "../TableInput/TableInput";
+import {LineContent} from "../../TableLine/LineContext";
 
 export interface ITableSelect {
     setValue: (event: string) => void,
     typeColumn: TypeColumn,
     value: string,
+    disabled?: boolean,
 }
 
-const TableSelect: React.FC<ITableSelect> = ({typeColumn, setValue, value}) => {
+const TableSelect: React.FC<ITableSelect> = ({typeColumn, setValue, value, disabled}) => {
     const dataDropDownList: Array<Line> = useTypedSelector(state => state.tableReducer.storage[typeColumn].isAll.data)
     const {forceUpdate} = useForceUpdateALl()
 
@@ -46,7 +41,11 @@ const TableSelect: React.FC<ITableSelect> = ({typeColumn, setValue, value}) => {
     }, [])
 
     return (
-        <select value={value} onChange={setTitleCallback}>
+        <select
+            value={value}
+            onChange={setTitleCallback}
+            disabled={disabled}
+        >
             <option selected>тип</option>
             {dropDownList
                 .map(item => <option

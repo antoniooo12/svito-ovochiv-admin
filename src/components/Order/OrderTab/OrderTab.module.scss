@@ -4,6 +4,7 @@
   border-radius: 20px;
   padding: 25px;
   box-shadow: 0 2px 10px #c4c4c4;
+  transition: height 0.2s;
 
   .Header {
     display: flex;
@@ -35,5 +36,15 @@
     }
 
 
+  }
+
+  .OrderedGoodsHeader {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+    align-items: center;
+    color: #242731;
+    margin-bottom: 5px;
   }
 }

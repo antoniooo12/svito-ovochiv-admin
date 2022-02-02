@@ -1,15 +1,41 @@
 .wrapper {
   padding: 0;
   user-select: none;
+  position: relative;
+  height: 40px;
+
   & > * {
 
     height: 100%;
     width: 100%;
   }
 
+  .rightTab {
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    right: 2px;
+    bottom: 2px;
+    cursor: none;
+    z-index: 0;
+  }
 
+  .numberWrapper {
+    &::-webkit-inner-spin-button {
+      top: 0;
+      right: 0;
+      transform: translateY(-40%);
+    }
+  }
 
+  .numberWrapper {
+    padding-top: 0 ;
+  }
 
+  //.numberWrapper::-webkit-outer-spin-button {
+  //  margin: 0;
+  //  position: absolute;
+  //}
 }
 
 
@@ -34,7 +60,7 @@ body {
 
 .toggleButton label span {
   display: block;
-  height: 20px;
+  height: 24px;
   cursor: pointer;
   font-size: 9px;
   text-align: center;

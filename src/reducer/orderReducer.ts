@@ -1,40 +1,36 @@
-import {EnumOrderReducer, Order, OrderReducerActions, OrderState} from "../types/orderReducerTypes";
+import {EnumOrderReducer, OrderReducerActions, OrdersFromServer, OrderState} from "../types/orderReducerTypes";
+import {List} from "immutable";
 
 const defaultState: OrderState = {
-    orders: []
+    orders: List()
 }
 
 export default function orderReducer(state: OrderState = defaultState, action: OrderReducerActions): OrderState {
     switch (action.type) {
-        case EnumOrderReducer.CREATE_ORDER: {
-            const {clientInformation, } = action.payload
-            console.log(clientInformation)
-            const newOrder: Order = {
-                numberOfOrder: '',
-                orderInformation: {
-                    status: 'Редагується',
-                    sum: 0
-                },
-                clientInformation: clientInformation,
-                orderedGoods: []
-            }
+        case EnumOrderReducer.SET_ORDERS: {
+            const {orders} = action.payload
+            console.log(orders)
             return {
                 ...state,
-                orders: [newOrder, ...state.orders]
+                orders: List(orders)
             }
         }
-
         default:
             return state
     }
 }
 
-export const changeOrder = (order: Order) => ({
-    type: EnumOrderReducer.CHANGE_ORDER,
-    payload: order,
-})
+// export const changeOrder = (order: OrderComponent) => ({
+//     type: EnumOrderReducer.CHANGE_ORDER,
+//     payload: order,
+// })
 
-export const createNewOrder = (order: Partial<Order>) => ({
-    type: EnumOrderReducer.CREATE_ORDER,
-    payload: order
+// export const createNewOrder = (order: Partial<OrderComponent>) => ({
+//     type: EnumOrderReducer.CREATE_ORDER,
+//     payload: order
+// })
+
+export const setOrders = (orders: OrdersFromServer) => ({
+    type: EnumOrderReducer.SET_ORDERS,
+    payload: orders,
 })

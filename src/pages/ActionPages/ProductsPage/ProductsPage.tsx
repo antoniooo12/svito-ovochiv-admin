@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Outlet, useLocation} from "react-router-dom";
 import {ProductsPageHeader} from "../../../components/ProductsPageHeader/ProductsPageHeader";
 import cl from "./ProductsPage.module.scss";
@@ -9,6 +9,7 @@ import {BtnBlue} from "../../../components/UI/BtnBlue/BtnBlue";
 import {createNewRow} from "../../../reducer/tableReducer";
 import {IconSave} from "../../../components/UI/icons/IconSave/IconSave";
 import {useSaveTable} from "../../../hooks/hooks";
+import {socket} from "../../../soket/soket";
 
 const ProductsPage = () => {
     const dispatch = useDispatch()
