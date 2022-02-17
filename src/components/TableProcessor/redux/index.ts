@@ -1,7 +1,7 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import {composeWithDevTools} from "redux-devtools-extension";
 import thunk from "redux-thunk";
-import {tableStoreReducer} from "./reducer/tableReducer";
+import {tableStoreReducer} from "./state";
 import {TableState} from "../types/TableReducerTypes";
 
 

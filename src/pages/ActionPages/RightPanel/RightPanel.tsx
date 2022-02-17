@@ -1,13 +1,8 @@
-import React, {memo, useCallback, useMemo} from 'react';
+import React, {memo} from 'react';
 import cl from "./RightPanel.module.scss";
 
 import isEqual from "react-fast-compare";
-import {TypeTable} from "../../../types/TableCreatorTypes";
 import {useDispatch} from "react-redux";
-import {createNewRow} from "../../../reducer/tableReducer";
-import {useSaveTable} from "../../../hooks/hooks";
-import {BtnBlue} from "../../../components/UI/BtnBlue/BtnBlue";
-import {IconSave} from "../../../components/UI/icons/IconSave/IconSave";
 import {useLocation} from "react-router-dom";
 
 const RightPanel: React.FC =

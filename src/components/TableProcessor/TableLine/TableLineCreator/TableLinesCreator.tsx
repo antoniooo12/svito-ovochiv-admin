@@ -4,6 +4,7 @@ import {EnumStatus} from "../../../../types/categoryReducerTypes";
 import {TableLineCreator} from "../TableLine/TableLineCreator";
 import {ColumnParam, LineStructure} from "../../../../types/TableCreatorTypes";
 import {TableShieldContext} from "../../TableShield/TableShieldContext";
+import {useKeyCreateLine} from "../../hooks/useKeyCreateLine";
 
 
 type TableLinesCreator = {
@@ -14,9 +15,6 @@ type TableLinesCreator = {
 
 const TableLinesCreator: React.FC<TableLinesCreator> = ({lines, columnParams, lineParams}) => {
     const {tableActions} = useContext(TableShieldContext)
-    const {useCreateLine} = tableActions
-    useCreateLine()
-
     return (
         <div>
             {Object.keys(lines).map((status) => {

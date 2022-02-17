@@ -1,12 +1,11 @@
 import {createContext} from "react";
-import {useTableActions} from "../hooks/useCreateLine";
+import {changeColumn, tableCreateLine} from "../redux/reducer/tableReducer";
+import {useActionsTable} from "../hooks/useActionTable";
+import {LineStructure} from "../../../types/TableCreatorTypes";
+import {useExternalActions} from "../hooks/useExternalActions";
 
 type TableShieldContext = {
-    tableActions: ReturnType<typeof useTableActions>
+    tableActions: ReturnType<typeof useActionsTable | typeof useExternalActions>,
+    lineStructure: LineStructure
 }
-export const TableShieldContext = createContext<TableShieldContext>({
-    tableActions: {
-        useCreateLine: () => {
-        }
-    }
-})
+export const TableShieldContext = createContext<TableShieldContext>({} as TableShieldContext)
