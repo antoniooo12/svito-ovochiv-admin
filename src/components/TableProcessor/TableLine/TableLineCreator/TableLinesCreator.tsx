@@ -1,17 +1,37 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {TableStructure} from "../../types/TableReducerTypes";
 import {EnumStatus} from "../../../../types/categoryReducerTypes";
 import {TableLineCreator} from "../TableLine/TableLineCreator";
 import {ColumnParam, LineStructure} from "../../../../types/TableCreatorTypes";
+import {tableCreateLine} from "../../redux/reducer/tableReducer";
 
 
 type TableLinesCreator = {
     lines: TableStructure
     columnParams: ColumnParam[]
-    inputParams: LineStructure
+    lineParams: LineStructure
 }
 
-const TableLinesCreator: React.FC<TableLinesCreator> = ({lines, columnParams,inputParams}) => {
+const TableLinesCreator: React.FC<TableLinesCreator> = ({lines, columnParams, lineParams}) => {
+    useEffect(() => {
+        const onKeyDown = (event: any) => {
+            keysPressed[event.code] = true;
+        }
+        const onKeyUp = (event: any) => {
+            if (keysPressed['AltLeft'] && event.code === 'KeyA') {
+                tableCreateLine(lineParams)
+            }
+            delete keysPressed[event.code];
+        }
+        let keysPressed: any = {};
+        window.addEventListener('keydown', onKeyDown)
+        window.addEventListener('keyup', onKeyUp)
+        return () => {
+            window.removeEventListener('keydown', onKeyDown)
+            window.removeEventListener('keyup', onKeyUp)
+
+        }
+    }, [])
     return (
         <div>
             {Object.keys(lines).map((status) => {
@@ -19,7 +39,7 @@ const TableLinesCreator: React.FC<TableLinesCreator> = ({lines, columnParams,inp
                     return arr.data.map((line, index) => {
                         return (
                             <TableLineCreator
-                                inputParams={inputParams}
+                                inputParams={lineParams}
                                 status={status as EnumStatus}
                                 columnParams={columnParams}
                                 lineData={line}
