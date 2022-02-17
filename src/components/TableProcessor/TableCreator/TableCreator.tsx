@@ -29,8 +29,11 @@ const TableCreator: React.FC<TableCreator> = ({ tableViewStructure}) => {
     return (
         <>
             <TableHeader header={tableViewStructure.header} params={tableViewStructure.columnParams}/>
-            <TableLinesCreator lines={storage} columnParams={tableViewStructure.columnParams}
-                               lineParams={tableViewStructure.row}/>
+            <TableLinesCreator
+                lines={storage}
+                columnParams={tableViewStructure.columnParams}
+                lineParams={tableViewStructure.row}
+            />
         </>
     );
 };
