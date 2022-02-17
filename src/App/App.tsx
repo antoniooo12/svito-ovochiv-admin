@@ -9,34 +9,25 @@ import {User} from "../types/User";
 import ProductsPage from "../pages/ActionPages/ProductsPage/ProductsPage";
 import {SubPage} from "../pages/ActionPages/ProductsPage/subPage/subPage";
 import {OrdersPage} from "../pages/ActionPages/OrdersPage/OrdersPage";
+import {
+    TestInitializationComponent
+} from "../components/TableProcessor/TestInitilizationComponent/TestInitializationComponent";
+import {mockTables} from "../mockData/mockNewTable";
 
 function App() {
-    const user: User = {
-        name: 'a'
-    }
-    useEffect(() => {
-        socket.emit('ROOM:SET_USERS', {roomId: '1', user: user})
-        a()
-
-    }, [])
-
-    async function a() {
-        setTimeout(() => {
-            socket.emit('ADD_ORDER', {roomId: '1'})
-            console.log('send')
-        }, 1000)
-
-    }
-
-
     return (
         <div className={cl.wrapper}>
 
             <Routes>
                 <Route path='/' element={<Layout/>}>
+                    {mockTables.map(table =>
+                        <Route path={'testTable'}
+                               element={<TestInitializationComponent tableName={table.tableName}/>}/>
+                    )}
                     <Route path={`/goods`} element={<ProductsPage/>}>
+
                         {Object.keys(DataEntitiesCatalog).map((item, index) => {
-                                return <Route path={item} element={<SubPage/>}/>
+                                return <Route key={item} path={item} element={<SubPage/>}/>
                             }
                         )}
                     </Route>

@@ -9,7 +9,6 @@ import {BtnBlue} from "../../../components/UI/BtnBlue/BtnBlue";
 import {createNewRow} from "../../../reducer/tableReducer";
 import {IconSave} from "../../../components/UI/icons/IconSave/IconSave";
 import {useSaveTable} from "../../../hooks/hooks";
-import {socket} from "../../../soket/soket";
 
 const ProductsPage = () => {
     const dispatch = useDispatch()
@@ -31,15 +30,16 @@ const ProductsPage = () => {
             </div>
 
             <div className={cl.right}>
-                <RightPanel  >
-                        <BtnBlue
-                            showChildren={false}
-                            onClick={onCreate}
-                            icon={<IconSave/>}
-                        >
-                            Нове поле
-                        </BtnBlue>
+                <RightPanel>
                     <BtnBlue
+                        showChildren={false}
+                        onClick={onCreate}
+                        icon={<IconSave/>}
+                    >
+                        Нове поле
+                    </BtnBlue>
+                    <BtnBlue
+                       
                         onClick={OnSave}
                     >
                         зберегти

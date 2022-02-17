@@ -9,12 +9,22 @@ export const DataEntitiesCatalog = {
     Subcategory: "підкатегорії",
     TypeOfProduct: 'тип продуктів',
 }
-export const ColumnId ={
+type TableNameToTableId = {
+    [name: string]: string
+}
+export const NameToTableId: TableNameToTableId = {
+    Category: 'CategoryId',
+    Subcategory: 'SubcategoryId',
+    TypeOfProduct: 'TypeOfProductId',
+    Product: 'ProductId',
+}
+
+export const ColumnId = {
     CategoryId: ' CategoryId',
     SubcategoryId: ' SubcategoryId',
     ProductId: ' ProductId',
     TypeOfProductId: ' TypeOfProductId',
-    OrderTableId: 'OrderTableId'
+    OrderId: 'OrderId'
 }
 
 export const ColumnToColumnId: Record<TypeTable, TypeColumnId> = {
@@ -22,7 +32,7 @@ export const ColumnToColumnId: Record<TypeTable, TypeColumnId> = {
     'Subcategory': 'SubcategoryId',
     'Product': 'ProductId',
     'TypeOfProduct': 'TypeOfProductId',
-    'OrderTable': 'OrderTableId',
+    'Order': 'OrderId',
 }
 
 
@@ -36,6 +46,7 @@ export const DataColumn = {
     priority: 'пріорітет',
     count: 'кількість',
     totalSum: 'Всього',
+    Order: 'таблиця замовлень',
 }
 
 export const Columns = {
@@ -165,7 +176,7 @@ export const TableCreatorMokData: TablesCreator = {
         }
 
     },
-    OrderTable: {
+    Order: {
         dependency: ['Product'],
         title: 'Замовлення',
         columnParams: [{width: 150}, {width: 150}, {width: 150}, {width: 150}],
@@ -240,6 +251,6 @@ export const mainPagesList = [
             return `${this.path}/${this.defaultTable}`
         }
     },
-    // {id: 1, title: 'прайс', path: '/price', page: 'PricePage'},
     {id: 2, title: 'замовлення', path: '/orders', page: 'ProductsPage'}
 ]
+

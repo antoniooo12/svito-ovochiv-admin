@@ -1,25 +1,68 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useCallback} from 'react';
 import cl from "../OrderTab.module.scss";
 import {ClientInformation} from "../../../../types/orderReducerTypes";
 
 type ClientInformationTab = {
-    setName: (e: ChangeEvent<HTMLInputElement>) => void
-    setSurname: (e: ChangeEvent<HTMLInputElement>) => void
-    setNumber: (e: ChangeEvent<HTMLInputElement>) => void
-    setAddress: (e: ChangeEvent<HTMLInputElement>) => void
-    setComments: (e: ChangeEvent<HTMLTextAreaElement>) => void
+    setClientInformation:  React.Dispatch<React.SetStateAction<ClientInformation>>,
     clientInformation: ClientInformation
 }
 
 export const ClientInformationTab: React.FC<ClientInformationTab> = (
     {
-        setName,
-        setComments,
-        setAddress,
-        setSurname,
-        setNumber,
-        clientInformation
+        setClientInformation,
+        clientInformation,
     }) => {
+
+    const setName = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        setClientInformation((prevState) => {
+            return {
+                ...prevState,
+                name: e.target.value
+            }
+        })
+    }, [])
+    const setSurname = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        setClientInformation((prevState) => {
+            return {
+                ...prevState,
+                surname: e.target.value
+            }
+        })
+    }, [])
+    const setAddress = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        setClientInformation((prevState => {
+            return {
+                ...prevState,
+                address: e.target.value
+            }
+        }))
+    }, [])
+    const setNumber = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        setClientInformation((prevState => {
+            const value = e.target.value
+            const currentValue = value.replace(/[^\d]/g, '');
+            const valueLentgh = currentValue.length
+
+
+            const normilazeNumber = valueLentgh < 4 ? currentValue :
+                value.length < 10
+                    ? `(${currentValue.slice(0, 3)}) ${currentValue.slice(3)}`
+                    : `(${currentValue.slice(0, 3)}) ${currentValue.slice(3, 6)}-${currentValue.slice(6, 10)}`
+
+            return {
+                ...prevState,
+                number: normilazeNumber
+            }
+        }))
+    }, [])
+    const setClientComment = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
+        setClientInformation((prevState => {
+            return {
+                ...prevState,
+                comments: e.target.value
+            }
+        }))
+    }, [])
     return (
         <div className={cl.ClientInformation}>
             <div className={'font-bold text-xl'}> Інформація клієнта</div>
@@ -66,7 +109,7 @@ export const ClientInformationTab: React.FC<ClientInformationTab> = (
                     коментар
                     <textarea
                         value={clientInformation.comments}
-                        onChange={setComments}
+                        onChange={setClientComment}
                         placeholder={'comment'}
                         className={'w-full text-base px-3 py-2 text-gray-700 border rounded-lg focus:outline-none'}
                     />

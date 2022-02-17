@@ -45,8 +45,7 @@ const TableDataList: React.FC<ITableDataList> = ({link, typeColumn, filterByColu
     }, [rowState, state, dropDownList])
 
     const filteredDropDownList = useMemo(() => {
-        console.log(filterById)
-        console.log(filterByColumn)
+
         if (filterByColumn && filterById) {
             return dropDownList.filter(item => {
                 if (!item.dependencyId) {

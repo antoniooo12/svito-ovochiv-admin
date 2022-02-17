@@ -1,1 +1,1 @@
-export const defaultLink = '/orders'
+export const defaultLink = '/testTable'

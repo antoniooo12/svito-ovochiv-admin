@@ -4,15 +4,15 @@ import {SelectedOrder} from "./OrdersPage";
 type OrderPageContext = {
     isCreateNewOrderOpen: boolean
     setIsCreateNewOrderOpen: React.Dispatch<React.SetStateAction<boolean>>
-    selectedOrder: SelectedOrder
-    setSelectedIdOrder: React.Dispatch<React.SetStateAction<SelectedOrder>>
+    selectedOrderId: number
+    setSelectedIdOrder: React.Dispatch<React.SetStateAction<number>>
 
 }
 export const OrderPageContext = createContext<OrderPageContext>({
     isCreateNewOrderOpen: false,
     setIsCreateNewOrderOpen: () => {
     },
-    selectedOrder: {isOpen: false, id: ''},
+    selectedOrderId:0,
     setSelectedIdOrder: () => {
     }
 })

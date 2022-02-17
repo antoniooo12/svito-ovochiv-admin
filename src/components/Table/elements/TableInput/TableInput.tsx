@@ -71,8 +71,8 @@ export const TableInput: React.FC<ITableInput> = React.memo(
         const [value, setValue] = useState<typeof initial>(inputParams.defaultState || initial)
 
         const [rightTab, setRightTab] = useState('')
-        useEffect(() => {
 
+        useEffect(() => {
             if (inputParams.rightTab) {
                 const localId = rowState.columns[inputParams?.rightTab?.dependentByTable as TypeColumn]?.id
                 const dependLine = dependentTable?.find(line => line.id === localId)
@@ -80,6 +80,7 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                 setRightTab(localValue as string)
             }
         }, [rowState.columns])
+
         const setTitleCallback = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
             if (typeof value === "string") {
                 setValue(event.target.value)
@@ -107,7 +108,6 @@ export const TableInput: React.FC<ITableInput> = React.memo(
         useEffect(() => {
             if (inputParams.dependent) {
                 const dependValue = parent?.columns[dependParameter]?.value
-
                 setValue(dependValue as typeof value)
             } else if (inputParams.formula) {
                 const formula = inputParams.formula.local!.columns.reduce((accumulator: number, el) => {
@@ -116,7 +116,6 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                     accumulator += el.matchSing(first, second)
                     return accumulator
                 }, 0)
-                console.log(formula)
                 setValue(formula as typeof value)
             } else if (rowState && state && typeof state.value === "string" && state.value.length > 0) {
                 if (status === 'isAll' || !isMother) {
@@ -124,9 +123,9 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                 } else {
                     setValue(`${state.value}` as typeof value)
                 }
-            } else if (status && typeof state.value === "number" && state.value > 0) {
+            } else if (status && state && typeof state.value === "number" && state.value > 0) {
                 setValue(state.value as typeof value)
-            } else if (status && typeof state.value !== "string" && typeof state.value !== "number") {
+            } else if (status && state && typeof state.value !== "string" && typeof state.value !== "number") {
                 setValue(state.value as typeof value)
             }
         }, [rowState.columns])
@@ -186,7 +185,6 @@ export const TableInput: React.FC<ITableInput> = React.memo(
                         {inputParams.typeInput === EnumInput.text && typeof value === 'string' &&
                             <input
                                 value={value}
-
                                 onChange={setTitleCallback}
                                 onClick={forceUpdate}
                                 disabled={isInputDisable}

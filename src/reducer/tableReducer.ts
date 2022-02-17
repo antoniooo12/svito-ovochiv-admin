@@ -47,12 +47,11 @@ export default function tableReducer(state: CategoryState = defaultState, action
             const typeTable: any = action.payload
             const rowItemArray: ColumnReduxStructure =
                 Object.keys(TableCreatorMokData[typeTable as TypeGoodsTable].row).reduce((accumulator: ColumnReduxStructure, key) => {
-                        const generateDependents = dependentsIdMok.get(key as TypeColumn) && dependentsIdMok.get(typeTable)
-                            ?.reduce((accumulator: { [key: string]: number }, dependentId) => {
-                                accumulator[dependentId] = -1
-                                return accumulator
-                            }, {})
-                        console.log(generateDependents)
+                        // const generateDependents = dependentsIdMok.get(key as TypeColumn) && dependentsIdMok.get(typeTable)
+                        //     ?.reduce((accumulator: { [key: string]: number }, dependentId) => {
+                        //         accumulator[dependentId] = -1
+                        //         return accumulator
+                        //     }, {})
                         if (typeof key === typeTable) {
                             accumulator[key as TypeColumn] = {
                                 id: '__00__' + Date.now(),
@@ -141,8 +140,6 @@ export default function tableReducer(state: CategoryState = defaultState, action
 
         case EnumCategoryReducer.SET_CATEGORIES: {
             const {typeTable, rowItem} = action.payload
-            console.log(rowItem)
-            // const lines: Line & any = serverToApp(rowItem)
 
             return {
                 ...state,
@@ -274,7 +271,6 @@ function serverToApp(array: any[]) {
         // @ts-ignore
         const rowToRedux = row.reduce((accumulator: any, dbTable, index) => {
             const otherColumns = Object.keys(dbTable).filter(param => Object.keys(DataColumn).includes(param))
-            console.log(dbTable)
             const generateDependents = dependentsIdMok.get(dbTable.typeColumn) && dependentsIdMok.get(dbTable.typeColumn)
                 ?.reduce((accumulator: { [key: string]: number }, dependentId) => {
                     accumulator[dependentId] = dbTable.dependencyId[dependentId]

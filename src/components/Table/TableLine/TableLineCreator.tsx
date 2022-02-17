@@ -21,7 +21,6 @@ type TableLineCreator = {
     status: keyof typeof EnumStatus
 }
 const TableLineCreator: React.FC<TableLineCreator> = React.memo(({index, row, actions, typeTable, params, status}) => {
-    console.log(row)
     return (
         <TableLine
             typeTable={typeTable}

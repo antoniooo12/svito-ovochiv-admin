@@ -4,7 +4,6 @@ import {RootState} from "../reducer";
 import {getIdFromValueString1} from "../reducer/helpers/helper";
 import {TypeTable} from "../types/TableCreatorTypes";
 import {useActions} from "./useActions";
-import {ColumnReduxStructure, ICategoryTypeStructure, Line} from "../types/categoryReducerTypes";
 import {deleteAllNewInstance} from "../reducer/tableReducer";
 import {parseTableLines} from "../services/table";
 

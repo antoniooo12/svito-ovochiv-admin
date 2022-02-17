@@ -1,12 +1,15 @@
 import {ClientInformation, OrderAdditionalInformation} from "../types/orderReducerTypes";
 import {socket} from "../soket/soket";
 import {ColumnReduxStructure} from "../types/categoryReducerTypes";
+import {OrderTabWasEdit} from "../types/orderTypes";
 
 export const saveOrder = (
     {
         clientInformation,
         orderedGoods,
-        orderAdditionalInformation
+        orderAdditionalInformation,
+        edit,
+        orderId,
     }: {
         clientInformation: ClientInformation
         orderAdditionalInformation: OrderAdditionalInformation
@@ -15,9 +18,9 @@ export const saveOrder = (
             allToUpdate: ColumnReduxStructure[]
             allToDelete: (string | number)[]
         }
-
+        edit?: OrderTabWasEdit
+        orderId?: number
     }) => {
-    console.log(orderAdditionalInformation.timeFrame)
-
-    socket.emit('DATABASE:SAVE:ORDER', {clientInformation, orderedGoods, orderAdditionalInformation})
+    console.log(clientInformation, orderedGoods, orderAdditionalInformation, edit)
+    socket.emit('DATABASE:SAVE:ORDER', {clientInformation, orderedGoods, orderAdditionalInformation, edit, orderId})
 }

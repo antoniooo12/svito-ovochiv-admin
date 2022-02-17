@@ -1,5 +1,4 @@
 import {ColumnId, Columns, DataColumn, DataEntitiesCatalog} from "../mokData";
-import {Item} from "./categoryReducerTypes";
 import {TypeOrderTable} from "./orderTypes";
 
 
@@ -63,17 +62,20 @@ export type DependentColumn = {
     changeable: boolean
 }
 
-export type TableStructure = {
-    [name in TypeColumn]?: InputParams
+export type LineStructure = {
+    [key: string]: InputParams
 }
 export type DataEntitiesTableStructure = {
     dependency: TypeTable[]
     title: string
-    columnParams: Array<{ width: number }>
+    columnParams: Array<{ width: number }> | ColumnParam[]
     header: Array<{ title: string, style?: EnumStyles[], }>
-    row: TableStructure
+    row: LineStructure
 };
 
+export type ColumnParam = {
+    width: number
+}
 
 export type TablesCreator = {
     [name in TypeTable]: DataEntitiesTableStructure;

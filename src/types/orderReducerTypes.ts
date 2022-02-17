@@ -1,6 +1,8 @@
 /* eslint-disable */
 
 import Immutable from "immutable";
+import {statusOrder} from "../mockData/orderPageMock";
+import {OrderInstances} from "./orderTypes";
 
 export enum EnumOrderReducer {
     CREATE_ORDER = 'CREATE_ORDER',
@@ -14,8 +16,10 @@ export type ClientInformation = {
     number: string
     address: string
     comments: string
+    id: number
 }
 export type  OrderedGood = {
+    id: number
     product: string
     count: number
     price: number
@@ -34,12 +38,22 @@ export type OrderAdditionalInformation = {
 }
 
 export type Order = {
-    id: number | string
-    ClientId?: number | string
-    Client: ClientInformation
-    OrderedGood: OrderedGood[]
-    OrderAdditionalInformation: OrderAdditionalInformation
+    id: number
+    ClientOrder: {
+        Client: ClientInformation
+        ClientId: number
+    }
+    OrderAdditionalInformation: {
+        deliverFrom: Date
+        deliverTo: Date
+        id: number
+        sum: number
+        status: keyof typeof statusOrder
+        orderComment: string
+    }
+    OrderedGoods: OrderedGood[]
 }
+
 
 export type OrdersFromServer = {
     orders: Order[]

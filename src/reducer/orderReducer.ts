@@ -9,7 +9,7 @@ export default function orderReducer(state: OrderState = defaultState, action: O
     switch (action.type) {
         case EnumOrderReducer.SET_ORDERS: {
             const {orders} = action.payload
-            console.log(orders)
+            console.log('update')
             return {
                 ...state,
                 orders: List(orders)

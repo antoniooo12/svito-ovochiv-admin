@@ -12,7 +12,6 @@ const Header = () => {
     useEffect(() => {
         setPages(mainPagesList)
         navigate(`${defaultLink}`)
-
     }, [])
 
 
@@ -37,7 +36,7 @@ const Header = () => {
             </div>
             <div className={cl.right}>
                 <span>
-                    Іван Васильович Пупкін
+                    Сергій Загородній
                 </span>
                 <span>Адмін панель</span>
             </div>

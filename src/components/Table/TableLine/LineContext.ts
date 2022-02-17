@@ -12,7 +12,7 @@ export interface IOnChange {
     dependentColumns?: DependentColumn[]
 }
 
-interface ILineContent {
+export interface ILineContent {
     id?: number | string,
     states?: Item,
     wasEdit?: boolean,

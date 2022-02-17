@@ -1,25 +1,22 @@
 import React, {useCallback, useContext} from 'react';
-import {Order} from "../../../types/orderReducerTypes";
 import cl from './OrderMiniTab.module.scss'
 import {BtnBlue} from "../../UI/BtnBlue/BtnBlue";
 import {OrderPageContext} from "../../../pages/ActionPages/OrdersPage/OrderPageContext";
+import {Order} from "../../../types/orderReducerTypes";
+import {statusOrder} from "../../../mockData/orderPageMock";
 
 type OrderMiniTab = {
     order: Order
 }
-
 const OrderMiniTab: React.FC<OrderMiniTab> = ({order}) => {
-    console.log(order)
-    const {Client, id, OrderedGood, OrderAdditionalInformation} = order
+    const {id, OrderAdditionalInformation} = order
+    const {Client, ClientId} = order.ClientOrder
+
+
     const {setSelectedIdOrder, setIsCreateNewOrderOpen} = useContext(OrderPageContext)
     const onMore = useCallback(() => {
-        setSelectedIdOrder(() => {
-            return {
-                id: id,
-                isOpen: true,
-            }
-        })
-        setIsCreateNewOrderOpen(false)
+        setSelectedIdOrder(id)
+        setIsCreateNewOrderOpen(true)
     }, [])
     return (
         <div className={cl.wrapper}>
@@ -41,7 +38,7 @@ const OrderMiniTab: React.FC<OrderMiniTab> = ({order}) => {
                         </tr>
                         <tr>
                             <td align={'right'}>статус:</td>
-                            <td>{OrderAdditionalInformation.status}</td>
+                            <td>{statusOrder[OrderAdditionalInformation.status]}</td>
                         </tr>
                     </table>
                 </div>

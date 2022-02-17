@@ -17,7 +17,6 @@ const TimeTab: React.FC<TimeTab> = ({timeFrame, setTimeFrame}) => {
     }, [])
     const onDelverTo = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setTimeFrame(prevState => {
-            console.log(timeFrame.deliverTo)
 
             const year = timeFrame.deliverTo.getFullYear()
             const month = timeFrame.deliverTo.getMonth()

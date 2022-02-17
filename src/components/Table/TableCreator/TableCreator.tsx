@@ -1,26 +1,14 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import cl from './TableCreator.module.scss'
 import {TableList} from "../TableList/TableList";
 import {TableHeader} from '../TableHeader/TableHeader';
-import {TableLine} from "../TableLine/TableLine";
-import {EnumStatus, TableEntityStructure} from "../../../types/categoryReducerTypes";
+import {TableEntityStructure} from "../../../types/categoryReducerTypes";
 import {IOnChange} from "../TableLine/LineContext";
-import {
-    DataEntitiesTableStructure,
-    EnumStyles,
-    InputParams,
-    TypeColumn,
-    TypeTable
-} from "../../../types/TableCreatorTypes";
-import {IconTrash} from "../../UI/icons/Trash/Trash";
-import {EnumTableBtn, IOnClick} from "../../../types/TableBtnTypes";
-import {IconNotePencil} from "../../UI/icons/NotePencil/IconNotePencil";
+import {DataEntitiesTableStructure, EnumStyles, TypeTable} from "../../../types/TableCreatorTypes";
+import {IOnClick} from "../../../types/TableBtnTypes";
 import isEqual from "react-fast-compare";
 import clsx from "clsx";
-import {TableLineCreator} from "../TableLine/TableLineCreator";
 import TableLines from "../TableLine/TableLines";
-import {useActions} from "../../../hooks/useActions";
-import {TypeOrderTable} from "../../../types/orderTypes";
 
 interface column {
     column: Array<{ width: number }>
@@ -37,13 +25,8 @@ interface TableCreator {
     data: TableEntityStructure,
 }
 
-const TableCreator: React.FC<TableCreator> = ({params, data, actions, typeTable}) => {
-    // const {getAllRowsByTableName} = useActions()
-    // useEffect(() => {
-    //     params.dependency.forEach(dependency => {
-    //         getAllRowsByTableName({behavior: dependency})
-    //     })
-    // }, [typeTable])
+const TableCreator: React.FC<TableCreator> = React.memo(({params, data, actions, typeTable}) => {
+
 
     return (
         <div className={cl.wrapper}>
@@ -56,7 +39,7 @@ const TableCreator: React.FC<TableCreator> = ({params, data, actions, typeTable}
                                 [cl.fontSize14]: el.style && el.style.includes(EnumStyles.fontSize14),
                             })
                             return (
-                                <div className={headerStyle} style={{width: `${params.columnParams[index].width}px`}}>
+                                <div className={headerStyle} style={{width: `${params.columnParams[index].width}px`}} key={el.title}>
                                     {el.title}
                                 </div>
                             )
@@ -69,6 +52,6 @@ const TableCreator: React.FC<TableCreator> = ({params, data, actions, typeTable}
         </div>
 
     );
-}
+}, isEqual)
 
 export {TableCreator};
