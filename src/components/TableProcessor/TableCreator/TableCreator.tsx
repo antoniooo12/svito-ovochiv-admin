@@ -1,30 +1,43 @@
-import React, {useCallback, useEffect} from 'react';
-import {Provider, useDispatch} from "react-redux";
-import {tableStore} from "../redux";
-import Immutable from "immutable";
+import React, {useEffect} from 'react';
+import {useDispatch} from "react-redux";
 import {TableHeader} from "../TableHeader/TableHeader";
 import {DataEntitiesTableStructure} from "../../../types/TableCreatorTypes";
-import {useActionsTable} from "../hooks/useActionTable";
 import {TableLinesCreator} from "../TableLine/TableLineCreator/TableLinesCreator";
 import {useTableTypedSelector} from "../hooks/useTableTypedSelector";
-import {TTableLine} from "../types/TableReducerTypes";
+import {EternalActions} from "../TableShield/TableShield";
+import {useKeyCreateLine} from "../hooks/useKeyCreateLine";
+import {useExternalActions} from "../hooks/useExternalActions";
 
 
 type TableCreator = {
     tableViewStructure: DataEntitiesTableStructure
     modifyActions?: {
         createLine: () => {}
-    }
+    },
+    setActions?: React.Dispatch<React.SetStateAction<EternalActions>>
 }
 
 
-const TableCreator: React.FC<TableCreator> = ({ tableViewStructure}) => {
-    const {tableCreateLine} = useActionsTable()
+const TableCreator: React.FC<TableCreator> = ({tableViewStructure, setActions}) => {
+    // const {tableCreateLine} = useActionsTable()
     const dispatch = useDispatch()
     const {storage} = useTableTypedSelector(state => state.tableStore)
-    const createLine = useCallback(() => {
+    const externalActions = useExternalActions()
+    // const {tableCreateLine} = useBindTable(mockNewSubcategory)
+    useEffect(() => {
+        // console.log(actions?.addLine)
+        if (setActions) {
+            setActions(prevState => {
+                return {
+                    ...prevState,
+                    ...externalActions,
+                }
+            })
+        }
 
     }, [])
+    useKeyCreateLine()
+
 
     return (
         <>

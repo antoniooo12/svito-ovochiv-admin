@@ -1,11 +1,12 @@
-import React, {ChangeEvent, useCallback, useContext, useEffect, useState} from 'react';
+import React, {ChangeEvent, useCallback, useContext, useState} from 'react';
 import {Item} from "../../types/TableReducerTypes";
 import {ColumnParam, EnumInput, InputParams} from "../../../../types/TableCreatorTypes";
 import cl from './TableInput.module.scss'
 import clsx from "clsx";
-import {useActionsTable} from "../../hooks/useActionTable";
 import {LineContext} from "../../TableLine/TableLine/TableLineContext";
 import {useEffectSkipMount} from "../../../../hooks/hooks";
+import {TableShieldContext} from "../../TableShield/TableShieldContext";
+import {useActionsTable} from "../../hooks/useActionTable";
 
 type TableInput = {
     column: Item
@@ -31,7 +32,8 @@ const TableInput: React.FC<TableInput> = ({column, columnParam, inputParams}) =>
     }, [])
 
     useEffectSkipMount(() => {
-        changeColumn({lineId: lineId, typeColumn: column.typeColumn, status: status, value})
+        console.log(changeColumn)
+        changeColumn({lineId: lineId, typeColumn: column.typeColumn, status: 'isNew', value})
     }, [value])
     return (
         <div className={clsx({[cl.wrapper]: true})} style={{width: `${columnParam.width}px`}}>
