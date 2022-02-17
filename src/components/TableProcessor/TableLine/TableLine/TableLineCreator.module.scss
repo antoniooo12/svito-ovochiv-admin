@@ -1,0 +1,46 @@
+@import "src/variablesGlobal";
+
+.wrapper {
+  display: flex;
+  padding-left: 3px;
+  align-items: center;
+  width: fit-content;
+  position: relative;
+  border-bottom: 1px solid #151515;
+
+  & input, select {
+    background-color: rgba(0, 0, 0, 0.0);
+    padding: 8px 1px 8px 3px;
+    font-size: 16px;
+  }
+
+  & > * {
+    border-right: 2px solid #C0C0C0;
+  }
+
+  & > *:last-child {
+    border-right: none;
+  }
+}
+
+
+.LineDontSaveNew {
+  background-color: #FFC7C7;
+}
+
+.LineDontSaveOld {
+  background-color: #ffffff;
+}
+
+
+.toDelete:before {
+  content: "";
+  z-index: 1;
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background-color: $black;
+  top: 50%;
+  left: 0;
+  pointer-events: none;
+}

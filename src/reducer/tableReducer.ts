@@ -11,13 +11,14 @@ import {
 import {IOnClick} from "../types/TableBtnTypes";
 import {findIndexById, separateString} from "./helpers/helper";
 import {DataColumn, DataEntitiesCatalog, dependentsIdMok, TableCreatorMokData} from "../mokData";
-import {TypeColumn, TypeTable} from "../types/TableCreatorTypes";
-
+import {TypeColumn, TypeGoodsTable, TypeTable} from "../types/TableCreatorTypes";
+import {orderTable} from "../mockData/orderPageMock";
+import {Map} from "immutable";
 
 let implementedTableEntities: TableEntity = {}
 
-
-Object.keys(DataEntitiesCatalog).forEach((el: string) => {
+const tables = [...Object.keys(DataEntitiesCatalog), ...Object.keys(orderTable)]
+tables.forEach((el: string) => {
     implementedTableEntities[el] = {
         isNew: {
             forceRender: 0,
@@ -26,7 +27,6 @@ Object.keys(DataEntitiesCatalog).forEach((el: string) => {
         isAll: {
             forceRender: 0,
             data: [],
-            //AllCategories
         }
     }
 })
@@ -35,7 +35,8 @@ Object.keys(DataEntitiesCatalog).forEach((el: string) => {
 const defaultState: CategoryState = {
     storage: {
         ...implementedTableEntities
-    }
+    },
+    tableAdditionalDate: Map()
 }
 
 
@@ -45,13 +46,12 @@ export default function tableReducer(state: CategoryState = defaultState, action
         case EnumCategoryReducer.CREATE_CATEGORY: {
             const typeTable: any = action.payload
             const rowItemArray: ColumnReduxStructure =
-                Object.keys(TableCreatorMokData[typeTable as TypeTable].row).reduce((accumulator: ColumnReduxStructure, key) => {
-                        const generateDependents = dependentsIdMok.get(key as TypeColumn) && dependentsIdMok.get(typeTable)
-                            ?.reduce((accumulator: { [key: string]: number }, dependentId) => {
-                                accumulator[dependentId] = -1
-                                return accumulator
-                            }, {})
-                        console.log(generateDependents)
+                Object.keys(TableCreatorMokData[typeTable as TypeGoodsTable].row).reduce((accumulator: ColumnReduxStructure, key) => {
+                        // const generateDependents = dependentsIdMok.get(key as TypeColumn) && dependentsIdMok.get(typeTable)
+                        //     ?.reduce((accumulator: { [key: string]: number }, dependentId) => {
+                        //         accumulator[dependentId] = -1
+                        //         return accumulator
+                        //     }, {})
                         if (typeof key === typeTable) {
                             accumulator[key as TypeColumn] = {
                                 id: '__00__' + Date.now(),
@@ -94,15 +94,12 @@ export default function tableReducer(state: CategoryState = defaultState, action
 
 
         case EnumCategoryReducer.CHANGE_CATEGORY: {
-            const {value, id, typeTable, typeColumn, status} = action.payload
+            const {value, id, typeTable, typeColumn, status, dependentColumns} = action.payload
             const oldData = state.storage[typeTable][status].data
             const indexRow = findIndexById<Line>(oldData, id)
             const oldLine = oldData.find(obj => obj.id === id) as Line
-// debugger
-
             const oldColumn = oldLine.columns[typeColumn]
-            // const indexOldColumn = oldRow.columns.findIndex(column => column.typeColumn === typeColumn)
-            // debugger
+
 
             const generateDependents = dependentsIdMok.get(typeColumn) && dependentsIdMok.get(typeColumn)
                 ?.reduce((accumulator: { [key: string]: number }, dependentId) => {
@@ -111,12 +108,12 @@ export default function tableReducer(state: CategoryState = defaultState, action
                 }, {})
             const changedColumn = {
                 ...oldColumn,
-                // ...generateDependents,
                 id: Number(separateString(value, ':', 0)) ? Number(separateString(value, ':', 0)) : oldColumn?.id,
                 value: separateString(value, ':', 1) && separateString(value, ':', 1),
                 wasEdit: true,
                 dependencyId: generateDependents,
             }
+
             const changedLine: Line = {
                 ...oldLine,
                 columns: {
@@ -143,18 +140,18 @@ export default function tableReducer(state: CategoryState = defaultState, action
 
         case EnumCategoryReducer.SET_CATEGORIES: {
             const {typeTable, rowItem} = action.payload
-            const lines: Line & any = serverToApp(rowItem)
-            setTimeout(() => {
-            }, 1000);
+
             return {
                 ...state,
+                tableAdditionalDate: state.tableAdditionalDate.set(typeTable, rowItem),
                 storage: {
                     ...state.storage,
                     [typeTable]: {
                         ...state.storage[typeTable],
                         isAll: {
                             ...state.storage[typeTable].isAll,
-                            data: lines
+                            data: rowItem
+
                         }
                     }
                 }
@@ -274,7 +271,6 @@ function serverToApp(array: any[]) {
         // @ts-ignore
         const rowToRedux = row.reduce((accumulator: any, dbTable, index) => {
             const otherColumns = Object.keys(dbTable).filter(param => Object.keys(DataColumn).includes(param))
-            console.log(dbTable)
             const generateDependents = dependentsIdMok.get(dbTable.typeColumn) && dependentsIdMok.get(dbTable.typeColumn)
                 ?.reduce((accumulator: { [key: string]: number }, dependentId) => {
                     accumulator[dependentId] = dbTable.dependencyId[dependentId]
@@ -327,7 +323,6 @@ function serverToApp(array: any[]) {
 
 // export const bulkDeleteCategories = (arrOfId: any) => ({type: BULK_DELETE_CATEGORY, payload: arrOfId})
 // export const editOldCategory = (recruitment: any) => ({type: EDIT_OLD_CATEGORY, payload: recruitment})
-
 
 
 

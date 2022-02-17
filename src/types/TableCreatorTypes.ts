@@ -1,5 +1,5 @@
 import {ColumnId, Columns, DataColumn, DataEntitiesCatalog} from "../mokData";
-import {Item} from "./categoryReducerTypes";
+import {TypeOrderTable} from "./orderTypes";
 
 
 // export interface IDataEntitiesCatalog {
@@ -10,7 +10,8 @@ import {Item} from "./categoryReducerTypes";
 export type IDataColumn = {
     readonly   [name: string]: string
 }
-export type TypeTable = keyof typeof DataEntitiesCatalog
+export type TypeGoodsTable = keyof typeof DataEntitiesCatalog
+export type TypeTable = TypeGoodsTable | TypeOrderTable
 export type TypeColumn = keyof typeof DataColumn
 export type TypeColumnId = keyof typeof ColumnId
 export type TypeColumnOfTable = keyof typeof Columns
@@ -36,6 +37,7 @@ export enum EnumStyleHeader {
 export interface InputParams {
     typeColumn: TypeColumn,
     isDropDownList: boolean,
+    rightTab?: DependentColumn
     filterByColumn?: TypeColumn,
     typeInput: EnumInput,
     placeholder?: string,
@@ -44,19 +46,36 @@ export interface InputParams {
     bigNumberStep?: number,
     style?: EnumStyles[],
     defaultState?: boolean | string | number,
+    dependent?: {
+        local?: DependentColumn
+    }
+    formula?: {
+        local?: {
+            columns: Array<{ column: TypeColumn | 'previous', matchSing: (first: number, second: number) => number, onOther?: TypeColumn }>
+        }
+    }
 }
 
-export type TableStructure = {
-    [name in TypeColumn]?: InputParams
+export type DependentColumn = {
+    dependentByTable: TypeTable
+    parameter: TypeColumn
+    changeable: boolean
+}
+
+export type LineStructure = {
+    [key: string]: InputParams
 }
 export type DataEntitiesTableStructure = {
     dependency: TypeTable[]
     title: string
-    columnParams: Array<{ width: number }>
+    columnParams: Array<{ width: number }> | ColumnParam[]
     header: Array<{ title: string, style?: EnumStyles[], }>
-    row: TableStructure
+    row: LineStructure
 };
 
+export type ColumnParam = {
+    width: number
+}
 
 export type TablesCreator = {
     [name in TypeTable]: DataEntitiesTableStructure;

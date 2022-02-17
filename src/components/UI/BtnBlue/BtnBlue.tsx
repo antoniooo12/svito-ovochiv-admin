@@ -10,10 +10,12 @@ interface BtnBlue {
 
 const BtnBlue: React.FC<BtnBlue> = React.memo(({onClick, children, icon, showChildren = true}) => {
     return (
-        <div onClick={onClick} className={cl.wrapper}>
-            {showChildren && children}
-            <div className={cl.icon}>
-                {icon}
+        <div>
+            <div onClick={onClick} className={cl.wrapper}>
+                {showChildren && children}
+                <div className={cl.icon}>
+                    {icon}
+                </div>
             </div>
         </div>
     );

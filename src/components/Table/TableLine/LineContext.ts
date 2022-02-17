@@ -1,6 +1,7 @@
 import {createContext} from "react";
 import {EnumStatus, Item, Line} from "../../../types/categoryReducerTypes";
-import {TypeTable, TypeColumn} from "../../../types/TableCreatorTypes";
+import {TypeTable, TypeColumn, DependentColumn} from "../../../types/TableCreatorTypes";
+import {TableAttributes} from "../../../types/database/models/Table";
 
 export interface IOnChange {
     id: number | string,
@@ -8,16 +9,17 @@ export interface IOnChange {
     typeTable: TypeTable,
     typeColumn: TypeColumn,
     status: keyof typeof EnumStatus
+    dependentColumns?: DependentColumn[]
 }
 
-interface ILineContent {
+export interface ILineContent {
     id?: number | string,
     states?: Item,
     wasEdit?: boolean,
     isNew?: boolean,
     status?: keyof typeof EnumStatus,
     type?: any,
-    typeTable?:TypeTable,
+    typeTable?: TypeTable,
     typeRows?: TypeColumn,
     onChange?: ({id, value, typeTable, typeColumn, status}: IOnChange) => void,
     forceUpdate?: any,

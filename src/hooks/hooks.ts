@@ -4,8 +4,8 @@ import {RootState} from "../reducer";
 import {getIdFromValueString1} from "../reducer/helpers/helper";
 import {TypeTable} from "../types/TableCreatorTypes";
 import {useActions} from "./useActions";
-import {ColumnReduxStructure, Line} from "../types/categoryReducerTypes";
 import {deleteAllNewInstance} from "../reducer/tableReducer";
+import {parseTableLines} from "../services/table";
 
 export function useEffectSkipMount(cb: any, deps: any) {
     const mounted = useRef(true)
@@ -58,10 +58,9 @@ export const useSaveTable = (initial: TypeTable): { onClick: any } => {
     }, [initial])
     const {isNew, isAll} = useTypedSelector(state => state.tableReducer.storage[behavior])
 
+
     const {allToDelete, newToServer, allToUpdate} = useMemo(() => {
-        const allToDelete: Array<number | string> = isAll.data.flatMap(line => line.toDelete ? line.id : [])
-        const newToServer = isNew.data.flatMap(line => !line.toDelete ? line.columns : [])
-        const allToUpdate = isAll.data.flatMap(line => !line.toDelete && line.wasEdit ? line.columns : [])
+        const {allToDelete, newToServer, allToUpdate} = parseTableLines({isNew, isAll})
         return {allToDelete, newToServer, allToUpdate}
     }, [behavior, isNew.data, isAll])
 

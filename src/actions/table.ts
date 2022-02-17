@@ -1,18 +1,9 @@
-import Axios from "../core/axios";
+import axios from "../core/axios";
 import {TypeTable} from "../types/TableCreatorTypes";
 import {Dispatch} from "redux";
-import {
-    CategoryReducerActions,
-    ColumnReduxStructure,
-    Item,
-    Line,
-    RowsToChosenTable,
-    SetCategories
-} from "../types/categoryReducerTypes";
-import axios from "../core/axios";
+import {CategoryReducerActions, ColumnReduxStructure, RowsToChosenTable} from "../types/categoryReducerTypes";
 import {setCategories} from "../reducer/tableReducer";
-// import {AllData} from "../mokData";
-import {log} from "util";
+
 
 interface SaveTable {
     behavior: TypeTable,
@@ -44,10 +35,10 @@ export const getAllRowsByTableName = ({behavior}: { behavior: TypeTable }) => {
             const response = await axios.get(`/api/goods/table`, {
                 params: {
                     typeTable: behavior
-                }
+                },
             })
 
-            const toUI = response.data as Item[][]
+            const toUI = response.data
 
 
 

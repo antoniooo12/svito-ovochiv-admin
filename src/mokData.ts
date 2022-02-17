@@ -1,5 +1,6 @@
 import {EnumInput, EnumStyles, TablesCreator, TypeColumn, TypeColumnId, TypeTable} from "./types/TableCreatorTypes";
 import {Line} from "./types/categoryReducerTypes";
+import {columns} from "./API";
 
 
 export const DataEntitiesCatalog = {
@@ -8,11 +9,22 @@ export const DataEntitiesCatalog = {
     Subcategory: "підкатегорії",
     TypeOfProduct: 'тип продуктів',
 }
-export const ColumnId ={
+type TableNameToTableId = {
+    [name: string]: string
+}
+export const NameToTableId: TableNameToTableId = {
+    Category: 'CategoryId',
+    Subcategory: 'SubcategoryId',
+    TypeOfProduct: 'TypeOfProductId',
+    Product: 'ProductId',
+}
+
+export const ColumnId = {
     CategoryId: ' CategoryId',
     SubcategoryId: ' SubcategoryId',
     ProductId: ' ProductId',
     TypeOfProductId: ' TypeOfProductId',
+    OrderId: 'OrderId'
 }
 
 export const ColumnToColumnId: Record<TypeTable, TypeColumnId> = {
@@ -20,6 +32,7 @@ export const ColumnToColumnId: Record<TypeTable, TypeColumnId> = {
     'Subcategory': 'SubcategoryId',
     'Product': 'ProductId',
     'TypeOfProduct': 'TypeOfProductId',
+    'Order': 'OrderId',
 }
 
 
@@ -31,6 +44,9 @@ export const DataColumn = {
     actual: "актуальность",
     price: 'ціна',
     priority: 'пріорітет',
+    count: 'кількість',
+    totalSum: 'Всього',
+    Order: 'таблиця замовлень',
 }
 
 export const Columns = {
@@ -159,6 +175,61 @@ export const TableCreatorMokData: TablesCreator = {
             }
         }
 
+    },
+    Order: {
+        dependency: ['Product'],
+        title: 'Замовлення',
+        columnParams: [{width: 150}, {width: 150}, {width: 150}, {width: 150}],
+        header: [{title: 'Назва'}, {title: 'Кількість'}, {title: 'Ціна'}, {title: 'Всього'}],
+        row: {
+            Product: {
+                typeColumn: "Product",
+                typeInput: EnumInput.text,
+                isDropDownList: true,
+
+            },
+            count: {
+                typeColumn: "count",
+                rightTab: {
+                    dependentByTable: "Product",
+                    changeable: false,
+                    parameter: "TypeOfProduct",
+                },
+                typeInput: EnumInput.number,
+                // placeholder: 'name of product',
+                isDropDownList: false
+            },
+            price: {
+                typeColumn: "price",
+                typeInput: EnumInput.number,
+                dependent: {
+                    local: {
+                        dependentByTable: "Product",
+                        parameter: "price",
+                        changeable: false,
+                    }
+                },
+                isDropDownList: false
+            },
+            totalSum: {
+                typeColumn: "totalSum",
+                typeInput: EnumInput.number,
+                // placeholder: 'name of product',
+                isDropDownList: false,
+
+                formula: {
+                    local: {
+                        columns: [
+                            {
+                                column: "price", onOther: 'count', matchSing: function (first: number, second: number) {
+                                    return Math.round((first * second) * 1000) / 1000
+                                },
+                            }
+                        ]
+                    }
+                },
+            }
+        },
     }
 }
 
@@ -180,6 +251,6 @@ export const mainPagesList = [
             return `${this.path}/${this.defaultTable}`
         }
     },
-    {id: 1, title: 'прайс', path: '/price', page: 'PricePage'},
     {id: 2, title: 'замовлення', path: '/orders', page: 'ProductsPage'}
 ]
+

@@ -1,8 +1,8 @@
 import {IOnChange} from "../components/Table/TableLine/LineContext";
 import {IOnClick} from "./TableBtnTypes";
-import {} from "../API";
-import {IDataColumn, TablesCreator, TypeColumn, TypeColumnId, TypeTable} from "./TableCreatorTypes";
-import {DataEntitiesCatalog, DataColumn, ColumnId} from "../mokData";
+import {TypeColumn, TypeColumnId, TypeTable} from "./TableCreatorTypes";
+import {DataEntitiesCatalog} from "../mokData";
+import {TableAttributes} from "./database/models/Table";
 
 export enum EnumCategoryReducer {
     CREATE_CATEGORY = "CREATE_CATEGORY",
@@ -26,6 +26,7 @@ export interface TableEntity {
 }
 
 export interface CategoryState {
+    tableAdditionalDate: Immutable.Map<TypeTable, Line[]>
     storage: TableEntity
 }
 
@@ -56,6 +57,7 @@ export interface Line {
     toDelete: boolean,
     wasEdit: boolean,
     columns: ColumnReduxStructure,
+    rowAdditionalDate?: Map<TypeColumn, TableAttributes>,
 }
 
 export type ColumnReduxStructure = {
@@ -89,7 +91,7 @@ interface DeleteCategory {
 }
 
 export interface RowsToChosenTable {
-    readonly rowItem: any[][],
+    readonly rowItem: Line[],
     readonly typeTable: TypeTable,
 }
 
